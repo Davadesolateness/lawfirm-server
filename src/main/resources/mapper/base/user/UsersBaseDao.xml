@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.user.dao.UsersDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UsersDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.user.po.Users">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Users">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -102,7 +102,7 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.user.po.Users">
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
@@ -123,17 +123,17 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.user.po.Users">
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         insert into users (id, username, password, password_update_time, email,
-        phone_number, user_type, source_type, related_entity_id, is_valid_flag,
-        insert_time, operate_time)
+                           phone_number, user_type, source_type, related_entity_id, is_valid_flag,
+                           insert_time, operate_time)
         values (#{id}, #{username}, #{password}, #{passwordUpdateTime}, #{email},
-        #{phoneNumber}, #{userType}, #{sourceType}, #{relatedEntityId}, #{isValidFlag},
-        #{insertTime}, #{operateTime})
+                #{phoneNumber}, #{userType}, #{sourceType}, #{relatedEntityId}, #{isValidFlag},
+                #{insertTime}, #{operateTime})
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.user.po.Users">
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         insert into users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -215,7 +215,7 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.user.po.Users">
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         update users
         <set>
             <if test="username != null">
@@ -256,19 +256,19 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.user.po.Users">
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         update users
         set username=#{username},
-        password=#{password},
-        password_update_time=#{passwordUpdateTime},
-        email=#{email},
-        phone_number=#{phoneNumber},
-        user_type=#{userType},
-        source_type=#{sourceType},
-        related_entity_id=#{relatedEntityId},
-        is_valid_flag=#{isValidFlag},
-        insert_time=#{insertTime},
-        operate_time=#{operateTime}
+            password=#{password},
+            password_update_time=#{passwordUpdateTime},
+            email=#{email},
+            phone_number=#{phoneNumber},
+            user_type=#{userType},
+            source_type=#{sourceType},
+            related_entity_id=#{relatedEntityId},
+            is_valid_flag=#{isValidFlag},
+            insert_time=#{insertTime},
+            operate_time=#{operateTime}
         where id = #{id}
     </update>
 

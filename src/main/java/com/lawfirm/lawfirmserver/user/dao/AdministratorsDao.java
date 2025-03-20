@@ -1,6 +1,6 @@
-package com.lawfirm.user.dao;
+package com.lawfirm.lawfirmserver.user.dao;
 
-import com.lawfirm.user.po.Administrators;
+import com.lawfirm.lawfirmserver.user.po.Administrators;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 

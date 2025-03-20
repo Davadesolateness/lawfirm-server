@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.user.dao.CorporateClientsDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.user.po.CorporateClients">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         <id column="id" property="id"/>
         <result column="company_name" property="companyName"/>
         <result column="certificate_type" property="certificateType"/>
@@ -85,7 +85,8 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.user.po.CorporateClients">
+    <select id="selectPage" resultMap="BaseResultMap"
+            parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
@@ -106,15 +107,15 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.user.po.CorporateClients">
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         insert into corporate_clients (id, company_name, certificate_type, certificate_number, contact_person,
-        is_valid_flag, insert_time, operate_time)
+                                       is_valid_flag, insert_time, operate_time)
         values (#{id}, #{companyName}, #{certificateType}, #{certificateNumber}, #{contactPerson},
-        #{isValidFlag}, #{insertTime}, #{operateTime})
+                #{isValidFlag}, #{insertTime}, #{operateTime})
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.user.po.CorporateClients">
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         insert into corporate_clients
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -172,7 +173,7 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.user.po.CorporateClients">
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         update corporate_clients
         <set>
             <if test="companyName != null">
@@ -201,15 +202,15 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.user.po.CorporateClients">
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
         update corporate_clients
         set company_name=#{companyName},
-        certificate_type=#{certificateType},
-        certificate_number=#{certificateNumber},
-        contact_person=#{contactPerson},
-        is_valid_flag=#{isValidFlag},
-        insert_time=#{insertTime},
-        operate_time=#{operateTime}
+            certificate_type=#{certificateType},
+            certificate_number=#{certificateNumber},
+            contact_person=#{contactPerson},
+            is_valid_flag=#{isValidFlag},
+            insert_time=#{insertTime},
+            operate_time=#{operateTime}
         where id = #{id}
     </update>
 

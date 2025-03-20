@@ -3,8 +3,15 @@
 <!-- ============================================================== -->
 <!-- ================可直接使用Base配置文件中定义的节点！================ -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.user.dao.UsersDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UsersDao">
     <!-- 请在下方添加自定义配置-->
+    <!-- 按用户名查询一条记录 -->
+    <select id="selectUsersByUserName" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where username = #{username}
+    </select>
 
 
 </mapper>

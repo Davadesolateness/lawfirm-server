@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.user.dao.LawyersDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.LawyersDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.user.po.Lawyers">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Lawyers">
         <id column="id" property="id"/>
         <result column="law_firm" property="lawFirm"/>
         <result column="lawyer_license_number" property="lawyerLicenseNumber"/>
@@ -81,7 +81,7 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.user.po.Lawyers">
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
@@ -102,15 +102,15 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.user.po.Lawyers">
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
         insert into lawyers (id, law_firm, lawyer_license_number, specialization, is_valid_flag,
-        insert_time, operate_time)
+                             insert_time, operate_time)
         values (#{id}, #{lawFirm}, #{lawyerLicenseNumber}, #{specialization}, #{isValidFlag},
-        #{insertTime}, #{operateTime})
+                #{insertTime}, #{operateTime})
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.user.po.Lawyers">
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
         insert into lawyers
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -162,7 +162,7 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.user.po.Lawyers">
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
         update lawyers
         <set>
             <if test="lawFirm != null">
@@ -188,14 +188,14 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.user.po.Lawyers">
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
         update lawyers
         set law_firm=#{lawFirm},
-        lawyer_license_number=#{lawyerLicenseNumber},
-        specialization=#{specialization},
-        is_valid_flag=#{isValidFlag},
-        insert_time=#{insertTime},
-        operate_time=#{operateTime}
+            lawyer_license_number=#{lawyerLicenseNumber},
+            specialization=#{specialization},
+            is_valid_flag=#{isValidFlag},
+            insert_time=#{insertTime},
+            operate_time=#{operateTime}
         where id = #{id}
     </update>
 

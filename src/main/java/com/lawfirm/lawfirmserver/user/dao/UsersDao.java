@@ -1,6 +1,6 @@
-package com.lawfirm.user.dao;
+package com.lawfirm.lawfirmserver.user.dao;
 
-import com.lawfirm.user.po.Users;
+import com.lawfirm.lawfirmserver.user.po.Users;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,4 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UsersDao extends MybatisBaseDao<Users, Long> {
 
+    Users selectUsersByUserName(String username);
 }

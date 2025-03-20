@@ -1,4 +1,4 @@
-package com.lawfirm.user.po;
+package com.lawfirm.lawfirmserver.user.vo;
 
 import lombok.Data;
 
@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表individual_clients的PO对象<br/>
+ * 通过ins-framework-mybatis工具自动生成，表individual_clients的VO对象<br/>
  * 对应表名：individual_clients
  */
 @Data
-public class IndividualClients implements Serializable {
+public class IndividualClientsVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：个人客户唯一标识，自增主键

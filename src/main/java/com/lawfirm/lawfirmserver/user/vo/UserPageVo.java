@@ -1,4 +1,4 @@
-package com.lawfirm.user.vo;
+package com.lawfirm.lawfirmserver.user.vo;
 
 import lombok.Data;
 

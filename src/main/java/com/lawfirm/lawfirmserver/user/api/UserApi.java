@@ -1,7 +1,7 @@
-package com.lawfirm.user.api;
+package com.lawfirm.lawfirmserver.user.api;
 
-import com.lawfirm.user.service.UserService;
-import com.lawfirm.user.vo.UserPageVo;
+import com.lawfirm.lawfirmserver.user.service.UserService;
+import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
