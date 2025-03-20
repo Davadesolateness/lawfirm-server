@@ -19,10 +19,12 @@ public class CodeGenerator {
          * 三、生成的BASE中的文件不要进行修改（但可以自行添加序列的赋值语句）。
          **/
 
-        createBaseFiles("user", "user");
-//        createBaseFiles("fixduty","PrpLfixDutyExt");
-//        createBaseFiles("fixduty","PrpLfixDutyClauseKind");
-//        createBaseFiles("fixduty","PrpLcheckDutyOpinion");
+//        createBaseFiles("user", "user");
+        createBaseFiles("user", "users");
+        createBaseFiles("user", "corporate_clients");
+        createBaseFiles("user", "individual_clients");
+        createBaseFiles("user", "lawyers");
+        createBaseFiles("user", "administrators");
 
     }
 
@@ -39,7 +41,7 @@ public class CodeGenerator {
         // "Prp_D_Maim_Item" }));
         paramList.add(new GenParam(packageName, new String[]{tabName}));
         GenConfig gc = new GenConfig();
-        gc.setBasePackage("com.lawfirm.lawfirmserver");
+        gc.setBasePackage("com.lawfirm");
         // 设置要忽略的表名前缀，默认空
         gc.setIgnoreTablePrefixs(new String[]{"prpl", "prpd"});
         // 设置PO是否保留前缀(设置忽略表名前缀时)，默认true
@@ -55,7 +57,7 @@ public class CodeGenerator {
         // mysql 数据库相关配置
         // 设置基本保存目录（Java源代码根目录）
         String strDir = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        strDir = "E:\\workspace\\abc";
+        strDir = "E:\\workspace\\lawfirm\\mybatis\\java";
         //strDir = strDir.substring(1).replace("/target/test-classes/", "/src/main/java");
         gc.setSaveDir(strDir);
         // 可代码指定vo和xml的位置
