@@ -1,7 +1,7 @@
--- 若需删除 users 表，可取消此注释
--- DROP TABLE IF EXISTS users;
+-- 若需删除 user 表，可取消此注释
+-- DROP TABLE IF EXISTS user;
 -- 用户表，存储所有类型用户的通用信息
-CREATE TABLE users
+CREATE TABLE user
 (
     id                   BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '用户唯一标识，自增主键',
     username             VARCHAR(50)  NOT NULL UNIQUE COMMENT '用户名，唯一且不能为空',
@@ -12,11 +12,11 @@ CREATE TABLE users
     user_type            VARCHAR(50)  NOT NULL COMMENT '用户类型，取值可为：corporate（法人客户）、individual（个人客户）、lawyer（律师）、admin（管理员）',
     source_type          VARCHAR(50) DEFAULT 'manual_register' COMMENT '数据来源类型，取值可为：database_insert（数据库插入）、manual_register（人工系统注册），默认是人工系统注册',
     related_entity_id    BIGINT COMMENT '关联的实体 ID，根据 user_type 确定关联的表：corporate 对应 corporate_clients 表，individual 对应 individual_clients 表，lawyer 对应 lawyers 表，admin 对应 administrators 表',
-    is_valid_flag        BOOLEAN     DEFAULT TRUE COMMENT '用户是否有效，默认为有效',
+    is_valid_flag        CHAR(1)     DEFAULT '1' COMMENT '用户是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time          TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '用户信息插入时间，默认为当前时间',
     operate_time         TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户信息操作时间，自动更新'
 );
-CREATE INDEX idx_users_related_entity_id ON users (related_entity_id);
+CREATE INDEX idx_user_related_entity_id ON user (related_entity_id);
 
 -- 若需删除 corporate_clients 表，可取消此注释
 -- DROP TABLE IF EXISTS corporate_clients;
@@ -28,7 +28,7 @@ CREATE TABLE corporate_clients
     certificate_type   VARCHAR(50) COMMENT '证件类型，如营业执照、组织机构代码证等',
     certificate_number VARCHAR(50) UNIQUE COMMENT '证件号码，唯一',
     contact_person     VARCHAR(50) COMMENT '联系人姓名',
-    is_valid_flag      BOOLEAN   DEFAULT TRUE COMMENT '法人客户是否有效，默认为有效',
+    is_valid_flag      CHAR(1)   DEFAULT '1' COMMENT '法人客户是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time        TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '法人客户信息插入时间，默认为当前时间',
     operate_time       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '法人客户信息操作时间，自动更新'
 );
@@ -42,7 +42,7 @@ CREATE TABLE individual_clients
     full_name     VARCHAR(100) NOT NULL COMMENT '个人客户全名，不能为空',
     gender        VARCHAR(50) COMMENT '性别，取值可为：male（男）、female（女）、other（其他）',
     birth_date    DATE COMMENT '出生日期',
-    is_valid_flag BOOLEAN   DEFAULT TRUE COMMENT '个人客户是否有效，默认为有效',
+    is_valid_flag CHAR(1)   DEFAULT '1' COMMENT '个人客户是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '个人客户信息插入时间，默认为当前时间',
     operate_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '个人客户信息操作时间，自动更新'
 );
@@ -55,8 +55,8 @@ CREATE TABLE lawyers
     id                    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '律师唯一标识，自增主键',
     law_firm              VARCHAR(200) COMMENT '所在律师事务所名称',
     lawyer_license_number VARCHAR(50) UNIQUE COMMENT '律师执业证号，唯一',
-    specialization        TEXT COMMENT '专业领域',
-    is_valid_flag         BOOLEAN   DEFAULT TRUE COMMENT '律师是否有效，默认为有效',
+    specialization        VARCHAR(255) COMMENT '专业领域',
+    is_valid_flag         CHAR(1)   DEFAULT '1' COMMENT '律师是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time           TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '律师信息插入时间，默认为当前时间',
     operate_time          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '律师信息操作时间，自动更新'
 );
@@ -70,7 +70,7 @@ CREATE TABLE administrators
     admin_role      VARCHAR(50) COMMENT '管理员角色',
     admin_level     INT NOT NULL DEFAULT 1 COMMENT '管理员级别，数字越小级别越高',
     parent_admin_id BIGINT COMMENT '上级管理员 ID，顶级管理员该字段为 NULL',
-    is_valid_flag   BOOLEAN      DEFAULT TRUE COMMENT '管理员是否有效，默认为有效',
+    is_valid_flag   CHAR(1)      DEFAULT '1' COMMENT '管理员是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time     TIMESTAMP    DEFAULT CURRENT_TIMESTAMP COMMENT '管理员信息插入时间，默认为当前时间',
     operate_time    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '管理员信息操作时间，自动更新'
 );

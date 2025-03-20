@@ -22,7 +22,7 @@
     <sql id="Base_Column_List">
         id
         , full_name AS fullName, gender, birth_date AS birthDate, is_valid_flag AS isValidFlag,
-        insert_time AS insertTime, operate_time AS operateTime
+		 insert_time AS insertTime, operate_time AS operateTime
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->

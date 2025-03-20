@@ -20,7 +20,7 @@ public class CodeGenerator {
          **/
 
 //        createBaseFiles("user", "user");
-        createBaseFiles("user", "users");
+        createBaseFiles("user", "user");
         createBaseFiles("user", "corporate_clients");
         createBaseFiles("user", "individual_clients");
         createBaseFiles("user", "lawyers");
@@ -41,7 +41,7 @@ public class CodeGenerator {
         // "Prp_D_Maim_Item" }));
         paramList.add(new GenParam(packageName, new String[]{tabName}));
         GenConfig gc = new GenConfig();
-        gc.setBasePackage("com.lawfirm");
+        gc.setBasePackage("com.lawfirm.lawfirmserver");
         // 设置要忽略的表名前缀，默认空
         gc.setIgnoreTablePrefixs(new String[]{"prpl", "prpd"});
         // 设置PO是否保留前缀(设置忽略表名前缀时)，默认true

@@ -29,9 +29,9 @@ public class AdministratorsVo implements Serializable {
      */
     private Long parentAdminId;
     /**
-     * 对应字段：is_valid_flag,备注：管理员是否有效，默认为有效
+     * 对应字段：is_valid_flag,备注：管理员是否有效，1 表示有效，0 表示无效，默认为有效
      */
-    private Boolean isValidFlag;
+    private String isValidFlag;
     /**
      * 对应字段：insert_time,备注：管理员信息插入时间，默认为当前时间
      */

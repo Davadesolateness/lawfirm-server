@@ -37,6 +37,11 @@
             <artifactId>ins-framework-mybatis-generator</artifactId>
             <version>6.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
         <!-- Logback Classic Module -->
         <dependency>
             <groupId>ch.qos.logback</groupId>

@@ -29,9 +29,9 @@ public class IndividualClientsVo implements Serializable {
      */
     private Date birthDate;
     /**
-     * 对应字段：is_valid_flag,备注：个人客户是否有效，默认为有效
+     * 对应字段：is_valid_flag,备注：个人客户是否有效，1 表示有效，0 表示无效，默认为有效
      */
-    private Boolean isValidFlag;
+    private String isValidFlag;
     /**
      * 对应字段：insert_time,备注：个人客户信息插入时间，默认为当前时间
      */

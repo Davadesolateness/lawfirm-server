@@ -16,10 +16,10 @@ public class UserApi {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/checkUser", method = {RequestMethod.POST})
-    public UserPageVo checkUser(@RequestBody UserPageVo userPageVo, HttpServletRequest request) {
+    @RequestMapping(value = "/validateLogin", method = {RequestMethod.POST})
+    public UserPageVo validateLogin(@RequestBody UserPageVo userPageVo, HttpServletRequest request) {
 
-        Boolean result = userService.checkUser(userPageVo.getUsername(), userPageVo.getPassword());
+        Boolean result = userService.validateLogin(userPageVo.getUsername(), userPageVo.getPassword());
         userPageVo.setResult(result);
         return userPageVo;
     }

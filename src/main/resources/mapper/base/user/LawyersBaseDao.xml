@@ -21,9 +21,8 @@
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , law_firm AS lawFirm, lawyer_license_number AS lawyerLicenseNumber, specialization, is_valid_flag AS
-        isValidFlag,
-        insert_time AS insertTime, operate_time AS operateTime
+        , law_firm AS lawFirm, lawyer_license_number AS lawyerLicenseNumber, specialization, is_valid_flag AS isValidFlag,
+		 insert_time AS insertTime, operate_time AS operateTime
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->

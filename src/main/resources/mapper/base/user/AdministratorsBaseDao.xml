@@ -21,9 +21,8 @@
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , admin_role AS adminRole, admin_level AS adminLevel, parent_admin_id AS parentAdminId, is_valid_flag AS
-        isValidFlag,
-        insert_time AS insertTime, operate_time AS operateTime
+        , admin_role AS adminRole, admin_level AS adminLevel, parent_admin_id AS parentAdminId, is_valid_flag AS isValidFlag,
+		 insert_time AS insertTime, operate_time AS operateTime
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->

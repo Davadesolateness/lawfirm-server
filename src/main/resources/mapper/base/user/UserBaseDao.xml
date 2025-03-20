@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UsersDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UserDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Users">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.User">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -27,9 +27,8 @@
     <sql id="Base_Column_List">
         id
         , username, password, password_update_time AS passwordUpdateTime, email,
-        phone_number AS phoneNumber, user_type AS userType, source_type AS sourceType, related_entity_id AS
-        relatedEntityId, is_valid_flag AS isValidFlag,
-        insert_time AS insertTime, operate_time AS operateTime
+		 phone_number AS phoneNumber, user_type AS userType, source_type AS sourceType, related_entity_id AS relatedEntityId, is_valid_flag AS isValidFlag,
+		 insert_time AS insertTime, operate_time AS operateTime
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -76,7 +75,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from users
+        from user
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -86,7 +85,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from users
+        from user
         where id = #{param1}
     </select>
 
@@ -94,7 +93,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from users
+        from user
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -102,20 +101,20 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.User">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from users
+        from user
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from users
+        delete from user
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -123,18 +122,18 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
-        insert into users (id, username, password, password_update_time, email,
-                           phone_number, user_type, source_type, related_entity_id, is_valid_flag,
-                           insert_time, operate_time)
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+        insert into user (id, username, password, password_update_time, email,
+                          phone_number, user_type, source_type, related_entity_id, is_valid_flag,
+                          insert_time, operate_time)
         values (#{id}, #{username}, #{password}, #{passwordUpdateTime}, #{email},
                 #{phoneNumber}, #{userType}, #{sourceType}, #{relatedEntityId}, #{isValidFlag},
                 #{insertTime}, #{operateTime})
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
-        insert into users
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+        insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -215,8 +214,8 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
-        update users
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+        update user
         <set>
             <if test="username != null">
                 username=#{username},
@@ -256,8 +255,8 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
-        update users
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+        update user
         set username=#{username},
             password=#{password},
             password_update_time=#{passwordUpdateTime},
