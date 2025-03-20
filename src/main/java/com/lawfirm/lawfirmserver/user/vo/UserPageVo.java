@@ -4,11 +4,17 @@ import lombok.Data;
 
 @Data
 public class UserPageVo {
-    private String username;
-    /**
-     * 对应字段：password,备注：加密后的密码
-     */
-    private String password;
+
+    /*用户*/
+    private UserVo userVo;
+    /*律师*/
+    private LawyersVo lawyersVo;
+    /*个人客户*/
+    private IndividualClientsVo individualClientsVo;
+    /*法人客户*/
+    private CorporateClientsVo corporateClientsVo;
+    /*管理员*/
+    private AdministratorsVo administratorsVo;
 
     private boolean result;
 }

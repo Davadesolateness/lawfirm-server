@@ -23,7 +23,10 @@ public class UserService {
      */
     public boolean validateLogin(String username, String plainPassword) {
         User user = userDao.selectUserByUserName(username);
-        Boolean result = CommonUtil.checkPassword(plainPassword, user.getPassword());
+        Boolean result = false;
+        if (user != null) {
+            result = CommonUtil.checkPassword(plainPassword, user.getPassword());
+        }
         return result;
     }
 }

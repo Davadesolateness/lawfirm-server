@@ -19,7 +19,7 @@ public class UserApi {
     @RequestMapping(value = "/validateLogin", method = {RequestMethod.POST})
     public UserPageVo validateLogin(@RequestBody UserPageVo userPageVo, HttpServletRequest request) {
 
-        Boolean result = userService.validateLogin(userPageVo.getUsername(), userPageVo.getPassword());
+        Boolean result = userService.validateLogin(userPageVo.getUserVo().getUsername(), userPageVo.getUserVo().getPassword());
         userPageVo.setResult(result);
         return userPageVo;
     }
