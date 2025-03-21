@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional
 public class UserService {
@@ -55,19 +57,22 @@ public class UserService {
         CommonUtil.copyProperties(userPageVo.getIndividualClientsVo(), individualClients);
         CommonUtil.copyProperties(userPageVo.getLawyersVo(), lawyers);
         CommonUtil.copyProperties(userPageVo.getAdministratorsVo(), administrators);
+
         if (userPageVo.getUserVo().getId() == null) {
-            userDao.insertSelectiveAndBack(user);
+            userDao.insertSelectiveAndBackId(user);
+            user.setPassword(CommonUtil.encryptPassword(userPageVo.getUserVo().getPassword()));
+            user.setPasswordUpdateTime(new Date());
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                corporateClientsDao.insertSelectiveAndBack(corporateClients);
+                corporateClientsDao.insertSelectiveAndBackId(corporateClients);
                 user.setRelatedEntityId(corporateClients.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                individualClientsDao.insertSelectiveAndBack(individualClients);
+                individualClientsDao.insertSelectiveAndBackId(individualClients);
                 user.setRelatedEntityId(individualClients.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
-                lawyersDao.insertSelectiveAndBack(lawyers);
+                lawyersDao.insertSelectiveAndBackId(lawyers);
                 user.setRelatedEntityId(lawyers.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                administratorsDao.insertSelectiveAndBack(administrators);
+                administratorsDao.insertSelectiveAndBackId(administrators);
                 user.setRelatedEntityId(administrators.getId());
             }
             userDao.updateSelectiveByPrimaryKey(user);
@@ -83,13 +88,12 @@ public class UserService {
                 administratorsDao.updateSelectiveByPrimaryKey(administrators);
             }
         }
+
         CommonUtil.copyProperties(user, userPageVo.getUserVo());
         CommonUtil.copyProperties(corporateClients, userPageVo.getCorporateClientsVo());
         CommonUtil.copyProperties(individualClients, userPageVo.getIndividualClientsVo());
         CommonUtil.copyProperties(lawyers, userPageVo.getLawyersVo());
         CommonUtil.copyProperties(administrators, userPageVo.getAdministratorsVo());
-        userDao.insert(user);
+        userPageVo.setResult(true);
     }
-
-
 }

@@ -7,7 +7,7 @@
     <!-- 请在下方添加自定义配置-->
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelectiveAndBack" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>

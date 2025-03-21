@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AdministratorsDao extends MybatisBaseDao<Administrators, Long> {
 
-    void insertSelectiveAndBack(Administrators administrators);
+    void insertSelectiveAndBackId(Administrators administrators);
 }

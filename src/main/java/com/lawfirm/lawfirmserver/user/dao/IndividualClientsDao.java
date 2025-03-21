@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface IndividualClientsDao extends MybatisBaseDao<IndividualClients, Long> {
 
-    void insertSelectiveAndBack(IndividualClients individualClients);
+    void insertSelectiveAndBackId(IndividualClients individualClients);
 }

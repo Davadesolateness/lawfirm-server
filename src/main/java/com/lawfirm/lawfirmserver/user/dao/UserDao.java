@@ -13,6 +13,6 @@ public interface UserDao extends MybatisBaseDao<User, Long> {
 
     User selectUserByUserName(String username);
 
-    void insertSelectiveAndBack(User user);
+    void insertSelectiveAndBackId(User user);
 
 }

@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface LawyersDao extends MybatisBaseDao<Lawyers, Long> {
 
-    void insertSelectiveAndBack(Lawyers lawyers);
+    void insertSelectiveAndBackId(Lawyers lawyers);
 }
