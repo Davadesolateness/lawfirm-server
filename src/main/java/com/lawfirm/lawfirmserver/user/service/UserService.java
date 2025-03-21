@@ -54,6 +54,35 @@ public class UserService {
     }
 
     /**
+     * 修改用户密码的方法
+     *
+     * @param username    用户名称
+     * @param oldPassword 用户输入的旧密码
+     * @param newPassword 用户输入的新密码
+     * @return 如果密码修改成功返回 true，否则返回 false
+     */
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        // 根据用户名查询用户信息
+        User user = userDao.selectUserByUserName(username);
+        if (user == null) {
+            return false;
+        }
+        // 验证旧密码是否正确
+        if (!CommonUtil.checkPassword(oldPassword, user.getPassword())) {
+            return false;
+        }
+        // 对新密码进行加密处理
+        String encryptedNewPassword = CommonUtil.encryptPassword(newPassword);
+        user.setPassword(encryptedNewPassword);
+        // 更新密码修改时间为当前时间
+        user.setPasswordUpdateTime(new Date());
+        // 将更新后的用户信息保存到数据库
+        userDao.updateSelectiveByPrimaryKey(user);
+        // 密码修改成功，返回 true
+        return true;
+    }
+
+    /**
      * 保存或更新用户信息的方法。
      * 该方法接收一个 UserPageVo 对象，根据对象中的用户信息进行保存或更新操作。
      * 如果用户 ID 为空，则执行插入操作；如果用户 ID 不为空，则执行更新操作。
@@ -63,7 +92,6 @@ public class UserService {
      * @param userPageVo 包含用户信息和关联实体信息的 UserPageVo 对象
      */
     public void saveOrUpdateUser(UserPageVo userPageVo) {
-        // 模块一：对象初始化
         // 创建用于存储不同类型信息的对象
         User user = new User();
         CorporateClients corporateClients = new CorporateClients();
@@ -71,7 +99,6 @@ public class UserService {
         Lawyers lawyers = new Lawyers();
         Administrators administrators = new Administrators();
 
-        // 模块二：信息复制
         // 将 userPageVo 中的各部分信息复制到对应的对象中
         CommonUtil.copyProperties(userPageVo.getUserVo(), user);
         CommonUtil.copyProperties(userPageVo.getCorporateClientsVo(), corporateClients);
@@ -79,9 +106,7 @@ public class UserService {
         CommonUtil.copyProperties(userPageVo.getLawyersVo(), lawyers);
         CommonUtil.copyProperties(userPageVo.getAdministratorsVo(), administrators);
 
-        // 模块三：插入或更新操作
         if (userPageVo.getUserVo().getId() == null) {
-            // 插入操作
             // 插入用户信息并获取插入后的 ID
             userDao.insertSelectiveAndBackId(user);
             // 加密用户密码并更新密码更新时间
@@ -105,7 +130,6 @@ public class UserService {
             // 更新用户信息到数据库
             userDao.updateSelectiveByPrimaryKey(user);
         } else {
-            // 更新操作
             // 更新用户信息到数据库
             userDao.updateSelectiveByPrimaryKey(user);
 
@@ -121,7 +145,6 @@ public class UserService {
             }
         }
 
-        // 模块四：结果回写和状态设置
         // 将更新后的信息复制回 userPageVo 中
         CommonUtil.copyProperties(user, userPageVo.getUserVo());
         CommonUtil.copyProperties(corporateClients, userPageVo.getCorporateClientsVo());

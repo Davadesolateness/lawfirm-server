@@ -1,5 +1,5 @@
 用户信息保存
-http://localhost:8080/user/saveuser
+http://localhost:8080/user/saveUser
 
 {
     "userVo": {
