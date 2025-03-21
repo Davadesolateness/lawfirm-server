@@ -1,6 +1,7 @@
 package com.lawfirm.lawfirmserver.common.util;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.BeanUtils;
 
 public class CommonUtil {
 
@@ -41,5 +42,23 @@ public class CommonUtil {
      */
     public static boolean checkPassword(String plainPassword, String hashedPassword) {
         return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
+
+    /**
+     * 使用 Spring 的 BeanUtils 实现对象属性拷贝的公共方法
+     * 此方法将源对象的属性值拷贝到目标对象中
+     *
+     * @param source 源对象，即属性的来源对象
+     * @param target 目标对象，即要将属性复制到的对象
+     * @param <S>    源对象的类型
+     * @param <T>    目标对象的类型
+     * @return 拷贝属性后的目标对象
+     */
+    public static <S, T> T copyProperties(S source, T target) {
+        if (source == null || target == null) {
+            return target;
+        }
+        BeanUtils.copyProperties(source, target);
+        return target;
     }
 }
