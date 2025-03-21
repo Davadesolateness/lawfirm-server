@@ -63,92 +63,72 @@ public class UserService {
      * @param userPageVo 包含用户信息和关联实体信息的 UserPageVo 对象
      */
     public void saveOrUpdateUser(UserPageVo userPageVo) {
-        // 创建 User 对象，用于存储通用用户信息
+        // 模块一：对象初始化
+        // 创建用于存储不同类型信息的对象
         User user = new User();
-        // 创建 CorporateClients 对象，用于存储法人客户的额外信息
         CorporateClients corporateClients = new CorporateClients();
-        // 创建 IndividualClients 对象，用于存储个人客户的额外信息
         IndividualClients individualClients = new IndividualClients();
-        // 创建 Lawyers 对象，用于存储律师的额外信息
         Lawyers lawyers = new Lawyers();
-        // 创建 Administrators 对象，用于存储管理员的额外信息
         Administrators administrators = new Administrators();
 
-        // 使用 CommonUtil 工具类将 userPageVo 中的用户通用信息复制到 user 对象中
+        // 模块二：信息复制
+        // 将 userPageVo 中的各部分信息复制到对应的对象中
         CommonUtil.copyProperties(userPageVo.getUserVo(), user);
-        // 使用 CommonUtil 工具类将 userPageVo 中的法人客户信息复制到 corporateClients 对象中
         CommonUtil.copyProperties(userPageVo.getCorporateClientsVo(), corporateClients);
-        // 使用 CommonUtil 工具类将 userPageVo 中的个人客户信息复制到 individualClients 对象中
         CommonUtil.copyProperties(userPageVo.getIndividualClientsVo(), individualClients);
-        // 使用 CommonUtil 工具类将 userPageVo 中的律师信息复制到 lawyers 对象中
         CommonUtil.copyProperties(userPageVo.getLawyersVo(), lawyers);
-        // 使用 CommonUtil 工具类将 userPageVo 中的管理员信息复制到 administrators 对象中
         CommonUtil.copyProperties(userPageVo.getAdministratorsVo(), administrators);
 
-        // 判断用户 ID 是否为空，如果为空则执行插入操作
+        // 模块三：插入或更新操作
         if (userPageVo.getUserVo().getId() == null) {
-            // 调用 userDao 的 insertSelectiveAndBackId 方法将 user 对象插入数据库，并返回插入后的用户 ID
+            // 插入操作
+            // 插入用户信息并获取插入后的 ID
             userDao.insertSelectiveAndBackId(user);
-            // 对用户密码进行加密处理，并更新到 user 对象中
+            // 加密用户密码并更新密码更新时间
             user.setPassword(CommonUtil.encryptPassword(userPageVo.getUserVo().getPassword()));
-            // 设置用户密码更新时间为当前时间
             user.setPasswordUpdateTime(new Date());
 
-            // 根据用户类型进行不同的处理
+            // 根据用户类型插入关联实体信息并建立关联
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                // 如果是法人客户类型，调用 corporateClientsDao 的 insertSelectiveAndBackId 方法将法人客户信息插入数据库，并返回插入后的法人客户 ID
                 corporateClientsDao.insertSelectiveAndBackId(corporateClients);
-                // 将法人客户的 ID 设置到 user 对象的 relatedEntityId 字段中，建立关联
                 user.setRelatedEntityId(corporateClients.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                // 如果是个人客户类型，调用 individualClientsDao 的 insertSelectiveAndBackId 方法将个人客户信息插入数据库，并返回插入后的个人客户 ID
                 individualClientsDao.insertSelectiveAndBackId(individualClients);
-                // 将个人客户的 ID 设置到 user 对象的 relatedEntityId 字段中，建立关联
                 user.setRelatedEntityId(individualClients.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
-                // 如果是律师类型，调用 lawyersDao 的 insertSelectiveAndBackId 方法将律师信息插入数据库，并返回插入后的律师 ID
                 lawyersDao.insertSelectiveAndBackId(lawyers);
-                // 将律师的 ID 设置到 user 对象的 relatedEntityId 字段中，建立关联
                 user.setRelatedEntityId(lawyers.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                // 如果是管理员类型，调用 administratorsDao 的 insertSelectiveAndBackId 方法将管理员信息插入数据库，并返回插入后的管理员 ID
                 administratorsDao.insertSelectiveAndBackId(administrators);
-                // 将管理员的 ID 设置到 user 对象的 relatedEntityId 字段中，建立关联
                 user.setRelatedEntityId(administrators.getId());
             }
-            // 调用 userDao 的 updateSelectiveByPrimaryKey 方法更新 user 对象的信息到数据库
+            // 更新用户信息到数据库
             userDao.updateSelectiveByPrimaryKey(user);
         } else {
-            // 如果用户 ID 不为空，调用 userDao 的 updateSelectiveByPrimaryKey 方法更新 user 对象的信息到数据库
+            // 更新操作
+            // 更新用户信息到数据库
             userDao.updateSelectiveByPrimaryKey(user);
 
-            // 根据用户类型进行不同的处理
+            // 根据用户类型更新关联实体信息
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                // 如果是法人客户类型，调用 corporateClientsDao 的 updateSelectiveByPrimaryKey 方法更新法人客户信息到数据库
                 corporateClientsDao.updateSelectiveByPrimaryKey(corporateClients);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                // 如果是个人客户类型，调用 individualClientsDao 的 updateSelectiveByPrimaryKey 方法更新个人客户信息到数据库
                 individualClientsDao.updateSelectiveByPrimaryKey(individualClients);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
-                // 如果是律师类型，调用 lawyersDao 的 updateSelectiveByPrimaryKey 方法更新律师信息到数据库
                 lawyersDao.updateSelectiveByPrimaryKey(lawyers);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                // 如果是管理员类型，调用 administratorsDao 的 updateSelectiveByPrimaryKey 方法更新管理员信息到数据库
                 administratorsDao.updateSelectiveByPrimaryKey(administrators);
             }
         }
 
-        // 使用 CommonUtil 工具类将更新后的 user 对象信息复制回 userPageVo 中的用户通用信息部分
+        // 模块四：结果回写和状态设置
+        // 将更新后的信息复制回 userPageVo 中
         CommonUtil.copyProperties(user, userPageVo.getUserVo());
-        // 使用 CommonUtil 工具类将更新后的 corporateClients 对象信息复制回 userPageVo 中的法人客户信息部分
         CommonUtil.copyProperties(corporateClients, userPageVo.getCorporateClientsVo());
-        // 使用 CommonUtil 工具类将更新后的 individualClients 对象信息复制回 userPageVo 中的个人客户信息部分
         CommonUtil.copyProperties(individualClients, userPageVo.getIndividualClientsVo());
-        // 使用 CommonUtil 工具类将更新后的 lawyers 对象信息复制回 userPageVo 中的律师信息部分
         CommonUtil.copyProperties(lawyers, userPageVo.getLawyersVo());
-        // 使用 CommonUtil 工具类将更新后的 administrators 对象信息复制回 userPageVo 中的管理员信息部分
         CommonUtil.copyProperties(administrators, userPageVo.getAdministratorsVo());
-        // 设置 userPageVo 的操作结果为 true，表示操作成功
+        // 设置操作结果为成功
         userPageVo.setResult(true);
     }
 }
