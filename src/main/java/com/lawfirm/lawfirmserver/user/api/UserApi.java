@@ -59,9 +59,7 @@ public class UserApi {
         String newPassword = userPageVo.getUserVo().getNewPassword();
 
         boolean result = userService.changePassword(username, oldPassword, newPassword);
-
         userPageVo.setResult(result);
-
         return userPageVo;
     }
 
