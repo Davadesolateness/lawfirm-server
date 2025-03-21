@@ -1,0 +1,39 @@
+用户信息保存
+http://localhost:8080/user/saveuser
+
+{
+    "userVo": {
+        "username": "testUser2",
+        "password": "123456",
+        "email": "test2@example.com",
+        "phoneNumber": "1234567890",
+        "userType": "individual",
+        "sourceType": "manual_register",
+        "isValidFlag": "1"
+    },
+    "corporateClientsVo": {
+        "companyName": "Test Company",
+        "certificateType": "Business License",
+        "certificateNumber": "123456789",
+        "contactPerson": "John Doe",
+        "isValidFlag": "1"
+    },
+    "individualClientsVo": {
+        "fullName": "Jane Smith",
+        "gender": "female",
+        "birthDate": "1990-01-01",
+        "isValidFlag": "1"
+    },
+    "lawyersVo": {
+        "lawFirm": "Test Law Firm",
+        "lawyerLicenseNumber": "LF12345",
+        "specialization": "Civil Law",
+        "isValidFlag": "1"
+    },
+    "administratorsVo": {
+        "adminRole": "Super Admin",
+        "adminLevel": 1,
+        "parentAdminId": null,
+        "isValidFlag": "1"
+    }
+}
