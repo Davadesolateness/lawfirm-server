@@ -7,196 +7,176 @@
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <mapper namespace="com.lawfirm.lawfirmserver.user.dao.IndividualClientsDao">
-    <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        <id column="id" property="id"/>
-        <result column="full_name" property="fullName"/>
-        <result column="gender" property="gender"/>
-        <result column="birth_date" property="birthDate"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time" property="insertTime"/>
-        <result column="operate_time" property="operateTime"/>
-    </resultMap>
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		 <id column="id" property="id"/> 
+		 <result column="full_name" property="fullName"/> 
+		 <result column="gender" property="gender"/> 
+		 <result column="birth_date" property="birthDate"/> 
+		 <result column="is_valid_flag" property="isValidFlag"/> 
+		 <result column="insert_time_for_his" property="insertTimeForHis"/> 
+		 <result column="operate_time_for_his" property="operateTimeForHis"/> 
+	</resultMap>
 
-    <!-- 通用查询结果列-->
-    <sql id="Base_Column_List">
-        id
-        , full_name AS fullName, gender, birth_date AS birthDate, is_valid_flag AS isValidFlag,
-		 insert_time AS insertTime, operate_time AS operateTime
-    </sql>
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, full_name AS fullName, gender, birth_date AS birthDate, is_valid_flag AS isValidFlag,
+		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+	</sql>
 
-    <!-- 按对象查询记录的WHERE部分 -->
-    <sql id="Base_Select_By_Entity_Where">
-        <if test="id != null">
-            and id = #{id}
-        </if>
-        <if test="fullName != null">
-            and full_name = #{fullName}
-        </if>
-        <if test="gender != null">
-            and gender = #{gender}
-        </if>
-        <if test="birthDate != null">
-            and birth_date = #{birthDate}
-        </if>
-        <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
-        </if>
-        <if test="insertTime != null">
-            and insert_time = #{insertTime}
-        </if>
-        <if test="operateTime != null">
-            and operate_time = #{operateTime}
-        </if>
-    </sql>
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="fullName != null" >
+			and full_name = #{fullName}
+		</if>
+		<if test="gender != null" >
+			and gender = #{gender}
+		</if>
+		<if test="birthDate != null" >
+			and birth_date = #{birthDate}
+		</if>
+		<if test="isValidFlag != null" >
+			and is_valid_flag = #{isValidFlag}
+		</if>
+		<if test="insertTimeForHis != null" >
+			and insert_time_for_his = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null" >
+			and operate_time_for_his = #{operateTimeForHis}
+		</if>
+	</sql>
 
-    <!-- 按对象查询记录的SQL部分 -->
-    <sql id="Base_Select_By_Entity">
-        select
-        <include refid="Base_Column_List"/>
-        from individual_clients
-        <where>
-            <include refid="Base_Select_By_Entity_Where"/>
-        </where>
-    </sql>
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from individual_clients
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
 
-    <!-- 按主键查询一条记录 -->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from individual_clients
-        where id = #{param1}
-    </select>
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from individual_clients
+		where id = #{param1}
+	</select>
 
-    <!-- 按主键List查询多条记录 -->
-    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from individual_clients
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from individual_clients
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 
-    <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap"
-            parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        <include refid="Base_Select_By_Entity"/>
-    </select>
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		<include refid="Base_Select_By_Entity" />
+	</select>
 
-    <!-- 按主键删除一条记录 -->
-    <delete id="deleteByPrimaryKey" parameterType="map">
-        delete
-        from individual_clients
-        where id = #{param1}
-    </delete>
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from individual_clients
+		where id = #{param1}
+	</delete>
 
-    <!-- 按主键List删除多条记录 -->
-    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from individual_clients
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </delete>
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from individual_clients
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 
-    <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        insert into individual_clients (id, full_name, gender, birth_date, is_valid_flag,
-                                        insert_time, operate_time)
-        values (#{id}, #{fullName}, #{gender}, #{birthDate}, #{isValidFlag},
-                #{insertTime}, #{operateTime})
-    </insert>
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		insert into individual_clients (id, full_name, gender, birth_date, is_valid_flag, 
+			operate_time_for_his)
+		values(#{id}, #{fullName}, #{gender}, #{birthDate}, #{isValidFlag}, 
+			now())
+	</insert>
 
-    <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        insert into individual_clients
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="fullName != null">
-                full_name,
-            </if>
-            <if test="gender != null">
-                gender,
-            </if>
-            <if test="birthDate != null">
-                birth_date,
-            </if>
-            <if test="isValidFlag != null">
-                is_valid_flag,
-            </if>
-            <if test="insertTime != null">
-                insert_time,
-            </if>
-            <if test="operateTime != null">
-                operate_time,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id},
-            </if>
-            <if test="fullName != null">
-                #{fullName},
-            </if>
-            <if test="gender != null">
-                #{gender},
-            </if>
-            <if test="birthDate != null">
-                #{birthDate},
-            </if>
-            <if test="isValidFlag != null">
-                #{isValidFlag},
-            </if>
-            <if test="insertTime != null">
-                #{insertTime},
-            </if>
-            <if test="operateTime != null">
-                #{operateTime},
-            </if>
-        </trim>
-    </insert>
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		insert into individual_clients
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="fullName != null" >
+				full_name,
+			</if>
+			<if test="gender != null" >
+				gender,
+			</if>
+			<if test="birthDate != null" >
+				birth_date,
+			</if>
+			<if test="isValidFlag != null" >
+				is_valid_flag,
+			</if>
+			operate_time_for_his,
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="fullName != null" >
+				#{fullName},
+			</if>
+			<if test="gender != null" >
+				#{gender},
+			</if>
+			<if test="birthDate != null" >
+				#{birthDate},
+			</if>
+			<if test="isValidFlag != null" >
+				#{isValidFlag},
+			</if>
+			now(),
+		</trim>
+	</insert>
 
-    <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        update individual_clients
-        <set>
-            <if test="fullName != null">
-                full_name=#{fullName},
-            </if>
-            <if test="gender != null">
-                gender=#{gender},
-            </if>
-            <if test="birthDate != null">
-                birth_date=#{birthDate},
-            </if>
-            <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
-            </if>
-            <if test="insertTime != null">
-                insert_time=#{insertTime},
-            </if>
-            <if test="operateTime != null">
-                operate_time=#{operateTime},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		update individual_clients
+		<set>
+			<if test="fullName != null" >
+				full_name=#{fullName},
+			</if>
+			<if test="gender != null" >
+				gender=#{gender},
+			</if>
+			<if test="birthDate != null" >
+				birth_date=#{birthDate},
+			</if>
+			<if test="isValidFlag != null" >
+				is_valid_flag=#{isValidFlag},
+			</if>
+			operate_time_for_his=now(),
+		</set>
+		where id = #{id}
+	</update>
 
-    <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
-        update individual_clients
-        set full_name=#{fullName},
-            gender=#{gender},
-            birth_date=#{birthDate},
-            is_valid_flag=#{isValidFlag},
-            insert_time=#{insertTime},
-            operate_time=#{operateTime}
-        where id = #{id}
-    </update>
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClients">
+		update individual_clients
+		set full_name=#{fullName},
+			gender=#{gender},
+			birth_date=#{birthDate},
+			is_valid_flag=#{isValidFlag},
+			operate_time_for_his=now()
+		where id = #{id}
+	</update>
 
 </mapper>

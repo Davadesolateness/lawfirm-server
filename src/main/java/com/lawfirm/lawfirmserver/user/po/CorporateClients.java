@@ -37,12 +37,12 @@ public class CorporateClients implements Serializable {
      */
     private String isValidFlag;
     /**
-     * 对应字段：insert_time,备注：法人客户信息插入时间，默认为当前时间
+     * 对应字段：insert_time_for_his,备注：法人客户信息插入时间，默认为当前时间
      */
-    private Date insertTime;
+    private Date insertTimeForHis;
     /**
-     * 对应字段：operate_time,备注：法人客户信息操作时间，自动更新
+     * 对应字段：operate_time_for_his,备注：法人客户信息操作时间，自动更新
      */
-    private Date operateTime;
+    private Date operateTimeForHis;
 
 }

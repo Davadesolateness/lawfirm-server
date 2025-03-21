@@ -7,195 +7,176 @@
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <mapper namespace="com.lawfirm.lawfirmserver.user.dao.AdministratorsDao">
-    <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Administrators">
-        <id column="id" property="id"/>
-        <result column="admin_role" property="adminRole"/>
-        <result column="admin_level" property="adminLevel"/>
-        <result column="parent_admin_id" property="parentAdminId"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time" property="insertTime"/>
-        <result column="operate_time" property="operateTime"/>
-    </resultMap>
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Administrators">
+		 <id column="id" property="id"/> 
+		 <result column="admin_role" property="adminRole"/> 
+		 <result column="admin_level" property="adminLevel"/> 
+		 <result column="parent_admin_id" property="parentAdminId"/> 
+		 <result column="is_valid_flag" property="isValidFlag"/> 
+		 <result column="insert_time_for_his" property="insertTimeForHis"/> 
+		 <result column="operate_time_for_his" property="operateTimeForHis"/> 
+	</resultMap>
 
-    <!-- 通用查询结果列-->
-    <sql id="Base_Column_List">
-        id
-        , admin_role AS adminRole, admin_level AS adminLevel, parent_admin_id AS parentAdminId, is_valid_flag AS isValidFlag,
-		 insert_time AS insertTime, operate_time AS operateTime
-    </sql>
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, admin_role AS adminRole, admin_level AS adminLevel, parent_admin_id AS parentAdminId, is_valid_flag AS isValidFlag,
+		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+	</sql>
 
-    <!-- 按对象查询记录的WHERE部分 -->
-    <sql id="Base_Select_By_Entity_Where">
-        <if test="id != null">
-            and id = #{id}
-        </if>
-        <if test="adminRole != null">
-            and admin_role = #{adminRole}
-        </if>
-        <if test="adminLevel != null">
-            and admin_level = #{adminLevel}
-        </if>
-        <if test="parentAdminId != null">
-            and parent_admin_id = #{parentAdminId}
-        </if>
-        <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
-        </if>
-        <if test="insertTime != null">
-            and insert_time = #{insertTime}
-        </if>
-        <if test="operateTime != null">
-            and operate_time = #{operateTime}
-        </if>
-    </sql>
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="adminRole != null" >
+			and admin_role = #{adminRole}
+		</if>
+		<if test="adminLevel != null" >
+			and admin_level = #{adminLevel}
+		</if>
+		<if test="parentAdminId != null" >
+			and parent_admin_id = #{parentAdminId}
+		</if>
+		<if test="isValidFlag != null" >
+			and is_valid_flag = #{isValidFlag}
+		</if>
+		<if test="insertTimeForHis != null" >
+			and insert_time_for_his = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null" >
+			and operate_time_for_his = #{operateTimeForHis}
+		</if>
+	</sql>
 
-    <!-- 按对象查询记录的SQL部分 -->
-    <sql id="Base_Select_By_Entity">
-        select
-        <include refid="Base_Column_List"/>
-        from administrators
-        <where>
-            <include refid="Base_Select_By_Entity_Where"/>
-        </where>
-    </sql>
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from administrators
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
 
-    <!-- 按主键查询一条记录 -->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from administrators
-        where id = #{param1}
-    </select>
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from administrators
+		where id = #{param1}
+	</select>
 
-    <!-- 按主键List查询多条记录 -->
-    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from administrators
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from administrators
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 
-    <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
-        <include refid="Base_Select_By_Entity"/>
-    </select>
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+		<include refid="Base_Select_By_Entity" />
+	</select>
 
-    <!-- 按主键删除一条记录 -->
-    <delete id="deleteByPrimaryKey" parameterType="map">
-        delete
-        from administrators
-        where id = #{param1}
-    </delete>
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from administrators
+		where id = #{param1}
+	</delete>
 
-    <!-- 按主键List删除多条记录 -->
-    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from administrators
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </delete>
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from administrators
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 
-    <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
-        insert into administrators (id, admin_role, admin_level, parent_admin_id, is_valid_flag,
-                                    insert_time, operate_time)
-        values (#{id}, #{adminRole}, #{adminLevel}, #{parentAdminId}, #{isValidFlag},
-                #{insertTime}, #{operateTime})
-    </insert>
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+		insert into administrators (id, admin_role, admin_level, parent_admin_id, is_valid_flag, 
+			operate_time_for_his)
+		values(#{id}, #{adminRole}, #{adminLevel}, #{parentAdminId}, #{isValidFlag}, 
+			now())
+	</insert>
 
-    <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
-        insert into administrators
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="adminRole != null">
-                admin_role,
-            </if>
-            <if test="adminLevel != null">
-                admin_level,
-            </if>
-            <if test="parentAdminId != null">
-                parent_admin_id,
-            </if>
-            <if test="isValidFlag != null">
-                is_valid_flag,
-            </if>
-            <if test="insertTime != null">
-                insert_time,
-            </if>
-            <if test="operateTime != null">
-                operate_time,
-            </if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id},
-            </if>
-            <if test="adminRole != null">
-                #{adminRole},
-            </if>
-            <if test="adminLevel != null">
-                #{adminLevel},
-            </if>
-            <if test="parentAdminId != null">
-                #{parentAdminId},
-            </if>
-            <if test="isValidFlag != null">
-                #{isValidFlag},
-            </if>
-            <if test="insertTime != null">
-                #{insertTime},
-            </if>
-            <if test="operateTime != null">
-                #{operateTime},
-            </if>
-        </trim>
-    </insert>
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+		insert into administrators
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="adminRole != null" >
+				admin_role,
+			</if>
+			<if test="adminLevel != null" >
+				admin_level,
+			</if>
+			<if test="parentAdminId != null" >
+				parent_admin_id,
+			</if>
+			<if test="isValidFlag != null" >
+				is_valid_flag,
+			</if>
+			operate_time_for_his,
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="adminRole != null" >
+				#{adminRole},
+			</if>
+			<if test="adminLevel != null" >
+				#{adminLevel},
+			</if>
+			<if test="parentAdminId != null" >
+				#{parentAdminId},
+			</if>
+			<if test="isValidFlag != null" >
+				#{isValidFlag},
+			</if>
+			now(),
+		</trim>
+	</insert>
 
-    <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
-        update administrators
-        <set>
-            <if test="adminRole != null">
-                admin_role=#{adminRole},
-            </if>
-            <if test="adminLevel != null">
-                admin_level=#{adminLevel},
-            </if>
-            <if test="parentAdminId != null">
-                parent_admin_id=#{parentAdminId},
-            </if>
-            <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
-            </if>
-            <if test="insertTime != null">
-                insert_time=#{insertTime},
-            </if>
-            <if test="operateTime != null">
-                operate_time=#{operateTime},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+		update administrators
+		<set>
+			<if test="adminRole != null" >
+				admin_role=#{adminRole},
+			</if>
+			<if test="adminLevel != null" >
+				admin_level=#{adminLevel},
+			</if>
+			<if test="parentAdminId != null" >
+				parent_admin_id=#{parentAdminId},
+			</if>
+			<if test="isValidFlag != null" >
+				is_valid_flag=#{isValidFlag},
+			</if>
+			operate_time_for_his=now(),
+		</set>
+		where id = #{id}
+	</update>
 
-    <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
-        update administrators
-        set admin_role=#{adminRole},
-            admin_level=#{adminLevel},
-            parent_admin_id=#{parentAdminId},
-            is_valid_flag=#{isValidFlag},
-            insert_time=#{insertTime},
-            operate_time=#{operateTime}
-        where id = #{id}
-    </update>
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+		update administrators
+		set admin_role=#{adminRole},
+			admin_level=#{adminLevel},
+			parent_admin_id=#{parentAdminId},
+			is_valid_flag=#{isValidFlag},
+			operate_time_for_his=now()
+		where id = #{id}
+	</update>
 
 </mapper>

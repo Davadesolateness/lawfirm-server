@@ -6,5 +6,49 @@
 <mapper namespace="com.lawfirm.lawfirmserver.user.dao.LawyersDao">
     <!-- 请在下方添加自定义配置-->
 
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelectiveAndBack" parameterType="com.lawfirm.lawfirmserver.user.po.Lawyers">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS value
+        </selectKey>
+        insert into lawyers
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="lawFirm != null">
+                law_firm,
+            </if>
+            <if test="lawyerLicenseNumber != null">
+                lawyer_license_number,
+            </if>
+            <if test="specialization != null">
+                specialization,
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag,
+            </if>
+            operate_time_for_his,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="lawFirm != null">
+                #{lawFirm},
+            </if>
+            <if test="lawyerLicenseNumber != null">
+                #{lawyerLicenseNumber},
+            </if>
+            <if test="specialization != null">
+                #{specialization},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag},
+            </if>
+            now(),
+        </trim>
+    </insert>
 
 </mapper>

@@ -1,8 +1,12 @@
 package com.lawfirm.lawfirmserver.user.service;
 
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
-import com.lawfirm.lawfirmserver.user.dao.UserDao;
-import com.lawfirm.lawfirmserver.user.po.User;
+import com.lawfirm.lawfirmserver.user.consts.UserContant;
+import com.lawfirm.lawfirmserver.user.dao.*;
+import com.lawfirm.lawfirmserver.user.po.*;
+import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,9 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private LawyersDao lawyersDao;
+    @Autowired
+    private CorporateClientsDao corporateClientsDao;
+    @Autowired
+    private IndividualClientsDao individualClientsDao;
+    @Autowired
+    private AdministratorsDao administratorsDao;
 
     /**
      * 校验用户登录信息
@@ -29,4 +42,54 @@ public class UserService {
         }
         return result;
     }
+
+    public void saveOrUpdateUser(UserPageVo userPageVo) {
+        User user = new User();
+        CorporateClients corporateClients = new CorporateClients();
+        IndividualClients individualClients = new IndividualClients();
+        Lawyers lawyers = new Lawyers();
+        Administrators administrators = new Administrators();
+
+        CommonUtil.copyProperties(userPageVo.getUserVo(), user);
+        CommonUtil.copyProperties(userPageVo.getCorporateClientsVo(), corporateClients);
+        CommonUtil.copyProperties(userPageVo.getIndividualClientsVo(), individualClients);
+        CommonUtil.copyProperties(userPageVo.getLawyersVo(), lawyers);
+        CommonUtil.copyProperties(userPageVo.getAdministratorsVo(), administrators);
+        if (userPageVo.getUserVo().getId() == null) {
+            userDao.insertSelectiveAndBack(user);
+            if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
+                corporateClientsDao.insertSelectiveAndBack(corporateClients);
+                user.setRelatedEntityId(corporateClients.getId());
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
+                individualClientsDao.insertSelectiveAndBack(individualClients);
+                user.setRelatedEntityId(individualClients.getId());
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
+                lawyersDao.insertSelectiveAndBack(lawyers);
+                user.setRelatedEntityId(lawyers.getId());
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
+                administratorsDao.insertSelectiveAndBack(administrators);
+                user.setRelatedEntityId(administrators.getId());
+            }
+            userDao.updateSelectiveByPrimaryKey(user);
+        } else {
+            userDao.updateSelectiveByPrimaryKey(user);
+            if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
+                corporateClientsDao.updateSelectiveByPrimaryKey(corporateClients);
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
+                individualClientsDao.updateSelectiveByPrimaryKey(individualClients);
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
+                lawyersDao.updateSelectiveByPrimaryKey(lawyers);
+            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
+                administratorsDao.updateSelectiveByPrimaryKey(administrators);
+            }
+        }
+        CommonUtil.copyProperties(user, userPageVo.getUserVo());
+        CommonUtil.copyProperties(corporateClients, userPageVo.getCorporateClientsVo());
+        CommonUtil.copyProperties(individualClients, userPageVo.getIndividualClientsVo());
+        CommonUtil.copyProperties(lawyers, userPageVo.getLawyersVo());
+        CommonUtil.copyProperties(administrators, userPageVo.getAdministratorsVo());
+        userDao.insert(user);
+    }
+
+
 }
