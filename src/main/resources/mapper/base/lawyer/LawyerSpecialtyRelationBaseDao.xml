@@ -6,12 +6,12 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtiesDao">
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
         <id column="id" property="id"/>
-        <result column="specialty_name" property="specialtyName"/>
-        <result column="description" property="description"/>
+        <result column="lawyer_id" property="lawyerId"/>
+        <result column="specialty_id" property="specialtyId"/>
         <result column="insert_time_for_his" property="insertTimeForHis"/>
         <result column="operate_time_for_his" property="operateTimeForHis"/>
     </resultMap>
@@ -19,7 +19,7 @@
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , specialty_name AS specialtyName, description, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , lawyer_id AS lawyerId, specialty_id AS specialtyId, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
 
     </sql>
 
@@ -28,11 +28,11 @@
         <if test="id != null">
             and id = #{id}
         </if>
-        <if test="specialtyName != null">
-            and specialty_name = #{specialtyName}
+        <if test="lawyerId != null">
+            and lawyer_id = #{lawyerId}
         </if>
-        <if test="description != null">
-            and description = #{description}
+        <if test="specialtyId != null">
+            and specialty_id = #{specialtyId}
         </if>
         <if test="insertTimeForHis != null">
             and insert_time_for_his = #{insertTimeForHis}
@@ -46,7 +46,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from lawyer_specialties
+        from lawyer_specialty_relations
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -56,7 +56,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from lawyer_specialties
+        from lawyer_specialty_relations
         where id = #{param1}
     </select>
 
@@ -64,7 +64,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from lawyer_specialties
+        from lawyer_specialty_relations
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -73,20 +73,20 @@
 
     <!-- 按对象查询一页记录（多条记录） -->
     <select id="selectPage" resultMap="BaseResultMap"
-            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
+            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from lawyer_specialties
+        from lawyer_specialty_relations
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from lawyer_specialties
+        delete from lawyer_specialty_relations
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -94,23 +94,23 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
-        insert into lawyer_specialties (id, specialty_name, description, operate_time_for_his)
-        values (#{id}, #{specialtyName}, #{description}, now())
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
+        insert into lawyer_specialty_relations (id, lawyer_id, specialty_id, operate_time_for_his)
+        values (#{id}, #{lawyerId}, #{specialtyId}, now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
-        insert into lawyer_specialties
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
+        insert into lawyer_specialty_relations
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="specialtyName != null">
-                specialty_name,
+            <if test="lawyerId != null">
+                lawyer_id,
             </if>
-            <if test="description != null">
-                description,
+            <if test="specialtyId != null">
+                specialty_id,
             </if>
             operate_time_for_his,
         </trim>
@@ -119,25 +119,26 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="specialtyName != null">
-                #{specialtyName},
+            <if test="lawyerId != null">
+                #{lawyerId},
             </if>
-            <if test="description != null">
-                #{description},
+            <if test="specialtyId != null">
+                #{specialtyId},
             </if>
             now(),
         </trim>
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
-        update lawyer_specialties
+    <update id="updateSelectiveByPrimaryKey"
+            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
+        update lawyer_specialty_relations
         <set>
-            <if test="specialtyName != null">
-                specialty_name=#{specialtyName},
+            <if test="lawyerId != null">
+                lawyer_id=#{lawyerId},
             </if>
-            <if test="description != null">
-                description=#{description},
+            <if test="specialtyId != null">
+                specialty_id=#{specialtyId},
             </if>
             operate_time_for_his=now(),
         </set>
@@ -145,10 +146,10 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialties">
-        update lawyer_specialties
-        set specialty_name=#{specialtyName},
-            description=#{description},
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation">
+        update lawyer_specialty_relations
+        set lawyer_id=#{lawyerId},
+            specialty_id=#{specialtyId},
             operate_time_for_his=now()
         where id = #{id}
     </update>

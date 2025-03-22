@@ -3,11 +3,11 @@
 <!-- ============================================================== -->
 <!-- ================可直接使用Base配置文件中定义的节点！================ -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyersDao">
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao">
     <!-- 请在下方添加自定义配置-->
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyers">
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>

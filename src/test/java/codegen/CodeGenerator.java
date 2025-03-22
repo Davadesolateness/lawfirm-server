@@ -22,11 +22,12 @@ public class CodeGenerator {
 //        createBaseFiles("user", "user");
 //        createBaseFiles("user", "corporate_clients");
 //        createBaseFiles("user", "individual_clients");
-//        createBaseFiles("user", "lawyers");
+
 //        createBaseFiles("user", "administrators");
 
-        createBaseFiles("lawyer", "lawyer_specialty_relations");
-        createBaseFiles("lawyer", "lawyer_specialties");
+        //        createBaseFiles("lawyer", "lawyer");
+        createBaseFiles("lawyer", "lawyer_specialty_relation");
+        createBaseFiles("lawyer", "lawyer_specialtie");
 
     }
 

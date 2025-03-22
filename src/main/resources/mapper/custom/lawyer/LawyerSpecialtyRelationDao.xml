@@ -3,8 +3,15 @@
 <!-- ============================================================== -->
 <!-- ================可直接使用Base配置文件中定义的节点！================ -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationsDao">
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao">
     <!-- 请在下方添加自定义配置-->
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByLawyerId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyer_specialty_relations
+        where lawyerId = #{lawyerId}
+    </select>
 
 
 </mapper>

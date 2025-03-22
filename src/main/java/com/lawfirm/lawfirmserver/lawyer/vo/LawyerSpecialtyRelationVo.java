@@ -10,7 +10,7 @@ import java.util.Date;
  * 对应表名：lawyer_specialty_relations
  */
 @Data
-public class LawyerSpecialtyRelationsVo implements Serializable {
+public class LawyerSpecialtyRelationVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：关联记录唯一标识，自增主键
@@ -33,4 +33,5 @@ public class LawyerSpecialtyRelationsVo implements Serializable {
      */
     private Date operateTimeForHis;
 
+    private LawyerSpecialtieVo lawyerSpecialtiesVo;
 }

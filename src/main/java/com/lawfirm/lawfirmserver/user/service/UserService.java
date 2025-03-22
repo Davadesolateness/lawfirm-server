@@ -1,8 +1,8 @@
 package com.lawfirm.lawfirmserver.user.service;
 
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
-import com.lawfirm.lawfirmserver.lawyer.dao.LawyersDao;
-import com.lawfirm.lawfirmserver.lawyer.po.Lawyers;
+import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
+import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
 import com.lawfirm.lawfirmserver.user.dao.AdministratorsDao;
 import com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao;
@@ -29,7 +29,7 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private LawyersDao lawyersDao;
+    private LawyerDao lawyersDao;
     @Autowired
     private CorporateClientsDao corporateClientsDao;
     @Autowired
@@ -104,7 +104,7 @@ public class UserService {
         User user = new User();
         CorporateClients corporateClients = new CorporateClients();
         IndividualClients individualClients = new IndividualClients();
-        Lawyers lawyers = new Lawyers();
+        Lawyer lawyers = new Lawyer();
         Administrators administrators = new Administrators();
 
         // 将 userPageVo 中的各部分信息复制到对应的对象中

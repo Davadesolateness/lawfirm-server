@@ -1,7 +1,7 @@
 -- 若需删除 lawyers 表，可取消此注释
 -- DROP TABLE IF EXISTS lawyers;
 -- 律师表，存储律师的额外信息
-CREATE TABLE lawyers
+CREATE TABLE lawyer
 (
     id                    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '律师唯一标识，自增主键',
     law_firm              VARCHAR(200) COMMENT '所在律师事务所名称',

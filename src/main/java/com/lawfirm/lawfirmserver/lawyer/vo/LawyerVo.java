@@ -1,16 +1,17 @@
-package com.lawfirm.lawfirmserver.lawyer.po;
+package com.lawfirm.lawfirmserver.lawyer.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表lawyers的PO对象<br/>
+ * 通过ins-framework-mybatis工具自动生成，表lawyers的VO对象<br/>
  * 对应表名：lawyers
  */
 @Data
-public class Lawyers implements Serializable {
+public class LawyerVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：律师唯一标识，自增主键
@@ -40,5 +41,8 @@ public class Lawyers implements Serializable {
      * 对应字段：operate_time_for_his,备注：律师信息操作时间，自动更新
      */
     private Date operateTimeForHis;
+
+    private List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationsVolist;
+
 
 }

@@ -1,6 +1,6 @@
 package com.lawfirm.lawfirmserver.user.vo;
 
-import com.lawfirm.lawfirmserver.lawyer.vo.LawyersVo;
+import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
 import lombok.Data;
 
 @Data
@@ -9,7 +9,7 @@ public class UserPageVo {
     /*用户*/
     private UserVo userVo;
     /*律师*/
-    private LawyersVo lawyersVo;
+    private LawyerVo lawyersVo;
     /*个人客户*/
     private IndividualClientsVo individualClientsVo;
     /*法人客户*/
