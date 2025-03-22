@@ -9,7 +9,7 @@ public class UserPageVo {
     /*用户*/
     private UserVo userVo;
     /*律师*/
-    private LawyerVo lawyersVo;
+    private LawyerVo lawyerVo;
     /*个人客户*/
     private IndividualClientsVo individualClientsVo;
     /*法人客户*/

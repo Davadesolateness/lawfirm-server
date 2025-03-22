@@ -26,7 +26,7 @@ public class LawyerService {
         CommonUtil.copyProperties(lawyersVo, lawyers);
         lawyersDao.updateSelectiveByPrimaryKey(lawyers);
         if (lawyersVo.getLawyerSpecialtyRelationsVolist() != null && lawyersVo.getLawyerSpecialtyRelationsVolist().size() > 0) {
-            List<LawyerSpecialtyRelation> lawyerSpecialtyRelationsList = lawyerSpecialtyRelationsDao.selectBatchByLawyerId(lawyers.getId());
+            List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationsDao.selectBatchByLawyerId(lawyers.getId());
         }
     }
 }
