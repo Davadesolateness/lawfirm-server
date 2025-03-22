@@ -11,26 +11,26 @@ http://localhost:8080/user/saveUser
         "sourceType": "manual_register",
         "isValidFlag": "1"
     },
-    "corporateClientsVo": {
+    "corporateClientVo": {
         "companyName": "Test Company",
         "certificateType": "Business License",
         "certificateNumber": "123456789",
         "contactPerson": "John Doe",
         "isValidFlag": "1"
     },
-    "individualClientsVo": {
+    "individualClientVo": {
         "fullName": "Jane Smith",
         "gender": "female",
         "birthDate": "1990-01-01",
         "isValidFlag": "1"
     },
-    "lawyersVo": {
+    "lawyerVo": {
         "lawFirm": "Test Law Firm",
         "lawyerLicenseNumber": "LF12345",
         "specialization": "Civil Law",
         "isValidFlag": "1"
     },
-    "administratorsVo": {
+    "administratorVo": {
         "adminRole": "Super Admin",
         "adminLevel": 1,
         "parentAdminId": null,
