@@ -10,7 +10,7 @@ import java.util.Date;
  * 对应表名：corporate_clients
  */
 @Data
-public class CorporateClientsVo implements Serializable {
+public class CorporateClientVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：法人客户唯一标识，自增主键

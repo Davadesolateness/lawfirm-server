@@ -10,7 +10,7 @@ import java.util.Date;
  * 对应表名：administrators
  */
 @Data
-public class AdministratorsVo implements Serializable {
+public class AdministratorVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：管理员唯一标识，自增主键

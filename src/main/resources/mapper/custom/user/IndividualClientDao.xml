@@ -3,30 +3,27 @@
 <!-- ============================================================== -->
 <!-- ================可直接使用Base配置文件中定义的节点！================ -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.IndividualClientDao">
     <!-- 请在下方添加自定义配置-->
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>
-        insert into corporate_clients
+        insert into individual_clients
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="companyName != null">
-                company_name,
+            <if test="fullName != null">
+                full_name,
             </if>
-            <if test="certificateType != null">
-                certificate_type,
+            <if test="gender != null">
+                gender,
             </if>
-            <if test="certificateNumber != null">
-                certificate_number,
-            </if>
-            <if test="contactPerson != null">
-                contact_person,
+            <if test="birthDate != null">
+                birth_date,
             </if>
             <if test="isValidFlag != null">
                 is_valid_flag,
@@ -38,17 +35,14 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="companyName != null">
-                #{companyName},
+            <if test="fullName != null">
+                #{fullName},
             </if>
-            <if test="certificateType != null">
-                #{certificateType},
+            <if test="gender != null">
+                #{gender},
             </if>
-            <if test="certificateNumber != null">
-                #{certificateNumber},
-            </if>
-            <if test="contactPerson != null">
-                #{contactPerson},
+            <if test="birthDate != null">
+                #{birthDate},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},

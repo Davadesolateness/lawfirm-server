@@ -11,11 +11,11 @@ public class UserPageVo {
     /*律师*/
     private LawyerVo lawyerVo;
     /*个人客户*/
-    private IndividualClientsVo individualClientsVo;
+    private IndividualClientVo individualClientVo;
     /*法人客户*/
-    private CorporateClientsVo corporateClientsVo;
+    private CorporateClientVo corporateClientVo;
     /*管理员*/
-    private AdministratorsVo administratorsVo;
+    private AdministratorVo administratorVo;
 
     private boolean result;
 }

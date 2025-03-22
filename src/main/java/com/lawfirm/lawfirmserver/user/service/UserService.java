@@ -4,13 +4,13 @@ import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
-import com.lawfirm.lawfirmserver.user.dao.AdministratorsDao;
-import com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao;
-import com.lawfirm.lawfirmserver.user.dao.IndividualClientsDao;
+import com.lawfirm.lawfirmserver.user.dao.AdministratorDao;
+import com.lawfirm.lawfirmserver.user.dao.CorporateClientDao;
+import com.lawfirm.lawfirmserver.user.dao.IndividualClientDao;
 import com.lawfirm.lawfirmserver.user.dao.UserDao;
-import com.lawfirm.lawfirmserver.user.po.Administrators;
-import com.lawfirm.lawfirmserver.user.po.CorporateClients;
-import com.lawfirm.lawfirmserver.user.po.IndividualClients;
+import com.lawfirm.lawfirmserver.user.po.Administrator;
+import com.lawfirm.lawfirmserver.user.po.CorporateClient;
+import com.lawfirm.lawfirmserver.user.po.IndividualClient;
 import com.lawfirm.lawfirmserver.user.po.User;
 import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import org.slf4j.Logger;
@@ -31,11 +31,11 @@ public class UserService {
     @Autowired
     private LawyerDao lawyerDao;
     @Autowired
-    private CorporateClientsDao corporateClientsDao;
+    private CorporateClientDao corporateClientsDao;
     @Autowired
-    private IndividualClientsDao individualClientsDao;
+    private IndividualClientDao individualClientsDao;
     @Autowired
-    private AdministratorsDao administratorsDao;
+    private AdministratorDao administratorsDao;
 
     /**
      * 验证用户登录信息的方法。
@@ -102,10 +102,10 @@ public class UserService {
     public void saveOrUpdateUser(UserPageVo userPageVo) {
         // 创建用于存储不同类型信息的对象
         User user = new User();
-        CorporateClients corporateClients = new CorporateClients();
-        IndividualClients individualClients = new IndividualClients();
+        CorporateClient corporateClients = new CorporateClient();
+        IndividualClient individualClients = new IndividualClient();
         Lawyer lawyer = new Lawyer();
-        Administrators administrators = new Administrators();
+        Administrator administrators = new Administrator();
 
         // 将 userPageVo 中的各部分信息复制到对应的对象中
         CommonUtil.copyProperties(userPageVo.getUserVo(), user);

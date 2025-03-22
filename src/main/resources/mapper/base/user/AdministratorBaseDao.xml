@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.AdministratorsDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.AdministratorDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Administrator">
         <id column="id" property="id"/>
         <result column="admin_role" property="adminRole"/>
         <result column="admin_level" property="adminLevel"/>
@@ -80,7 +80,7 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Administrator">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
@@ -101,7 +101,7 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Administrator">
         insert into administrators (id, admin_role, admin_level, parent_admin_id, is_valid_flag,
                                     operate_time_for_his)
         values (#{id}, #{adminRole}, #{adminLevel}, #{parentAdminId}, #{isValidFlag},
@@ -109,7 +109,7 @@
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Administrator">
         insert into administrators
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -151,7 +151,7 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrator">
         update administrators
         <set>
             <if test="adminRole != null">
@@ -172,7 +172,7 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrators">
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Administrator">
         update administrators
         set admin_role=#{adminRole},
             admin_level=#{adminLevel},

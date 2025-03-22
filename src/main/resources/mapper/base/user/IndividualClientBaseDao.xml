@@ -6,14 +6,13 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.IndividualClientDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CorporateClients">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.IndividualClient">
         <id column="id" property="id"/>
-        <result column="company_name" property="companyName"/>
-        <result column="certificate_type" property="certificateType"/>
-        <result column="certificate_number" property="certificateNumber"/>
-        <result column="contact_person" property="contactPerson"/>
+        <result column="full_name" property="fullName"/>
+        <result column="gender" property="gender"/>
+        <result column="birth_date" property="birthDate"/>
         <result column="is_valid_flag" property="isValidFlag"/>
         <result column="insert_time_for_his" property="insertTimeForHis"/>
         <result column="operate_time_for_his" property="operateTimeForHis"/>
@@ -22,8 +21,8 @@
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , company_name AS companyName, certificate_type AS certificateType, certificate_number AS certificateNumber, contact_person AS contactPerson,
-		 is_valid_flag AS isValidFlag, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , full_name AS fullName, gender, birth_date AS birthDate, is_valid_flag AS isValidFlag,
+		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -31,17 +30,14 @@
         <if test="id != null">
             and id = #{id}
         </if>
-        <if test="companyName != null">
-            and company_name = #{companyName}
+        <if test="fullName != null">
+            and full_name = #{fullName}
         </if>
-        <if test="certificateType != null">
-            and certificate_type = #{certificateType}
+        <if test="gender != null">
+            and gender = #{gender}
         </if>
-        <if test="certificateNumber != null">
-            and certificate_number = #{certificateNumber}
-        </if>
-        <if test="contactPerson != null">
-            and contact_person = #{contactPerson}
+        <if test="birthDate != null">
+            and birth_date = #{birthDate}
         </if>
         <if test="isValidFlag != null">
             and is_valid_flag = #{isValidFlag}
@@ -58,7 +54,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from corporate_clients
+        from individual_clients
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -68,7 +64,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from corporate_clients
+        from individual_clients
         where id = #{param1}
     </select>
 
@@ -76,7 +72,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from corporate_clients
+        from individual_clients
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -85,20 +81,20 @@
 
     <!-- 按对象查询一页记录（多条记录） -->
     <select id="selectPage" resultMap="BaseResultMap"
-            parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
+            parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from corporate_clients
+        from individual_clients
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from corporate_clients
+        delete from individual_clients
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -106,31 +102,28 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
-        insert into corporate_clients (id, company_name, certificate_type, certificate_number, contact_person,
-                                       is_valid_flag, operate_time_for_his)
-        values (#{id}, #{companyName}, #{certificateType}, #{certificateNumber}, #{contactPerson},
-                #{isValidFlag}, now())
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
+        insert into individual_clients (id, full_name, gender, birth_date, is_valid_flag,
+                                        operate_time_for_his)
+        values (#{id}, #{fullName}, #{gender}, #{birthDate}, #{isValidFlag},
+                now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
-        insert into corporate_clients
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
+        insert into individual_clients
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="companyName != null">
-                company_name,
+            <if test="fullName != null">
+                full_name,
             </if>
-            <if test="certificateType != null">
-                certificate_type,
+            <if test="gender != null">
+                gender,
             </if>
-            <if test="certificateNumber != null">
-                certificate_number,
-            </if>
-            <if test="contactPerson != null">
-                contact_person,
+            <if test="birthDate != null">
+                birth_date,
             </if>
             <if test="isValidFlag != null">
                 is_valid_flag,
@@ -142,17 +135,14 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="companyName != null">
-                #{companyName},
+            <if test="fullName != null">
+                #{fullName},
             </if>
-            <if test="certificateType != null">
-                #{certificateType},
+            <if test="gender != null">
+                #{gender},
             </if>
-            <if test="certificateNumber != null">
-                #{certificateNumber},
-            </if>
-            <if test="contactPerson != null">
-                #{contactPerson},
+            <if test="birthDate != null">
+                #{birthDate},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},
@@ -162,20 +152,17 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
-        update corporate_clients
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
+        update individual_clients
         <set>
-            <if test="companyName != null">
-                company_name=#{companyName},
+            <if test="fullName != null">
+                full_name=#{fullName},
             </if>
-            <if test="certificateType != null">
-                certificate_type=#{certificateType},
+            <if test="gender != null">
+                gender=#{gender},
             </if>
-            <if test="certificateNumber != null">
-                certificate_number=#{certificateNumber},
-            </if>
-            <if test="contactPerson != null">
-                contact_person=#{contactPerson},
+            <if test="birthDate != null">
+                birth_date=#{birthDate},
             </if>
             <if test="isValidFlag != null">
                 is_valid_flag=#{isValidFlag},
@@ -186,12 +173,11 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClients">
-        update corporate_clients
-        set company_name=#{companyName},
-            certificate_type=#{certificateType},
-            certificate_number=#{certificateNumber},
-            contact_person=#{contactPerson},
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
+        update individual_clients
+        set full_name=#{fullName},
+            gender=#{gender},
+            birth_date=#{birthDate},
             is_valid_flag=#{isValidFlag},
             operate_time_for_his=now()
         where id = #{id}

@@ -1,6 +1,6 @@
 package com.lawfirm.lawfirmserver.user.dao;
 
-import com.lawfirm.lawfirmserver.user.po.Administrators;
+import com.lawfirm.lawfirmserver.user.po.Administrator;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 在其中添加自定义方法
  */
 @Mapper
-public interface AdministratorsDao extends MybatisBaseDao<Administrators, Long> {
+public interface AdministratorDao extends MybatisBaseDao<Administrator, Long> {
 
-    void insertSelectiveAndBackId(Administrators administrators);
+    void insertSelectiveAndBackId(Administrator administrators);
 }
