@@ -19,13 +19,12 @@ public class CodeGenerator {
          * 三、生成的BASE中的文件不要进行修改（但可以自行添加序列的赋值语句）。
          **/
 
-//        createBaseFiles("user", "user");
-//        createBaseFiles("user", "corporate_clients");
-//        createBaseFiles("user", "individual_clients");
+        createBaseFiles("user", "user");
+        createBaseFiles("user", "corporate_client");
+        createBaseFiles("user", "individual_client");
+        createBaseFiles("user", "administrator");
 
-//        createBaseFiles("user", "administrators");
-
-        //        createBaseFiles("lawyer", "lawyer");
+        createBaseFiles("lawyer", "lawyer");
         createBaseFiles("lawyer", "lawyer_specialty_relation");
         createBaseFiles("lawyer", "lawyer_specialtie");
 

@@ -11,7 +11,7 @@
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>
-        insert into individual_clients
+        insert into individual_client
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,

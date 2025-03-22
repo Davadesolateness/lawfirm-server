@@ -9,13 +9,13 @@
     <select id="selectBatchByLawyerId" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from lawyer_specialty_relations
+        from lawyer_specialty_relation
         where lawyerId = #{lawyerId}
     </select>
 
     <!-- 批量插入多条记录-->
     <insert id="insertList" parameterType="java.util.List">
-        insert into lawyer_specialty_relations (id, lawyer_id, specialty_id, operate_time_for_his)
+        insert into lawyer_specialty_relation (id, lawyer_id, specialty_id, operate_time_for_his)
         values
         <foreach item="item" index="index" collection="list" separator=",">
             (#{id}, #{lawyerId}, #{specialtyId}, now())
@@ -26,7 +26,7 @@
     <!-- 批量更新多条记录-->
     <update id="updateList" parameterType="java.util.List">
         <foreach item="item" index="index" collection="list" separator=";">
-            update lawyer_specialty_relations
+            update lawyer_specialty_relation
             set lawyer_id=#{lawyerId}, specialty_id=#{specialtyId},
             operate_time_for_his=now()
             where id = #{item.id}
