@@ -102,17 +102,17 @@ public class UserService {
     public void saveOrUpdateUser(UserPageVo userPageVo) {
         // 创建用于存储不同类型信息的对象
         User user = new User();
-        CorporateClient corporateClients = new CorporateClient();
-        IndividualClient individualClients = new IndividualClient();
+        CorporateClient corporateClient = new CorporateClient();
+        IndividualClient individualClient = new IndividualClient();
         Lawyer lawyer = new Lawyer();
-        Administrator administrators = new Administrator();
+        Administrator administrator = new Administrator();
 
         // 将 userPageVo 中的各部分信息复制到对应的对象中
         CommonUtil.copyProperties(userPageVo.getUserVo(), user);
-        CommonUtil.copyProperties(userPageVo.getCorporateClientsVo(), corporateClients);
-        CommonUtil.copyProperties(userPageVo.getIndividualClientsVo(), individualClients);
+        CommonUtil.copyProperties(userPageVo.getCorporateClientVo(), corporateClient);
+        CommonUtil.copyProperties(userPageVo.getIndividualClientVo(), individualClient);
         CommonUtil.copyProperties(userPageVo.getLawyerVo(), lawyer);
-        CommonUtil.copyProperties(userPageVo.getAdministratorsVo(), administrators);
+        CommonUtil.copyProperties(userPageVo.getAdministratorVo(), administrator);
 
         if (userPageVo.getUserVo().getId() == null) {
             // 插入用户信息并获取插入后的 ID
@@ -123,17 +123,17 @@ public class UserService {
 
             // 根据用户类型插入关联实体信息并建立关联
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                corporateClientsDao.insertSelectiveAndBackId(corporateClients);
-                user.setRelatedEntityId(corporateClients.getId());
+                corporateClientsDao.insertSelectiveAndBackId(corporateClient);
+                user.setRelatedEntityId(corporateClient.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                individualClientsDao.insertSelectiveAndBackId(individualClients);
-                user.setRelatedEntityId(individualClients.getId());
+                individualClientsDao.insertSelectiveAndBackId(individualClient);
+                user.setRelatedEntityId(individualClient.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.insertSelectiveAndBackId(lawyer);
                 user.setRelatedEntityId(lawyer.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                administratorsDao.insertSelectiveAndBackId(administrators);
-                user.setRelatedEntityId(administrators.getId());
+                administratorsDao.insertSelectiveAndBackId(administrator);
+                user.setRelatedEntityId(administrator.getId());
             }
             // 更新用户信息到数据库
             userDao.updateSelectiveByPrimaryKey(user);
@@ -143,22 +143,22 @@ public class UserService {
 
             // 根据用户类型更新关联实体信息
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                corporateClientsDao.updateSelectiveByPrimaryKey(corporateClients);
+                corporateClientsDao.updateSelectiveByPrimaryKey(corporateClient);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                individualClientsDao.updateSelectiveByPrimaryKey(individualClients);
+                individualClientsDao.updateSelectiveByPrimaryKey(individualClient);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.updateSelectiveByPrimaryKey(lawyer);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                administratorsDao.updateSelectiveByPrimaryKey(administrators);
+                administratorsDao.updateSelectiveByPrimaryKey(administrator);
             }
         }
 
         // 将更新后的信息复制回 userPageVo 中
         CommonUtil.copyProperties(user, userPageVo.getUserVo());
-        CommonUtil.copyProperties(corporateClients, userPageVo.getCorporateClientsVo());
-        CommonUtil.copyProperties(individualClients, userPageVo.getIndividualClientsVo());
+        CommonUtil.copyProperties(corporateClient, userPageVo.getCorporateClientVo());
+        CommonUtil.copyProperties(individualClient, userPageVo.getIndividualClientVo());
         CommonUtil.copyProperties(lawyer, userPageVo.getLawyerVo());
-        CommonUtil.copyProperties(administrators, userPageVo.getAdministratorsVo());
+        CommonUtil.copyProperties(administrator, userPageVo.getAdministratorVo());
         // 设置操作结果为成功
         userPageVo.setResult(true);
     }
