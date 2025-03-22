@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationsDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        <id column="id" property="id"/>
+        <result column="lawyer_id" property="lawyerId"/>
+        <result column="specialty_id" property="specialtyId"/>
+        <result column="insert_time_for_his" property="insertTimeForHis"/>
+        <result column="operate_time_for_his" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id
+        , lawyer_id AS lawyerId, specialty_id AS specialtyId, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="lawyerId != null">
+            and lawyer_id = #{lawyerId}
+        </if>
+        <if test="specialtyId != null">
+            and specialty_id = #{specialtyId}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insert_time_for_his = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operate_time_for_his = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyer_specialty_relations
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyer_specialty_relations
+        where id = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyer_specialty_relations
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap"
+            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from lawyer_specialty_relations
+        where id = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from lawyer_specialty_relations
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        insert into lawyer_specialty_relations (id, lawyer_id, specialty_id, operate_time_for_his)
+        values (#{id}, #{lawyerId}, #{specialtyId}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        insert into lawyer_specialty_relations
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="lawyerId != null">
+                lawyer_id,
+            </if>
+            <if test="specialtyId != null">
+                specialty_id,
+            </if>
+            operate_time_for_his,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="lawyerId != null">
+                #{lawyerId},
+            </if>
+            <if test="specialtyId != null">
+                #{specialtyId},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey"
+            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        update lawyer_specialty_relations
+        <set>
+            <if test="lawyerId != null">
+                lawyer_id=#{lawyerId},
+            </if>
+            <if test="specialtyId != null">
+                specialty_id=#{specialtyId},
+            </if>
+            operate_time_for_his=now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelations">
+        update lawyer_specialty_relations
+        set lawyer_id=#{lawyerId},
+            specialty_id=#{specialtyId},
+            operate_time_for_his=now()
+        where id = #{id}
+    </update>
+
+</mapper>
