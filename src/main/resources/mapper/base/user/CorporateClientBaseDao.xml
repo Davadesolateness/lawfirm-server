@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CorporateClientDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        <id column="id" property="id"/>
+        <result column="company_name" property="companyName"/>
+        <result column="certificate_type" property="certificateType"/>
+        <result column="certificate_number" property="certificateNumber"/>
+        <result column="contact_person" property="contactPerson"/>
+        <result column="is_valid_flag" property="isValidFlag"/>
+        <result column="insert_time_for_his" property="insertTimeForHis"/>
+        <result column="operate_time_for_his" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id
+        , company_name AS companyName, certificate_type AS certificateType, certificate_number AS certificateNumber, contact_person AS contactPerson,
+		 is_valid_flag AS isValidFlag, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="companyName != null">
+            and company_name = #{companyName}
+        </if>
+        <if test="certificateType != null">
+            and certificate_type = #{certificateType}
+        </if>
+        <if test="certificateNumber != null">
+            and certificate_number = #{certificateNumber}
+        </if>
+        <if test="contactPerson != null">
+            and contact_person = #{contactPerson}
+        </if>
+        <if test="isValidFlag != null">
+            and is_valid_flag = #{isValidFlag}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insert_time_for_his = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operate_time_for_his = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from corporate_client
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from corporate_client
+        where id = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from corporate_client
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from corporate_client
+        where id = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from corporate_client
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        insert into corporate_client (id, company_name, certificate_type, certificate_number, contact_person,
+                                      is_valid_flag, operate_time_for_his)
+        values (#{id}, #{companyName}, #{certificateType}, #{certificateNumber}, #{contactPerson},
+                #{isValidFlag}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        insert into corporate_client
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="certificateType != null">
+                certificate_type,
+            </if>
+            <if test="certificateNumber != null">
+                certificate_number,
+            </if>
+            <if test="contactPerson != null">
+                contact_person,
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag,
+            </if>
+            operate_time_for_his,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="companyName != null">
+                #{companyName},
+            </if>
+            <if test="certificateType != null">
+                #{certificateType},
+            </if>
+            <if test="certificateNumber != null">
+                #{certificateNumber},
+            </if>
+            <if test="contactPerson != null">
+                #{contactPerson},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        update corporate_client
+        <set>
+            <if test="companyName != null">
+                company_name=#{companyName},
+            </if>
+            <if test="certificateType != null">
+                certificate_type=#{certificateType},
+            </if>
+            <if test="certificateNumber != null">
+                certificate_number=#{certificateNumber},
+            </if>
+            <if test="contactPerson != null">
+                contact_person=#{contactPerson},
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag=#{isValidFlag},
+            </if>
+            operate_time_for_his=now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
+        update corporate_client
+        set company_name=#{companyName},
+            certificate_type=#{certificateType},
+            certificate_number=#{certificateNumber},
+            contact_person=#{contactPerson},
+            is_valid_flag=#{isValidFlag},
+            operate_time_for_his=now()
+        where id = #{id}
+    </update>
+
+</mapper>
