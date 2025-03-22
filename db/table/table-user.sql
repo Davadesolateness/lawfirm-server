@@ -53,22 +53,6 @@ CREATE TABLE individual_clients
 CREATE INDEX idx_individual_clients_insert_time_for_his ON individual_clients (insert_time_for_his);
 CREATE INDEX idx_individual_clients_operate_time_for_his ON individual_clients (operate_time_for_his);
 
--- 若需删除 lawyers 表，可取消此注释
--- DROP TABLE IF EXISTS lawyers;
--- 律师表，存储律师的额外信息
-CREATE TABLE lawyers
-(
-    id                    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '律师唯一标识，自增主键',
-    law_firm              VARCHAR(200) COMMENT '所在律师事务所名称',
-    lawyer_license_number VARCHAR(50) COMMENT '律师执业证号',
-    specialization        VARCHAR(255) COMMENT '专业领域',
-    is_valid_flag         CHAR(1)   DEFAULT '1' COMMENT '律师是否有效，1 表示有效，0 表示无效，默认为有效',
-    insert_time_for_his   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '律师信息插入时间，默认为当前时间',
-    operate_time_for_his  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '律师信息操作时间，自动更新'
-);
-CREATE INDEX idx_lawyers_insert_time_for_his ON lawyers (insert_time_for_his);
-CREATE INDEX idx_lawyers_operate_time_for_his ON lawyers (operate_time_for_his);
-
 -- 若需删除 administrators 表，可取消此注释
 -- DROP TABLE IF EXISTS administrators;
 -- 管理员表，存储管理员的额外信息

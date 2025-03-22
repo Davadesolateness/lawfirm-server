@@ -1,9 +1,17 @@
 package com.lawfirm.lawfirmserver.user.service;
 
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
+import com.lawfirm.lawfirmserver.lawyer.dao.LawyersDao;
+import com.lawfirm.lawfirmserver.lawyer.po.Lawyers;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
-import com.lawfirm.lawfirmserver.user.dao.*;
-import com.lawfirm.lawfirmserver.user.po.*;
+import com.lawfirm.lawfirmserver.user.dao.AdministratorsDao;
+import com.lawfirm.lawfirmserver.user.dao.CorporateClientsDao;
+import com.lawfirm.lawfirmserver.user.dao.IndividualClientsDao;
+import com.lawfirm.lawfirmserver.user.dao.UserDao;
+import com.lawfirm.lawfirmserver.user.po.Administrators;
+import com.lawfirm.lawfirmserver.user.po.CorporateClients;
+import com.lawfirm.lawfirmserver.user.po.IndividualClients;
+import com.lawfirm.lawfirmserver.user.po.User;
 import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
