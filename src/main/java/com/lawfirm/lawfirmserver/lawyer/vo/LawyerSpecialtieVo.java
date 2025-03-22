@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，表lawyer_specialties的VO对象<br/>
- * 对应表名：lawyer_specialties
+ * 通过ins-framework-mybatis工具自动生成，表lawyer_specialtie的VO对象<br/>
+ * 对应表名：lawyer_specialtie
  */
 @Data
 public class LawyerSpecialtieVo implements Serializable {

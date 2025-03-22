@@ -23,29 +23,29 @@ import java.util.List;
 public class LawyerService {
 
     @Autowired
-    LawyerDao lawyersDao;
+    LawyerDao lawyerDao;
     @Autowired
-    LawyerSpecialtyRelationDao lawyerSpecialtyRelationsDao;
+    LawyerSpecialtyRelationDao lawyerSpecialtyRelationDao;
     @Autowired
-    LawyerSpecialtieDao lawyerSpecialtiesDao;
+    LawyerSpecialtieDao lawyerSpecialtieDao;
 
     /**
      * 更新律师信息及其关联的专长信息
      *
-     * @param lawyersVo 包含律师信息和专长关联信息的视图对象
+     * @param lawyerVo 包含律师信息和专长关联信息的视图对象
      */
-    public void updateLawyer(LawyerVo lawyersVo) {
+    public void updateLawyer(LawyerVo lawyerVo) {
         // 创建 Lawyer 对象并复制视图对象的律师信息
         Lawyer lawyer = new Lawyer();
-        CommonUtil.copyProperties(lawyersVo, lawyer);
+        CommonUtil.copyProperties(lawyerVo, lawyer);
         // 根据主键选择性更新律师信息
-        lawyersDao.updateSelectiveByPrimaryKey(lawyer);
+        lawyerDao.updateSelectiveByPrimaryKey(lawyer);
 
         // 检查专长关联信息列表是否存在且不为空
-        if (lawyersVo.getLawyerSpecialtyRelationsVolist() != null && !lawyersVo.getLawyerSpecialtyRelationsVolist().isEmpty()) {
+        if (lawyerVo.getLawyerSpecialtyRelationVolist() != null && !lawyerVo.getLawyerSpecialtyRelationVolist().isEmpty()) {
             // 复制视图对象的专长关联信息
             List<LawyerSpecialtyRelation> lawyerSpecialtyRelationVoList = new ArrayList<>();
-            CommonUtil.copyProperties(lawyersVo.getLawyerSpecialtyRelationsVolist(), lawyerSpecialtyRelationVoList);
+            CommonUtil.copyProperties(lawyerVo.getLawyerSpecialtyRelationVolist(), lawyerSpecialtyRelationVoList);
 
             // 分别存储需插入、更新、删除的专长关联信息
             List<LawyerSpecialtyRelation> insertList = new ArrayList<>();
@@ -54,7 +54,7 @@ public class LawyerService {
 
             // 存储从数据库查询的专长关联信息，键为 ID
             HashMap<Long, LawyerSpecialtyRelation> poIdMap = new HashMap<>();
-            List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationsDao.selectBatchByLawyerId(lawyer.getId());
+            List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
             for (LawyerSpecialtyRelation lsrPo : lawyerSpecialtyRelationList) {
                 poIdMap.put(lsrPo.getId(), lsrPo);
             }
@@ -72,13 +72,13 @@ public class LawyerService {
 
             // 批量插入、更新、删除专长关联信息
             if (!insertList.isEmpty()) {
-                lawyerSpecialtyRelationsDao.insertList(insertList);
+                lawyerSpecialtyRelationDao.insertList(insertList);
             }
             if (!updateList.isEmpty()) {
-                lawyerSpecialtyRelationsDao.updateList(updateList);
+                lawyerSpecialtyRelationDao.updateList(updateList);
             }
             if (!deleteList.isEmpty()) {
-                lawyerSpecialtyRelationsDao.deleteBatchByPrimaryKeys(deleteList);
+                lawyerSpecialtyRelationDao.deleteBatchByPrimaryKeys(deleteList);
             }
         }
     }
@@ -95,10 +95,10 @@ public class LawyerService {
         List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVoList = new ArrayList<>();
 
         // 查询律师基本信息
-        Lawyer lawyer = lawyersDao.selectByPrimaryKey(lawyerId);
+        Lawyer lawyer = lawyerDao.selectByPrimaryKey(lawyerId);
 
         // 查询律师的专长关联信息
-        List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationsDao.selectBatchByLawyerId(lawyer.getId());
+        List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
 
         // 处理专长关联信息
         if (lawyerSpecialtyRelationList != null && !lawyerSpecialtyRelationList.isEmpty()) {
@@ -108,14 +108,14 @@ public class LawyerService {
                 LawyerSpecialtieVo specialtyVo = new LawyerSpecialtieVo();
 
                 // 查询专长详细信息
-                LawyerSpecialtie specialty = lawyerSpecialtiesDao.selectByPrimaryKey(relation.getSpecialtyId());
+                LawyerSpecialtie specialty = lawyerSpecialtieDao.selectByPrimaryKey(relation.getSpecialtyId());
 
                 // 复制信息到视图对象
                 CommonUtil.copyProperties(specialty, specialtyVo);
                 CommonUtil.copyProperties(relation, relationVo);
 
                 // 关联专长信息到专长关联信息视图对象
-                relationVo.setLawyerSpecialtiesVo(specialtyVo);
+                relationVo.setLawyerSpecialtieVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
             }
@@ -124,7 +124,7 @@ public class LawyerService {
         // 复制律师基本信息到 LawyerVo 对象
         CommonUtil.copyProperties(lawyer, lawyerVo);
         // 设置专长关联信息视图对象列表到 LawyerVo 对象
-        lawyerVo.setLawyerSpecialtyRelationsVolist(lawyerSpecialtyRelationVoList);
+        lawyerVo.setLawyerSpecialtyRelationVolist(lawyerSpecialtyRelationVoList);
 
         return lawyerVo;
     }

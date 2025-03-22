@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表lawyers的PO对象<br/>
- * 对应表名：lawyers
+ * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表lawyer的PO对象<br/>
+ * 对应表名：lawyer
  */
 @Data
 public class Lawyer implements Serializable {

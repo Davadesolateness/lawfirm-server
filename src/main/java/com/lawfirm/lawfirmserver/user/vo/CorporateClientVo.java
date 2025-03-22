@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，表corporate_clients的VO对象<br/>
- * 对应表名：corporate_clients
+ * 通过ins-framework-mybatis工具自动生成，表corporate_client的VO对象<br/>
+ * 对应表名：corporate_client
  */
 @Data
 public class CorporateClientVo implements Serializable {

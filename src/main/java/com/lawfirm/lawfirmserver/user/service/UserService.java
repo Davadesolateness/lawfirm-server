@@ -31,11 +31,11 @@ public class UserService {
     @Autowired
     private LawyerDao lawyerDao;
     @Autowired
-    private CorporateClientDao corporateClientsDao;
+    private CorporateClientDao corporateClientDao;
     @Autowired
-    private IndividualClientDao individualClientsDao;
+    private IndividualClientDao individualClientDao;
     @Autowired
-    private AdministratorDao administratorsDao;
+    private AdministratorDao administratorDao;
 
     /**
      * 验证用户登录信息的方法。
@@ -123,16 +123,16 @@ public class UserService {
 
             // 根据用户类型插入关联实体信息并建立关联
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                corporateClientsDao.insertSelectiveAndBackId(corporateClient);
+                corporateClientDao.insertSelectiveAndBackId(corporateClient);
                 user.setRelatedEntityId(corporateClient.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                individualClientsDao.insertSelectiveAndBackId(individualClient);
+                individualClientDao.insertSelectiveAndBackId(individualClient);
                 user.setRelatedEntityId(individualClient.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.insertSelectiveAndBackId(lawyer);
                 user.setRelatedEntityId(lawyer.getId());
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                administratorsDao.insertSelectiveAndBackId(administrator);
+                administratorDao.insertSelectiveAndBackId(administrator);
                 user.setRelatedEntityId(administrator.getId());
             }
             // 更新用户信息到数据库
@@ -143,13 +143,13 @@ public class UserService {
 
             // 根据用户类型更新关联实体信息
             if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
-                corporateClientsDao.updateSelectiveByPrimaryKey(corporateClient);
+                corporateClientDao.updateSelectiveByPrimaryKey(corporateClient);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
-                individualClientsDao.updateSelectiveByPrimaryKey(individualClient);
+                individualClientDao.updateSelectiveByPrimaryKey(individualClient);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.updateSelectiveByPrimaryKey(lawyer);
             } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
-                administratorsDao.updateSelectiveByPrimaryKey(administrator);
+                administratorDao.updateSelectiveByPrimaryKey(administrator);
             }
         }
 

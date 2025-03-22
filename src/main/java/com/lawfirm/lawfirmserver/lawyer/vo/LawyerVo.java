@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，表lawyers的VO对象<br/>
- * 对应表名：lawyers
+ * 通过ins-framework-mybatis工具自动生成，表lawyer的VO对象<br/>
+ * 对应表名：lawyer
  */
 @Data
 public class LawyerVo implements Serializable {
@@ -42,7 +42,7 @@ public class LawyerVo implements Serializable {
      */
     private Date operateTimeForHis;
 
-    private List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationsVolist;
+    private List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVolist;
 
 
 }

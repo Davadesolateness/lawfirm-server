@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，表administrators的VO对象<br/>
- * 对应表名：administrators
+ * 通过ins-framework-mybatis工具自动生成，表administrator的VO对象<br/>
+ * 对应表名：administrator
  */
 @Data
 public class AdministratorVo implements Serializable {

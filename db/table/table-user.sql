@@ -11,7 +11,7 @@ CREATE TABLE `user`
     phone_number         VARCHAR(20) UNIQUE COMMENT '用户电话号码，唯一',
     user_type            VARCHAR(50)  NOT NULL COMMENT '用户类型，取值可为：corporate（法人客户）、individual（个人客户）、lawyer（律师）、admin（管理员）',
     source_type          VARCHAR(50) DEFAULT 'manual_register' COMMENT '数据来源类型，取值可为：database_insert（数据库插入）、manual_register（人工系统注册），默认是人工系统注册',
-    related_entity_id    BIGINT COMMENT '关联的实体 ID，根据 user_type 确定关联的表：corporate 对应 corporate_client 表，individual 对应 individual_client 表，lawyer 对应 lawyers 表，admin 对应 administrator 表',
+    related_entity_id    BIGINT COMMENT '关联的实体 ID，根据 user_type 确定关联的表：corporate 对应 corporate_client 表，individual 对应 individual_client 表，lawyer 对应 lawyer 表，admin 对应 administrator 表',
     is_valid_flag        CHAR(1)     DEFAULT '1' COMMENT '用户是否有效，1 表示有效，0 表示无效，默认为有效',
     insert_time_for_his  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '用户信息插入时间，默认为当前时间',
     operate_time_for_his TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户信息操作时间，自动更新'

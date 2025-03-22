@@ -49,7 +49,7 @@ public class UserVo implements Serializable {
      */
     private String sourceType;
     /**
-     * 对应字段：related_entity_id,备注：关联的实体 ID，根据 user_type 确定关联的表：corporate 对应 corporate_clients 表，individual 对应 individual_clients 表，lawyer 对应 lawyers 表，admin 对应 administrators 表
+     * 对应字段：related_entity_id,备注：关联的实体 ID，根据 user_type 确定关联的表：corporate 对应 corporate_client 表，individual 对应 individual_client 表，lawyer 对应 lawyers 表，admin 对应 administrator 表
      */
     private Long relatedEntityId;
     /**
