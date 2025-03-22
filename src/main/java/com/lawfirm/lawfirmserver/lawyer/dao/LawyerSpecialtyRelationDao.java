@@ -14,4 +14,8 @@ import java.util.List;
 public interface LawyerSpecialtyRelationDao extends MybatisBaseDao<LawyerSpecialtyRelation, Long> {
 
     List<LawyerSpecialtyRelation> selectBatchByLawyerId(Long lawyerId);
+
+    void insertList(List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList);
+
+    void updateList(List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList);
 }

@@ -13,5 +13,24 @@
         where lawyerId = #{lawyerId}
     </select>
 
+    <!-- 批量插入多条记录-->
+    <insert id="insertList" parameterType="java.util.List">
+        insert into lawyer_specialty_relations (id, lawyer_id, specialty_id, operate_time_for_his)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{id}, #{lawyerId}, #{specialtyId}, now())
+        </foreach>
+
+    </insert>
+
+    <!-- 批量更新多条记录-->
+    <update id="updateList" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update lawyer_specialty_relations
+            set lawyer_id=#{lawyerId}, specialty_id=#{specialtyId},
+            operate_time_for_his=now()
+            where id = #{item.id}
+        </foreach>
+    </update>
 
 </mapper>
