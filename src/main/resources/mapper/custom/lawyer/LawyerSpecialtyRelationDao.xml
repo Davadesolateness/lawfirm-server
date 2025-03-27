@@ -10,7 +10,7 @@
         select
         <include refid="Base_Column_List"/>
         from lawyer_specialty_relation
-        where lawyerId = #{lawyerId}
+        where lawyer_id = #{lawyerId}
     </select>
 
     <!-- 批量插入多条记录-->

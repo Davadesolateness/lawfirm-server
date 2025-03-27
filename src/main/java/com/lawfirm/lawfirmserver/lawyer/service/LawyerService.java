@@ -45,7 +45,6 @@ public class LawyerService {
         if (lawyerVo.getLawyerSpecialtyRelationVolist() != null && !lawyerVo.getLawyerSpecialtyRelationVolist().isEmpty()) {
             // 复制视图对象的专长关联信息
             List<LawyerSpecialtyRelation> lawyerSpecialtyRelationVoList = new ArrayList<>();
-            CommonUtil.copyProperties(lawyerVo.getLawyerSpecialtyRelationVolist(), lawyerSpecialtyRelationVoList);
 
             // 分别存储需插入、更新、删除的专长关联信息
             List<LawyerSpecialtyRelation> insertList = new ArrayList<>();
@@ -60,11 +59,13 @@ public class LawyerService {
             }
 
             // 遍历复制的专长关联信息，分类添加到对应列表
-            for (LawyerSpecialtyRelation lsrVo : lawyerSpecialtyRelationVoList) {
+            for (LawyerSpecialtyRelationVo lsrVo : lawyerVo.getLawyerSpecialtyRelationVolist()) {
+                LawyerSpecialtyRelation lsr = new LawyerSpecialtyRelation();
+                CommonUtil.copyProperties(lsrVo, lsr);
                 if (lsrVo.getId() == null) {
-                    insertList.add(lsrVo);
+                    insertList.add(lsr);
                 } else if (poIdMap.containsKey(lsrVo.getId())) {
-                    updateList.add(lsrVo);
+                    updateList.add(lsr);
                 } else {
                     deleteList.add(lsrVo.getId());
                 }
@@ -72,7 +73,7 @@ public class LawyerService {
 
             // 批量插入、更新、删除专长关联信息
             if (!insertList.isEmpty()) {
-                lawyerSpecialtyRelationDao.insertList(insertList);
+//                lawyerSpecialtyRelationDao.insertList(insertList);
             }
             if (!updateList.isEmpty()) {
                 lawyerSpecialtyRelationDao.updateList(updateList);

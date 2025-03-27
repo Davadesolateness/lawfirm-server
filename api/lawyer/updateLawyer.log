@@ -1,0 +1,21 @@
+更新律师信息
+http://localhost:8080/lawyer/updateLawyer
+{
+        "id": 1,
+        "lawFirm": "Test Law Firm",
+        "lawyerLicenseNumber": "LF12345",
+        "specialization": "Civil Law",
+        "isValidFlag": "1",
+        "insertTimeForHis": null,
+        "operateTimeForHis": null,
+        "lawyerSpecialtyRelationVolist": [
+            {
+                "lawyerId":1,
+                "specialtyId":1
+            },
+            {
+                "lawyerId":1,
+                "specialtyId":2
+            }
+        ]
+}
