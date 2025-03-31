@@ -73,7 +73,7 @@ public class LawyerService {
 
             // 批量插入、更新、删除专长关联信息
             if (!insertList.isEmpty()) {
-//                lawyerSpecialtyRelationDao.insertList(insertList);
+                lawyerSpecialtyRelationDao.insertList(insertList);
             }
             if (!updateList.isEmpty()) {
                 lawyerSpecialtyRelationDao.updateList(updateList);

@@ -18,7 +18,7 @@
         insert into lawyer_specialty_relation (id, lawyer_id, specialty_id, operate_time_for_his)
         values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{id}, #{lawyerId}, #{specialtyId}, now())
+            (#{item.id}, #{item.lawyerId}, #{item.specialtyId}, now())
         </foreach>
 
     </insert>
@@ -27,7 +27,7 @@
     <update id="updateList" parameterType="java.util.List">
         <foreach item="item" index="index" collection="list" separator=";">
             update lawyer_specialty_relation
-            set lawyer_id=#{lawyerId}, specialty_id=#{specialtyId},
+            set lawyer_id=#{item.lawyerId}, specialty_id=#{item.specialtyId},
             operate_time_for_his=now()
             where id = #{item.id}
         </foreach>
