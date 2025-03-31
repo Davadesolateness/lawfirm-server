@@ -17,18 +17,18 @@
                 id,
             </if>
             <if test="lawFirm != null">
-                law_firm,
+                lawFirm,
             </if>
             <if test="lawyerLicenseNumber != null">
-                lawyer_license_number,
+                lawyerLicenseNumber,
             </if>
             <if test="specialization != null">
                 specialization,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">

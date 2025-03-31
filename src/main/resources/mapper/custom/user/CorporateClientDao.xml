@@ -11,27 +11,27 @@
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>
-        insert into corporate_client
+        insert into corporateclient
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
             <if test="companyName != null">
-                company_name,
+                companyName,
             </if>
             <if test="certificateType != null">
-                certificate_type,
+                certificateType,
             </if>
             <if test="certificateNumber != null">
-                certificate_number,
+                certificateNumber,
             </if>
             <if test="contactPerson != null">
-                contact_person,
+                contactPerson,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">

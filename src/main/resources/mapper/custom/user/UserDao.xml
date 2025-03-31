@@ -31,27 +31,27 @@
                 password,
             </if>
             <if test="passwordUpdateTime != null">
-                password_update_time,
+                passwordUpdateTime,
             </if>
             <if test="email != null">
                 email,
             </if>
             <if test="phoneNumber != null">
-                phone_number,
+                phoneNumber,
             </if>
             <if test="userType != null">
-                user_type,
+                userType,
             </if>
             <if test="sourceType != null">
-                source_type,
+                sourceType,
             </if>
             <if test="relatedEntityId != null">
-                related_entity_id,
+                relatedEntityId,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">

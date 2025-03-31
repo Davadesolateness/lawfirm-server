@@ -12,23 +12,23 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
-        <result column="password_update_time" property="passwordUpdateTime"/>
+        <result column="passwordUpdateTime" property="passwordUpdateTime"/>
         <result column="email" property="email"/>
-        <result column="phone_number" property="phoneNumber"/>
-        <result column="user_type" property="userType"/>
-        <result column="source_type" property="sourceType"/>
-        <result column="related_entity_id" property="relatedEntityId"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time_for_his" property="insertTimeForHis"/>
-        <result column="operate_time_for_his" property="operateTimeForHis"/>
+        <result column="phoneNumber" property="phoneNumber"/>
+        <result column="userType" property="userType"/>
+        <result column="sourceType" property="sourceType"/>
+        <result column="relatedEntityId" property="relatedEntityId"/>
+        <result column="isValidFlag" property="isValidFlag"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
 
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , username, password, password_update_time AS passwordUpdateTime, email,
-		 phone_number AS phoneNumber, user_type AS userType, source_type AS sourceType, related_entity_id AS relatedEntityId, is_valid_flag AS isValidFlag,
-		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , username, password, passwordUpdateTime, email,
+		 phoneNumber, userType, sourceType, relatedEntityId, isValidFlag,
+		 insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -43,31 +43,31 @@
             and password = #{password}
         </if>
         <if test="passwordUpdateTime != null">
-            and password_update_time = #{passwordUpdateTime}
+            and passwordUpdateTime = #{passwordUpdateTime}
         </if>
         <if test="email != null">
             and email = #{email}
         </if>
         <if test="phoneNumber != null">
-            and phone_number = #{phoneNumber}
+            and phoneNumber = #{phoneNumber}
         </if>
         <if test="userType != null">
-            and user_type = #{userType}
+            and userType = #{userType}
         </if>
         <if test="sourceType != null">
-            and source_type = #{sourceType}
+            and sourceType = #{sourceType}
         </if>
         <if test="relatedEntityId != null">
-            and related_entity_id = #{relatedEntityId}
+            and relatedEntityId = #{relatedEntityId}
         </if>
         <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
+            and isValidFlag = #{isValidFlag}
         </if>
         <if test="insertTimeForHis != null">
-            and insert_time_for_his = #{insertTimeForHis}
+            and insertTimeForHis = #{insertTimeForHis}
         </if>
         <if test="operateTimeForHis != null">
-            and operate_time_for_his = #{operateTimeForHis}
+            and operateTimeForHis = #{operateTimeForHis}
         </if>
     </sql>
 
@@ -123,9 +123,9 @@
 
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        insert into user (id, username, password, password_update_time, email,
-                          phone_number, user_type, source_type, related_entity_id, is_valid_flag,
-                          operate_time_for_his)
+        insert into user (id, username, password, passwordUpdateTime, email,
+                          phoneNumber, userType, sourceType, relatedEntityId, isValidFlag,
+                          operateTimeForHis)
         values (#{id}, #{username}, #{password}, #{passwordUpdateTime}, #{email},
                 #{phoneNumber}, #{userType}, #{sourceType}, #{relatedEntityId}, #{isValidFlag},
                 now())
@@ -145,27 +145,27 @@
                 password,
             </if>
             <if test="passwordUpdateTime != null">
-                password_update_time,
+                passwordUpdateTime,
             </if>
             <if test="email != null">
                 email,
             </if>
             <if test="phoneNumber != null">
-                phone_number,
+                phoneNumber,
             </if>
             <if test="userType != null">
-                user_type,
+                userType,
             </if>
             <if test="sourceType != null">
-                source_type,
+                sourceType,
             </if>
             <if test="relatedEntityId != null">
-                related_entity_id,
+                relatedEntityId,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -214,27 +214,27 @@
                 password=#{password},
             </if>
             <if test="passwordUpdateTime != null">
-                password_update_time=#{passwordUpdateTime},
+                passwordUpdateTime=#{passwordUpdateTime},
             </if>
             <if test="email != null">
                 email=#{email},
             </if>
             <if test="phoneNumber != null">
-                phone_number=#{phoneNumber},
+                phoneNumber=#{phoneNumber},
             </if>
             <if test="userType != null">
-                user_type=#{userType},
+                userType=#{userType},
             </if>
             <if test="sourceType != null">
-                source_type=#{sourceType},
+                sourceType=#{sourceType},
             </if>
             <if test="relatedEntityId != null">
-                related_entity_id=#{relatedEntityId},
+                relatedEntityId=#{relatedEntityId},
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
+                isValidFlag=#{isValidFlag},
             </if>
-            operate_time_for_his=now(),
+            operateTimeForHis=now(),
         </set>
         where id = #{id}
     </update>
@@ -244,14 +244,14 @@
         update user
         set username=#{username},
             password=#{password},
-            password_update_time=#{passwordUpdateTime},
+            passwordUpdateTime=#{passwordUpdateTime},
             email=#{email},
-            phone_number=#{phoneNumber},
-            user_type=#{userType},
-            source_type=#{sourceType},
-            related_entity_id=#{relatedEntityId},
-            is_valid_flag=#{isValidFlag},
-            operate_time_for_his=now()
+            phoneNumber=#{phoneNumber},
+            userType=#{userType},
+            sourceType=#{sourceType},
+            relatedEntityId=#{relatedEntityId},
+            isValidFlag=#{isValidFlag},
+            operateTimeForHis=now()
         where id = #{id}
     </update>
 

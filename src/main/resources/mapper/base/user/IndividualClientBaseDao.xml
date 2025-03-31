@@ -10,19 +10,19 @@
     <!-- 通用查询结果对象-->
     <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.IndividualClient">
         <id column="id" property="id"/>
-        <result column="full_name" property="fullName"/>
+        <result column="fullName" property="fullName"/>
         <result column="gender" property="gender"/>
-        <result column="birth_date" property="birthDate"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time_for_his" property="insertTimeForHis"/>
-        <result column="operate_time_for_his" property="operateTimeForHis"/>
+        <result column="birthDate" property="birthDate"/>
+        <result column="isValidFlag" property="isValidFlag"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
 
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , full_name AS fullName, gender, birth_date AS birthDate, is_valid_flag AS isValidFlag,
-		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , fullName, gender, birthDate, isValidFlag,
+		 insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -31,22 +31,22 @@
             and id = #{id}
         </if>
         <if test="fullName != null">
-            and full_name = #{fullName}
+            and fullName = #{fullName}
         </if>
         <if test="gender != null">
             and gender = #{gender}
         </if>
         <if test="birthDate != null">
-            and birth_date = #{birthDate}
+            and birthDate = #{birthDate}
         </if>
         <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
+            and isValidFlag = #{isValidFlag}
         </if>
         <if test="insertTimeForHis != null">
-            and insert_time_for_his = #{insertTimeForHis}
+            and insertTimeForHis = #{insertTimeForHis}
         </if>
         <if test="operateTimeForHis != null">
-            and operate_time_for_his = #{operateTimeForHis}
+            and operateTimeForHis = #{operateTimeForHis}
         </if>
     </sql>
 
@@ -54,7 +54,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from individual_client
+        from individualclient
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -64,7 +64,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from individual_client
+        from individualclient
         where id = #{param1}
     </select>
 
@@ -72,7 +72,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from individual_client
+        from individualclient
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -88,13 +88,13 @@
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from individual_client
+        from individualclient
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from individual_client
+        delete from individualclient
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -103,32 +103,32 @@
 
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
-        insert into individual_client (id, full_name, gender, birth_date, is_valid_flag,
-                                       operate_time_for_his)
+        insert into individualclient (id, fullName, gender, birthDate, isValidFlag,
+                                      operateTimeForHis)
         values (#{id}, #{fullName}, #{gender}, #{birthDate}, #{isValidFlag},
                 now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
     <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
-        insert into individual_client
+        insert into individualclient
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
             <if test="fullName != null">
-                full_name,
+                fullName,
             </if>
             <if test="gender != null">
                 gender,
             </if>
             <if test="birthDate != null">
-                birth_date,
+                birthDate,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -153,33 +153,33 @@
 
     <!-- 更新一条记录(为空的字段不操作) -->
     <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
-        update individual_client
+        update individualclient
         <set>
             <if test="fullName != null">
-                full_name=#{fullName},
+                fullName=#{fullName},
             </if>
             <if test="gender != null">
                 gender=#{gender},
             </if>
             <if test="birthDate != null">
-                birth_date=#{birthDate},
+                birthDate=#{birthDate},
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
+                isValidFlag=#{isValidFlag},
             </if>
-            operate_time_for_his=now(),
+            operateTimeForHis=now(),
         </set>
         where id = #{id}
     </update>
 
     <!-- 完整更新一条记录 -->
     <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.IndividualClient">
-        update individual_client
-        set full_name=#{fullName},
+        update individualclient
+        set fullName=#{fullName},
             gender=#{gender},
-            birth_date=#{birthDate},
-            is_valid_flag=#{isValidFlag},
-            operate_time_for_his=now()
+            birthDate=#{birthDate},
+            isValidFlag=#{isValidFlag},
+            operateTimeForHis=now()
         where id = #{id}
     </update>
 

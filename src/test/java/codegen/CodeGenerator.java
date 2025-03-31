@@ -20,13 +20,13 @@ public class CodeGenerator {
          **/
 
         createBaseFiles("user", "user");
-        createBaseFiles("user", "corporate_client");
-        createBaseFiles("user", "individual_client");
+        createBaseFiles("user", "corporateclient");
+        createBaseFiles("user", "individualclient");
         createBaseFiles("user", "administrator");
 
         createBaseFiles("lawyer", "lawyer");
-        createBaseFiles("lawyer", "lawyer_specialty_relation");
-        createBaseFiles("lawyer", "lawyer_specialtie");
+        createBaseFiles("lawyer", "lawyerspecialtyrelation");
+        createBaseFiles("lawyer", "lawyerspecialtie");
 
     }
 

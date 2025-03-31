@@ -11,24 +11,24 @@
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>
-        insert into individual_client
+        insert into individualclient
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
             <if test="fullName != null">
-                full_name,
+                fullName,
             </if>
             <if test="gender != null">
                 gender,
             </if>
             <if test="birthDate != null">
-                birth_date,
+                birthDate,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">

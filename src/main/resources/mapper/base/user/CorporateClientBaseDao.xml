@@ -10,20 +10,20 @@
     <!-- 通用查询结果对象-->
     <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CorporateClient">
         <id column="id" property="id"/>
-        <result column="company_name" property="companyName"/>
-        <result column="certificate_type" property="certificateType"/>
-        <result column="certificate_number" property="certificateNumber"/>
-        <result column="contact_person" property="contactPerson"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time_for_his" property="insertTimeForHis"/>
-        <result column="operate_time_for_his" property="operateTimeForHis"/>
+        <result column="companyName" property="companyName"/>
+        <result column="certificateType" property="certificateType"/>
+        <result column="certificateNumber" property="certificateNumber"/>
+        <result column="contactPerson" property="contactPerson"/>
+        <result column="isValidFlag" property="isValidFlag"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
 
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , company_name AS companyName, certificate_type AS certificateType, certificate_number AS certificateNumber, contact_person AS contactPerson,
-		 is_valid_flag AS isValidFlag, insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , companyName, certificateType, certificateNumber, contactPerson,
+		 isValidFlag, insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -32,25 +32,25 @@
             and id = #{id}
         </if>
         <if test="companyName != null">
-            and company_name = #{companyName}
+            and companyName = #{companyName}
         </if>
         <if test="certificateType != null">
-            and certificate_type = #{certificateType}
+            and certificateType = #{certificateType}
         </if>
         <if test="certificateNumber != null">
-            and certificate_number = #{certificateNumber}
+            and certificateNumber = #{certificateNumber}
         </if>
         <if test="contactPerson != null">
-            and contact_person = #{contactPerson}
+            and contactPerson = #{contactPerson}
         </if>
         <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
+            and isValidFlag = #{isValidFlag}
         </if>
         <if test="insertTimeForHis != null">
-            and insert_time_for_his = #{insertTimeForHis}
+            and insertTimeForHis = #{insertTimeForHis}
         </if>
         <if test="operateTimeForHis != null">
-            and operate_time_for_his = #{operateTimeForHis}
+            and operateTimeForHis = #{operateTimeForHis}
         </if>
     </sql>
 
@@ -58,7 +58,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from corporate_client
+        from corporateclient
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -68,7 +68,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from corporate_client
+        from corporateclient
         where id = #{param1}
     </select>
 
@@ -76,7 +76,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from corporate_client
+        from corporateclient
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -91,13 +91,13 @@
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from corporate_client
+        from corporateclient
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from corporate_client
+        delete from corporateclient
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -106,35 +106,35 @@
 
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
-        insert into corporate_client (id, company_name, certificate_type, certificate_number, contact_person,
-                                      is_valid_flag, operate_time_for_his)
+        insert into corporateclient (id, companyName, certificateType, certificateNumber, contactPerson,
+                                     isValidFlag, operateTimeForHis)
         values (#{id}, #{companyName}, #{certificateType}, #{certificateNumber}, #{contactPerson},
                 #{isValidFlag}, now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
     <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
-        insert into corporate_client
+        insert into corporateclient
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
             <if test="companyName != null">
-                company_name,
+                companyName,
             </if>
             <if test="certificateType != null">
-                certificate_type,
+                certificateType,
             </if>
             <if test="certificateNumber != null">
-                certificate_number,
+                certificateNumber,
             </if>
             <if test="contactPerson != null">
-                contact_person,
+                contactPerson,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -162,37 +162,37 @@
 
     <!-- 更新一条记录(为空的字段不操作) -->
     <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
-        update corporate_client
+        update corporateclient
         <set>
             <if test="companyName != null">
-                company_name=#{companyName},
+                companyName=#{companyName},
             </if>
             <if test="certificateType != null">
-                certificate_type=#{certificateType},
+                certificateType=#{certificateType},
             </if>
             <if test="certificateNumber != null">
-                certificate_number=#{certificateNumber},
+                certificateNumber=#{certificateNumber},
             </if>
             <if test="contactPerson != null">
-                contact_person=#{contactPerson},
+                contactPerson=#{contactPerson},
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
+                isValidFlag=#{isValidFlag},
             </if>
-            operate_time_for_his=now(),
+            operateTimeForHis=now(),
         </set>
         where id = #{id}
     </update>
 
     <!-- 完整更新一条记录 -->
     <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CorporateClient">
-        update corporate_client
-        set company_name=#{companyName},
-            certificate_type=#{certificateType},
-            certificate_number=#{certificateNumber},
-            contact_person=#{contactPerson},
-            is_valid_flag=#{isValidFlag},
-            operate_time_for_his=now()
+        update corporateclient
+        set companyName=#{companyName},
+            certificateType=#{certificateType},
+            certificateNumber=#{certificateNumber},
+            contactPerson=#{contactPerson},
+            isValidFlag=#{isValidFlag},
+            operateTimeForHis=now()
         where id = #{id}
     </update>
 

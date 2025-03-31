@@ -10,19 +10,19 @@
     <!-- 通用查询结果对象-->
     <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         <id column="id" property="id"/>
-        <result column="law_firm" property="lawFirm"/>
-        <result column="lawyer_license_number" property="lawyerLicenseNumber"/>
+        <result column="lawFirm" property="lawFirm"/>
+        <result column="lawyerLicenseNumber" property="lawyerLicenseNumber"/>
         <result column="specialization" property="specialization"/>
-        <result column="is_valid_flag" property="isValidFlag"/>
-        <result column="insert_time_for_his" property="insertTimeForHis"/>
-        <result column="operate_time_for_his" property="operateTimeForHis"/>
+        <result column="isValidFlag" property="isValidFlag"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
 
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-        , law_firm AS lawFirm, lawyer_license_number AS lawyerLicenseNumber, specialization, is_valid_flag AS isValidFlag,
-		 insert_time_for_his AS insertTimeForHis, operate_time_for_his AS operateTimeForHis
+        , lawFirm, lawyerLicenseNumber, specialization, isValidFlag,
+		 insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -31,22 +31,22 @@
             and id = #{id}
         </if>
         <if test="lawFirm != null">
-            and law_firm = #{lawFirm}
+            and lawFirm = #{lawFirm}
         </if>
         <if test="lawyerLicenseNumber != null">
-            and lawyer_license_number = #{lawyerLicenseNumber}
+            and lawyerLicenseNumber = #{lawyerLicenseNumber}
         </if>
         <if test="specialization != null">
             and specialization = #{specialization}
         </if>
         <if test="isValidFlag != null">
-            and is_valid_flag = #{isValidFlag}
+            and isValidFlag = #{isValidFlag}
         </if>
         <if test="insertTimeForHis != null">
-            and insert_time_for_his = #{insertTimeForHis}
+            and insertTimeForHis = #{insertTimeForHis}
         </if>
         <if test="operateTimeForHis != null">
-            and operate_time_for_his = #{operateTimeForHis}
+            and operateTimeForHis = #{operateTimeForHis}
         </if>
     </sql>
 
@@ -102,8 +102,8 @@
 
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
-        insert into lawyer (id, law_firm, lawyer_license_number, specialization, is_valid_flag,
-                            operate_time_for_his)
+        insert into lawyer (id, lawFirm, lawyerLicenseNumber, specialization, isValidFlag,
+                            operateTimeForHis)
         values (#{id}, #{lawFirm}, #{lawyerLicenseNumber}, #{specialization}, #{isValidFlag},
                 now())
     </insert>
@@ -116,18 +116,18 @@
                 id,
             </if>
             <if test="lawFirm != null">
-                law_firm,
+                lawFirm,
             </if>
             <if test="lawyerLicenseNumber != null">
-                lawyer_license_number,
+                lawyerLicenseNumber,
             </if>
             <if test="specialization != null">
                 specialization,
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag,
+                isValidFlag,
             </if>
-            operate_time_for_his,
+            operateTimeForHis,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -155,18 +155,18 @@
         update lawyer
         <set>
             <if test="lawFirm != null">
-                law_firm=#{lawFirm},
+                lawFirm=#{lawFirm},
             </if>
             <if test="lawyerLicenseNumber != null">
-                lawyer_license_number=#{lawyerLicenseNumber},
+                lawyerLicenseNumber=#{lawyerLicenseNumber},
             </if>
             <if test="specialization != null">
                 specialization=#{specialization},
             </if>
             <if test="isValidFlag != null">
-                is_valid_flag=#{isValidFlag},
+                isValidFlag=#{isValidFlag},
             </if>
-            operate_time_for_his=now(),
+            operateTimeForHis=now(),
         </set>
         where id = #{id}
     </update>
@@ -174,11 +174,11 @@
     <!-- 完整更新一条记录 -->
     <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         update lawyer
-        set law_firm=#{lawFirm},
-            lawyer_license_number=#{lawyerLicenseNumber},
+        set lawFirm=#{lawFirm},
+            lawyerLicenseNumber=#{lawyerLicenseNumber},
             specialization=#{specialization},
-            is_valid_flag=#{isValidFlag},
-            operate_time_for_his=now()
+            isValidFlag=#{isValidFlag},
+            operateTimeForHis=now()
         where id = #{id}
     </update>
 
