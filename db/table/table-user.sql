@@ -69,4 +69,4 @@ CREATE TABLE Administrator
 CREATE INDEX idx_Administrator_id ON Administrator (id);
 CREATE INDEX idx_Administrator_parentAdminId ON Administrator (parentAdminId);
 CREATE INDEX idx_Administrator_insertTimeForHis ON Administrator (insertTimeForHis);
-CREATE INDEX idx_Administrator_operateTimeForHis ON Administrator (operateTimeForHis);    
+CREATE INDEX idx_Administrator_operateTimeForHis ON Administrator (operateTimeForHis);
