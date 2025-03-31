@@ -2,13 +2,13 @@ package com.lawfirm.lawfirmserver.lawyer.service;
 
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
-import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtieDao;
+import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
-import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtie;
+import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
-import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtieVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyRelationVo;
+import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class LawyerService {
     @Autowired
     LawyerSpecialtyRelationDao lawyerSpecialtyRelationDao;
     @Autowired
-    LawyerSpecialtieDao lawyerSpecialtieDao;
+    LawyerSpecialtyDao lawyerSpecialtyDao;
 
     /**
      * 更新律师信息及其关联的专长信息
@@ -106,17 +106,17 @@ public class LawyerService {
             for (LawyerSpecialtyRelation relation : lawyerSpecialtyRelationList) {
                 // 创建专长关联信息视图对象和专长信息视图对象
                 LawyerSpecialtyRelationVo relationVo = new LawyerSpecialtyRelationVo();
-                LawyerSpecialtieVo specialtyVo = new LawyerSpecialtieVo();
+                LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
 
                 // 查询专长详细信息
-                LawyerSpecialtie specialty = lawyerSpecialtieDao.selectByPrimaryKey(relation.getSpecialtyId());
+                LawyerSpecialty specialty = lawyerSpecialtyDao.selectByPrimaryKey(relation.getSpecialtyId());
 
                 // 复制信息到视图对象
                 CommonUtil.copyProperties(specialty, specialtyVo);
                 CommonUtil.copyProperties(relation, relationVo);
 
                 // 关联专长信息到专长关联信息视图对象
-                relationVo.setLawyerSpecialtieVo(specialtyVo);
+                relationVo.setLawyerSpecialtyVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
             }

@@ -33,5 +33,5 @@ public class LawyerSpecialtyRelationVo implements Serializable {
      */
     private Date operateTimeForHis;
 
-    private LawyerSpecialtieVo lawyerSpecialtieVo;
+    private LawyerSpecialtyVo lawyerSpecialtyVo;
 }

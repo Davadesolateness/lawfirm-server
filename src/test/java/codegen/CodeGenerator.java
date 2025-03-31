@@ -26,7 +26,7 @@ public class CodeGenerator {
 
         createBaseFiles("lawyer", "lawyer");
         createBaseFiles("lawyer", "lawyerspecialtyrelation");
-        createBaseFiles("lawyer", "lawyerspecialtie");
+        createBaseFiles("lawyer", "lawyerspecialty");
 
     }
 
