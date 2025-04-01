@@ -35,39 +35,58 @@ public class LawyerService {
      * @param lawyerVo 包含律师信息和专长关联信息的视图对象
      */
     public void updateLawyer(LawyerVo lawyerVo) {
-        // 创建 Lawyer 对象并复制视图对象的律师信息
+        // 创建 Lawyer 对象并复制律师信息
         Lawyer lawyer = new Lawyer();
         CommonUtil.copyProperties(lawyerVo, lawyer);
         // 根据主键选择性更新律师信息
         lawyerDao.updateSelectiveByPrimaryKey(lawyer);
 
-        // 检查专长关联信息列表是否存在且不为空
+        // 检查专长关联信息列表是否为空
         if (lawyerVo.getLawyerSpecialtyRelationVolist() != null && !lawyerVo.getLawyerSpecialtyRelationVolist().isEmpty()) {
-            // 复制视图对象的专长关联信息
-            List<LawyerSpecialtyRelation> lawyerSpecialtyRelationVoList = new ArrayList<>();
-
-            // 分别存储需插入、更新、删除的专长关联信息
+            // 存储需插入、更新、删除的专长关联信息
             List<LawyerSpecialtyRelation> insertList = new ArrayList<>();
             List<LawyerSpecialtyRelation> updateList = new ArrayList<>();
             List<Long> deleteList = new ArrayList<>();
 
-            // 存储从数据库查询的专长关联信息，键为 ID
+            // 存储从数据库查询的专长关联信息
             HashMap<Long, LawyerSpecialtyRelation> poIdMap = new HashMap<>();
+            HashMap<Long, LawyerSpecialtyRelation> poIdSaveMap = new HashMap<>();
+            HashMap<Long, LawyerSpecialtyRelation> pospecialtyIdMap = new HashMap<>();
+            // 查询该律师的所有专长关联信息
             List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
             for (LawyerSpecialtyRelation lsrPo : lawyerSpecialtyRelationList) {
                 poIdMap.put(lsrPo.getId(), lsrPo);
+                pospecialtyIdMap.put(lsrPo.getSpecialtyId(), lsrPo);
             }
 
-            // 遍历复制的专长关联信息，分类添加到对应列表
+            // 遍历专长关联信息，分类添加到对应列表
             for (LawyerSpecialtyRelationVo lsrVo : lawyerVo.getLawyerSpecialtyRelationVolist()) {
                 LawyerSpecialtyRelation lsr = new LawyerSpecialtyRelation();
-                CommonUtil.copyProperties(lsrVo, lsr);
                 if (lsrVo.getId() == null) {
-                    insertList.add(lsr);
+                    if (!pospecialtyIdMap.containsKey(lsrVo.getSpecialtyId())) {
+                        // 新增专长关联信息
+                        CommonUtil.copyProperties(lsrVo, lsr);
+                        insertList.add(lsr);
+                    } else {
+                        // 已有专长关联信息，更新
+                        CommonUtil.copyProperties(lsrVo, lsr);
+                        lsr.setId(pospecialtyIdMap.get(lsrVo.getSpecialtyId()).getId());
+                        poIdSaveMap.put(lsr.getId(), lsr);
+                        updateList.add(lsr);
+                    }
                 } else if (poIdMap.containsKey(lsrVo.getId())) {
+                    // 已有专长关联信息，更新
+                    CommonUtil.copyProperties(lsrVo, lsr);
+                    lsr.setId(poIdMap.get(lsrVo.getId()).getId());
+                    poIdSaveMap.put(lsr.getId(), lsr);
                     updateList.add(lsr);
-                } else {
-                    deleteList.add(lsrVo.getId());
+                }
+            }
+
+            // 找出需要删除的专长关联信息
+            for (LawyerSpecialtyRelation lsrPo : lawyerSpecialtyRelationList) {
+                if (!poIdSaveMap.containsKey(lsrPo.getId())) {
+                    deleteList.add(lsrPo.getId());
                 }
             }
 

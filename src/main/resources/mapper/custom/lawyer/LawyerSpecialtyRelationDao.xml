@@ -25,10 +25,11 @@
 
     <!-- 批量更新多条记录-->
     <update id="updateList" parameterType="java.util.List">
-        <foreach item="item" index="index" collection="list" separator=";">
-            update lawyer_specialty_relation
-            set lawyerId=#{item.lawyerId}, specialtyId=#{item.specialtyId},
-            operateTimeForHis=now()
+        <foreach collection="list" item="item" separator=";">
+            update lawyerspecialtyrelation
+            set lawyerId = #{item.lawyerId},
+            specialtyId = #{item.specialtyId},
+            operateTimeForHis = now()
             where id = #{item.id}
         </foreach>
     </update>
