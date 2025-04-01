@@ -1,0 +1,7 @@
+根据律师主键获取律师信息
+
+http://localhost:8080/lawyer/getLawyerInfo
+
+{
+        "id": 1
+}

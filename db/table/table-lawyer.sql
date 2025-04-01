@@ -4,9 +4,14 @@
 CREATE TABLE lawyer
 (
     id                  BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '律师唯一标识，自增主键',
+    lawyerName          VARCHAR(100) COMMENT '律师名称',
     lawFirm             VARCHAR(200) COMMENT '所在律师事务所名称',
     lawyerLicenseNumber VARCHAR(50) COMMENT '律师执业证号',
-    specialization      VARCHAR(255) COMMENT '专业领域',
+    provinceCode        VARCHAR(20) COMMENT '律师所属省级行政区编码',
+    cityCode            VARCHAR(20) COMMENT '律师所属地市级行政区编码',
+    districtCode        VARCHAR(20) COMMENT '律师所属县区编码',
+    lawyerIntroduction  TEXT COMMENT '律师简介',
+    lawyerDetails       TEXT COMMENT '律师详情',
     isValidFlag         CHAR(1)   DEFAULT '1' COMMENT '律师是否有效，1 表示有效，0 表示无效，默认为有效',
     insertTimeForHis    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '律师信息插入时间，默认为当前时间',
     operateTimeForHis   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '律师信息操作时间，自动更新'
