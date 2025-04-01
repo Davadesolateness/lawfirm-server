@@ -16,14 +16,29 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="lawyerName != null">
+                lawyerName,
+            </if>
             <if test="lawFirm != null">
                 lawFirm,
             </if>
             <if test="lawyerLicenseNumber != null">
                 lawyerLicenseNumber,
             </if>
-            <if test="specialization != null">
-                specialization,
+            <if test="provinceCode != null">
+                provinceCode,
+            </if>
+            <if test="cityCode != null">
+                cityCode,
+            </if>
+            <if test="districtCode != null">
+                districtCode,
+            </if>
+            <if test="lawyerIntroduction != null">
+                lawyerIntroduction,
+            </if>
+            <if test="lawyerDetails != null">
+                lawyerDetails,
             </if>
             <if test="isValidFlag != null">
                 isValidFlag,
@@ -35,14 +50,29 @@
             <if test="id != null">
                 #{id},
             </if>
+            <if test="lawyerName != null">
+                #{lawyerName},
+            </if>
             <if test="lawFirm != null">
                 #{lawFirm},
             </if>
             <if test="lawyerLicenseNumber != null">
                 #{lawyerLicenseNumber},
             </if>
-            <if test="specialization != null">
-                #{specialization},
+            <if test="provinceCode != null">
+                #{provinceCode},
+            </if>
+            <if test="cityCode != null">
+                #{cityCode},
+            </if>
+            <if test="districtCode != null">
+                #{districtCode},
+            </if>
+            <if test="lawyerIntroduction != null">
+                #{lawyerIntroduction},
+            </if>
+            <if test="lawyerDetails != null">
+                #{lawyerDetails},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},

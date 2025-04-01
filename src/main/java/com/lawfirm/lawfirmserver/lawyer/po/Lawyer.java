@@ -17,27 +17,47 @@ public class Lawyer implements Serializable {
      */
     private Long id;
     /**
-     * 对应字段：law_firm,备注：所在律师事务所名称
+     * 对应字段：lawyerName,备注：律师名称
+     */
+    private String lawyerName;
+    /**
+     * 对应字段：lawFirm,备注：所在律师事务所名称
      */
     private String lawFirm;
     /**
-     * 对应字段：lawyer_license_number,备注：律师执业证号，唯一
+     * 对应字段：lawyerLicenseNumber,备注：律师执业证号
      */
     private String lawyerLicenseNumber;
     /**
-     * 对应字段：specialization,备注：专业领域
+     * 对应字段：provinceCode,备注：律师所属省级行政区编码
      */
-    private String specialization;
+    private String provinceCode;
     /**
-     * 对应字段：is_valid_flag,备注：律师是否有效，1 表示有效，0 表示无效，默认为有效
+     * 对应字段：cityCode,备注：律师所属地市级行政区编码
+     */
+    private String cityCode;
+    /**
+     * 对应字段：districtCode,备注：律师所属县区编码
+     */
+    private String districtCode;
+    /**
+     * 对应字段：lawyerIntroduction,备注：律师简介
+     */
+    private String lawyerIntroduction;
+    /**
+     * 对应字段：lawyerDetails,备注：律师详情
+     */
+    private String lawyerDetails;
+    /**
+     * 对应字段：isValidFlag,备注：律师是否有效，1 表示有效，0 表示无效，默认为有效
      */
     private String isValidFlag;
     /**
-     * 对应字段：insert_time_for_his,备注：律师信息插入时间，默认为当前时间
+     * 对应字段：insertTimeForHis,备注：律师信息插入时间，默认为当前时间
      */
     private Date insertTimeForHis;
     /**
-     * 对应字段：operate_time_for_his,备注：律师信息操作时间，自动更新
+     * 对应字段：operateTimeForHis,备注：律师信息操作时间，自动更新
      */
     private Date operateTimeForHis;
 
