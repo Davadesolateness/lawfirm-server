@@ -12,6 +12,8 @@ CREATE TABLE lawyer
     districtCode        VARCHAR(20) COMMENT '律师所属县区编码',
     lawyerIntroduction  TEXT COMMENT '律师简介',
     lawyerDetails       TEXT COMMENT '律师详情',
+    workYears           INT COMMENT '律师职业年限',
+    rating              DECIMAL(3, 2) COMMENT '律师评分',
     isValidFlag         CHAR(1)   DEFAULT '1' COMMENT '律师是否有效，1 表示有效，0 表示无效，默认为有效',
     insertTimeForHis    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '律师信息插入时间，默认为当前时间',
     operateTimeForHis   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '律师信息操作时间，自动更新'
