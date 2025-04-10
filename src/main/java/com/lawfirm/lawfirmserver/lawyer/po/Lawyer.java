@@ -3,6 +3,7 @@ package com.lawfirm.lawfirmserver.lawyer.po;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -48,6 +49,14 @@ public class Lawyer implements Serializable {
      * 对应字段：lawyerDetails,备注：律师详情
      */
     private String lawyerDetails;
+    /**
+     * 对应字段：workYears,备注：律师职业年限
+     */
+    private Integer workYears;
+    /**
+     * 对应字段：rating,备注：律师评分
+     */
+    private BigDecimal rating;
     /**
      * 对应字段：isValidFlag,备注：律师是否有效，1 表示有效，0 表示无效，默认为有效
      */

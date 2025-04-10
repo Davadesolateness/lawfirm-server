@@ -4,12 +4,14 @@ import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
+import com.lawfirm.lawfirmserver.lawyer.dto.LawyerQueryDTO;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyRelationVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
+import ins.framework.mybatis.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,7 @@ public class LawyerService {
      *
      * @param lawyerVo 包含律师信息和专长关联信息的视图对象
      */
-    public void updateLawyer(LawyerVo lawyerVo) {
+    public LawyerVo updateLawyer(LawyerVo lawyerVo) {
         // 创建 Lawyer 对象并复制律师信息
         Lawyer lawyer = new Lawyer();
         CommonUtil.copyProperties(lawyerVo, lawyer);
@@ -101,6 +103,8 @@ public class LawyerService {
                 lawyerSpecialtyRelationDao.deleteBatchByPrimaryKeys(deleteList);
             }
         }
+
+        return lawyerVo;
     }
 
     /**
@@ -149,5 +153,14 @@ public class LawyerService {
         return lawyerVo;
     }
 
-
+    /**
+     * 多维度筛选查询律师
+     *
+     * @param queryDTO 查询条件
+     * @return 分页的律师信息列表
+     */
+    public Page<LawyerVo> searchLawyers(LawyerQueryDTO queryDTO) {
+        // 创建分页对象
+        return null;
+    }
 }

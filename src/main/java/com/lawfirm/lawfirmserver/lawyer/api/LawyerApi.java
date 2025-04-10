@@ -1,7 +1,9 @@
 package com.lawfirm.lawfirmserver.lawyer.api;
 
+import com.lawfirm.lawfirmserver.lawyer.dto.LawyerQueryDTO;
 import com.lawfirm.lawfirmserver.lawyer.service.LawyerService;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
+import ins.framework.mybatis.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +73,20 @@ public class LawyerApi {
         lawyerVo = lawyerService.getLawyer(lawyerVo.getId());
         // 将获取到律师信息的 lawyerVo 对象返回给客户端
         return lawyerVo;
+    }
+
+    /**
+     * 多维度筛选查询律师
+     * <p>
+     * 该方法支持按领域（刑事/民事）、地域、执业年限、评分等条件筛选律师。
+     * 查询结果支持分页返回。
+     *
+     * @param queryDTO 包含查询条件的DTO对象
+     * @return 分页的律师信息列表
+     */
+    @RequestMapping(value = "/searchLawyers", method = {RequestMethod.POST})
+    public Page<LawyerVo> searchLawyers(@RequestBody LawyerQueryDTO queryDTO) {
+        return lawyerService.searchLawyers(queryDTO);
     }
 
 }

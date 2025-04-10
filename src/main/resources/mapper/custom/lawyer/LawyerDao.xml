@@ -40,6 +40,12 @@
             <if test="lawyerDetails != null">
                 lawyerDetails,
             </if>
+            <if test="workYears != null">
+                workYears,
+            </if>
+            <if test="rating != null">
+                rating,
+            </if>
             <if test="isValidFlag != null">
                 isValidFlag,
             </if>
@@ -73,6 +79,12 @@
             </if>
             <if test="lawyerDetails != null">
                 #{lawyerDetails},
+            </if>
+            <if test="workYears != null">
+                #{workYears},
+            </if>
+            <if test="rating != null">
+                #{rating},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},
