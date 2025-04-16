@@ -84,4 +84,10 @@ public class LoginApi {
     public Result<LoginVo> refreshToken(@RequestParam String refreshToken) {
         return loginService.refreshToken(refreshToken);
     }
+
+    @RequestMapping("/refreshToken1")
+    public void test() {
+        Result aaa =  loginService.refreshToken("refreshToken");
+        return;
+    }
 }
