@@ -4,14 +4,17 @@
 CREATE TABLE User
 (
     id                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '用户唯一标识，自增主键',
+    openId             VARCHAR(100) COMMENT '开放平台的唯一标识',
     username           VARCHAR(50)  NOT NULL UNIQUE COMMENT '用户名，唯一且不能为空',
     password           VARCHAR(255) NOT NULL COMMENT '用户密码，需加密存储',
     passwordUpdateTime TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '用户密码修改时间，初始为当前时间',
+    nickName           VARCHAR(50) COMMENT '用户昵称',
     email              VARCHAR(100) COMMENT '用户邮箱',
     phoneNumber        VARCHAR(20) UNIQUE COMMENT '用户电话号码，唯一',
     userType           VARCHAR(50)  NOT NULL COMMENT '用户类型，取值可为：corporate（法人客户）、individual（个人客户）、lawyer（律师）、admin（管理员）',
     sourceType         VARCHAR(50) DEFAULT 'manual_register' COMMENT '数据来源类型，取值可为：database_insert（数据库插入）、manual_register（人工系统注册），默认是人工系统注册',
     relatedEntityId    BIGINT COMMENT '关联的实体 ID，根据 userType 确定关联的表：corporate 对应 CorporateClient 表，individual 对应 IndividualClient 表，lawyer 对应 Lawyer 表，admin 对应 Administrator 表',
+    createTime         TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间，默认为当前时间',
     isValidFlag        CHAR(1)     DEFAULT '1' COMMENT '用户是否有效，1 表示有效，0 表示无效，默认为有效',
     insertTimeForHis   TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '用户信息插入时间，默认为当前时间',
     operateTimeForHis  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户信息操作时间，自动更新'
@@ -19,10 +22,11 @@ CREATE TABLE User
 CREATE INDEX idx_User_relatedEntityId ON User (relatedEntityId);
 CREATE INDEX idx_User_insertTimeForHis ON User (insertTimeForHis);
 CREATE INDEX idx_User_operateTimeForHis ON User (operateTimeForHis);
-
+CREATE INDEX idx_User_createTime ON User (createTime);
 -- 若需删除 CorporateClient 表，可取消此注释
 -- DROP TABLE IF EXISTS CorporateClient;
 -- 法人客户表，存储法人客户的额外信息
+
 CREATE TABLE CorporateClient
 (
     id                BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '法人客户唯一标识，自增主键',
