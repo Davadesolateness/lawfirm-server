@@ -15,4 +15,5 @@ public interface UserDao extends MybatisBaseDao<User, Long> {
 
     void insertSelectiveAndBackId(User user);
 
+    User selectByPhone(String phoneNumber);
 }

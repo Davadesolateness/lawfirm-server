@@ -14,6 +14,14 @@
         where username = #{username}
     </select>
 
+    <!-- 按用户名查询一条记录 -->
+    <select id="selectByPhone" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where phoneNumber = #{phone}
+    </select>
+
     <!-- 插入一条记录(为空的字段不操作) -->
     <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.User">
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
