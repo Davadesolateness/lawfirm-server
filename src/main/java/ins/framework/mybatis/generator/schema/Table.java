@@ -20,28 +20,28 @@ public class Table {
         return this.name;
     }
 
-    public String getComment() {
-        return this.comment;
-    }
-
-    public List<Column> getColumns() {
-        return this.columns;
-    }
-
-    public List<PrimaryKey> getPrimaryKeys() {
-        return this.primaryKeys;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getComment() {
+        return this.comment;
     }
 
     public void setComment(String comment) {
         this.comment = comment;
     }
 
+    public List<Column> getColumns() {
+        return this.columns;
+    }
+
     public void setColumns(List<Column> columns) {
         this.columns = columns;
+    }
+
+    public List<PrimaryKey> getPrimaryKeys() {
+        return this.primaryKeys;
     }
 
     public void setPrimaryKeys(List<PrimaryKey> primaryKeys) {

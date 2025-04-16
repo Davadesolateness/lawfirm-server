@@ -5,18 +5,13 @@
 
 package ins.framework.mybatis.generator;
 
-import ins.framework.mybatis.generator.executer.DaoExecuter;
-import ins.framework.mybatis.generator.executer.MyBatisBaseXmlExecuter;
-import ins.framework.mybatis.generator.executer.MyBatisCustomXmlExecuter;
-import ins.framework.mybatis.generator.executer.PoExecuter;
-import ins.framework.mybatis.generator.executer.VoExecuter;
+import ins.framework.mybatis.generator.executer.*;
 import ins.framework.mybatis.generator.schema.Table;
 import ins.framework.mybatis.generator.util.GeneratorUtils;
-
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class Generator extends BaseGenerator {
     private static final Logger log = LoggerFactory.getLogger(Generator.class);

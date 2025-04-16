@@ -20,44 +20,44 @@ public class Column {
         return this.name;
     }
 
-    public String getType() {
-        return this.type;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
-    public String getDefaultValue() {
-        return this.defaultValue;
-    }
-
-    public String getComment() {
-        return this.comment;
-    }
-
-    public boolean isNullable() {
-        return this.nullable;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
+    public int getSize() {
+        return this.size;
+    }
+
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public String getDefaultValue() {
+        return this.defaultValue;
     }
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
+    public String getComment() {
+        return this.comment;
+    }
+
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isNullable() {
+        return this.nullable;
     }
 
     public void setNullable(boolean nullable) {

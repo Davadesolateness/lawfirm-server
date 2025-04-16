@@ -16,12 +16,12 @@ public class Database {
         return this.productName;
     }
 
-    public String getProductVersion() {
-        return this.productVersion;
-    }
-
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProductVersion() {
+        return this.productVersion;
     }
 
     public void setProductVersion(String productVersion) {

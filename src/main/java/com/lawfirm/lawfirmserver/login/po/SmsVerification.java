@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @description: 短信验证码登录po
  * @author dongzhibo
- * @date 2025/4/15 21:04
  * @version 1.0
+ * @description: 短信验证码登录po
+ * @date 2025/4/15 21:04
  */
 @Data
 public class SmsVerification {

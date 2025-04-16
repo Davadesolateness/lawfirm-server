@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Options;
  */
 @Mapper
 public interface LoginLogMapper {
-    
+
     /**
      * 插入登录日志
      *

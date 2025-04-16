@@ -1,15 +1,15 @@
 package com.lawfirm.lawfirmserver.common;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * @description: 统一返回结果
  * @author dongzhibo
- * @date 2025/4/16 20:09
  * @version 1.0
+ * @description: 统一返回结果
+ * @date 2025/4/16 20:09
  */
 @Data
 @NoArgsConstructor

@@ -8,15 +8,9 @@ package ins.framework.mybatis.generator;
 import java.util.Arrays;
 
 public class GenConfig {
-    private String basePackage;
     protected String saveDir;
     protected String saveDirForVo;
     protected String saveDirForXml;
-    private GenType[] genTypes;
-    private String insertTimeForHisName;
-    private String operateTimeForHisName;
-    private String operateTimeForHisFunc;
-    private String versionName;
     protected String[] ignoreTablePrefixs = null;
     protected boolean keepPrefixForPO = true;
     protected boolean deletedFlagMode = false;
@@ -31,6 +25,12 @@ public class GenConfig {
     protected String dbPassword;
     protected String dbUrl;
     protected String dbSchema;
+    private String basePackage;
+    private GenType[] genTypes;
+    private String insertTimeForHisName;
+    private String operateTimeForHisName;
+    private String operateTimeForHisFunc;
+    private String versionName;
 
     public GenConfig() {
     }
@@ -39,180 +39,180 @@ public class GenConfig {
         return this.basePackage;
     }
 
-    public String getSaveDir() {
-        return this.saveDir;
-    }
-
-    public String getSaveDirForVo() {
-        return this.saveDirForVo;
-    }
-
-    public String getSaveDirForXml() {
-        return this.saveDirForXml;
-    }
-
-    public GenType[] getGenTypes() {
-        return this.genTypes;
-    }
-
-    public String getInsertTimeForHisName() {
-        return this.insertTimeForHisName;
-    }
-
-    public String getOperateTimeForHisName() {
-        return this.operateTimeForHisName;
-    }
-
-    public String getOperateTimeForHisFunc() {
-        return this.operateTimeForHisFunc;
-    }
-
-    public String getVersionName() {
-        return this.versionName;
-    }
-
-    public String[] getIgnoreTablePrefixs() {
-        return this.ignoreTablePrefixs;
-    }
-
-    public boolean isKeepPrefixForPO() {
-        return this.keepPrefixForPO;
-    }
-
-    public boolean isDeletedFlagMode() {
-        return this.deletedFlagMode;
-    }
-
-    public boolean isIgnoreUnderline() {
-        return this.ignoreUnderline;
-    }
-
-    public String[] getTableNames() {
-        return this.tableNames;
-    }
-
-    public boolean isDefaultCache() {
-        return this.defaultCache;
-    }
-
-    public boolean isFileOverride() {
-        return this.fileOverride;
-    }
-
-    public boolean isDbPrefix() {
-        return this.dbPrefix;
-    }
-
-    public boolean isDbColumnUnderline() {
-        return this.dbColumnUnderline;
-    }
-
-    public String getDbDriverName() {
-        return this.dbDriverName;
-    }
-
-    public String getDbUser() {
-        return this.dbUser;
-    }
-
-    public String getDbPassword() {
-        return this.dbPassword;
-    }
-
-    public String getDbUrl() {
-        return this.dbUrl;
-    }
-
-    public String getDbSchema() {
-        return this.dbSchema;
-    }
-
     public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;
+    }
+
+    public String getSaveDir() {
+        return this.saveDir;
     }
 
     public void setSaveDir(String saveDir) {
         this.saveDir = saveDir;
     }
 
+    public String getSaveDirForVo() {
+        return this.saveDirForVo;
+    }
+
     public void setSaveDirForVo(String saveDirForVo) {
         this.saveDirForVo = saveDirForVo;
+    }
+
+    public String getSaveDirForXml() {
+        return this.saveDirForXml;
     }
 
     public void setSaveDirForXml(String saveDirForXml) {
         this.saveDirForXml = saveDirForXml;
     }
 
+    public GenType[] getGenTypes() {
+        return this.genTypes;
+    }
+
     public void setGenTypes(GenType[] genTypes) {
         this.genTypes = genTypes;
+    }
+
+    public String getInsertTimeForHisName() {
+        return this.insertTimeForHisName;
     }
 
     public void setInsertTimeForHisName(String insertTimeForHisName) {
         this.insertTimeForHisName = insertTimeForHisName;
     }
 
+    public String getOperateTimeForHisName() {
+        return this.operateTimeForHisName;
+    }
+
     public void setOperateTimeForHisName(String operateTimeForHisName) {
         this.operateTimeForHisName = operateTimeForHisName;
+    }
+
+    public String getOperateTimeForHisFunc() {
+        return this.operateTimeForHisFunc;
     }
 
     public void setOperateTimeForHisFunc(String operateTimeForHisFunc) {
         this.operateTimeForHisFunc = operateTimeForHisFunc;
     }
 
+    public String getVersionName() {
+        return this.versionName;
+    }
+
     public void setVersionName(String versionName) {
         this.versionName = versionName;
+    }
+
+    public String[] getIgnoreTablePrefixs() {
+        return this.ignoreTablePrefixs;
     }
 
     public void setIgnoreTablePrefixs(String[] ignoreTablePrefixs) {
         this.ignoreTablePrefixs = ignoreTablePrefixs;
     }
 
+    public boolean isKeepPrefixForPO() {
+        return this.keepPrefixForPO;
+    }
+
     public void setKeepPrefixForPO(boolean keepPrefixForPO) {
         this.keepPrefixForPO = keepPrefixForPO;
+    }
+
+    public boolean isDeletedFlagMode() {
+        return this.deletedFlagMode;
     }
 
     public void setDeletedFlagMode(boolean deletedFlagMode) {
         this.deletedFlagMode = deletedFlagMode;
     }
 
+    public boolean isIgnoreUnderline() {
+        return this.ignoreUnderline;
+    }
+
     public void setIgnoreUnderline(boolean ignoreUnderline) {
         this.ignoreUnderline = ignoreUnderline;
+    }
+
+    public String[] getTableNames() {
+        return this.tableNames;
     }
 
     public void setTableNames(String[] tableNames) {
         this.tableNames = tableNames;
     }
 
+    public boolean isDefaultCache() {
+        return this.defaultCache;
+    }
+
     public void setDefaultCache(boolean defaultCache) {
         this.defaultCache = defaultCache;
+    }
+
+    public boolean isFileOverride() {
+        return this.fileOverride;
     }
 
     public void setFileOverride(boolean fileOverride) {
         this.fileOverride = fileOverride;
     }
 
+    public boolean isDbPrefix() {
+        return this.dbPrefix;
+    }
+
     public void setDbPrefix(boolean dbPrefix) {
         this.dbPrefix = dbPrefix;
+    }
+
+    public boolean isDbColumnUnderline() {
+        return this.dbColumnUnderline;
     }
 
     public void setDbColumnUnderline(boolean dbColumnUnderline) {
         this.dbColumnUnderline = dbColumnUnderline;
     }
 
+    public String getDbDriverName() {
+        return this.dbDriverName;
+    }
+
     public void setDbDriverName(String dbDriverName) {
         this.dbDriverName = dbDriverName;
+    }
+
+    public String getDbUser() {
+        return this.dbUser;
     }
 
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
 
+    public String getDbPassword() {
+        return this.dbPassword;
+    }
+
     public void setDbPassword(String dbPassword) {
         this.dbPassword = dbPassword;
     }
 
+    public String getDbUrl() {
+        return this.dbUrl;
+    }
+
     public void setDbUrl(String dbUrl) {
         this.dbUrl = dbUrl;
+    }
+
+    public String getDbSchema() {
+        return this.dbSchema;
     }
 
     public void setDbSchema(String dbSchema) {

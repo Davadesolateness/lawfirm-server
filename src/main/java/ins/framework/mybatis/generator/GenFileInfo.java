@@ -20,20 +20,20 @@ public class GenFileInfo {
         return this.name;
     }
 
-    public String getPackageName() {
-        return this.packageName;
-    }
-
-    public String getPath() {
-        return this.path;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getPackageName() {
+        return this.packageName;
+    }
+
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getPath() {
+        return this.path;
     }
 
     public void setPath(String path) {

@@ -8,6 +8,9 @@ package ins.framework.mybatis.generator;
 import ins.framework.mybatis.generator.schema.Database;
 import ins.framework.mybatis.generator.schema.Table;
 import ins.framework.mybatis.generator.util.WordFileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,30 +21,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 abstract class BaseGenerator {
-    private static final Logger log = LoggerFactory.getLogger(BaseGenerator.class);
     protected static final String JAVA_SUFFIX = ".java";
     protected static final String XML_SUFFIX = ".xml";
+    private static final Logger log = LoggerFactory.getLogger(BaseGenerator.class);
     protected GenConfig genConfig;
     protected List<GenParam> paramList;
     protected Database database;
     protected boolean fileOvervide = false;
 
     BaseGenerator() {
-    }
-
-    protected abstract void run(Table var1, String var2) throws IOException;
-
-    public void setGenConfig(GenConfig genConfig) {
-        this.genConfig = genConfig;
-    }
-
-    public void setParamList(List<GenParam> paramList) {
-        this.paramList = paramList;
     }
 
     protected static String getPathFromPackageName(String packageName) {
@@ -55,6 +44,16 @@ abstract class BaseGenerator {
         }
 
         return folder.getPath();
+    }
+
+    protected abstract void run(Table var1, String var2) throws IOException;
+
+    public void setGenConfig(GenConfig genConfig) {
+        this.genConfig = genConfig;
+    }
+
+    public void setParamList(List<GenParam> paramList) {
+        this.paramList = paramList;
     }
 
     protected boolean containsGenType(GenType genType) {

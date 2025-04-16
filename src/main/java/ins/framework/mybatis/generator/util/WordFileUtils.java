@@ -5,6 +5,10 @@
 
 package ins.framework.mybatis.generator.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -13,16 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class WordFileUtils {
-    private static final Logger log = LoggerFactory.getLogger(WordFileUtils.class);
     public static final String WORD_ROOT_FILE = "wordroot.properties";
     public static final String WORD_ROOT_TABLE_FILE = "wordroot-table.properties";
-    private static Map<String, Word> wordMap = new HashMap();
+    private static final Logger log = LoggerFactory.getLogger(WordFileUtils.class);
     public static boolean hasShowHelp = false;
+    private static Map<String, Word> wordMap = new HashMap();
 
     private WordFileUtils() {
     }

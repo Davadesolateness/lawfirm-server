@@ -8,15 +8,10 @@ package ins.framework.mybatis.generator.executer;
 import ins.framework.mybatis.generator.GenConfig;
 import ins.framework.mybatis.generator.GenFileInfo;
 import ins.framework.mybatis.generator.schema.Table;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
 
 public class MyBatisCustomXmlExecuter extends BaseExecuter {
     private static final Logger log = LoggerFactory.getLogger(MyBatisCustomXmlExecuter.class);

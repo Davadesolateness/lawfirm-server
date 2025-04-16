@@ -2,17 +2,17 @@ package com.lawfirm.lawfirmserver.login.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
 /**
- * @description: 登录返回信息
  * @author dongzhibo
- * @date 2025/4/15 21:10
  * @version 1.0
+ * @description: 登录返回信息
+ * @date 2025/4/15 21:10
  */
 @Data
 @NoArgsConstructor
@@ -57,7 +57,7 @@ public class LoginVo implements Serializable {
 
     @ApiModelProperty("律师专长")
     private String specialty;
-    
+
     /**
      * 简化构造方法，用于登录返回
      */

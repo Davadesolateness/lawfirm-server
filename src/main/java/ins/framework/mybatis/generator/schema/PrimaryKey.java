@@ -17,20 +17,20 @@ public class PrimaryKey {
         return this.pkName;
     }
 
-    public int getKeySeq() {
-        return this.keySeq;
-    }
-
-    public String getColumnName() {
-        return this.columnName;
-    }
-
     public void setPkName(String pkName) {
         this.pkName = pkName;
     }
 
+    public int getKeySeq() {
+        return this.keySeq;
+    }
+
     public void setKeySeq(int keySeq) {
         this.keySeq = keySeq;
+    }
+
+    public String getColumnName() {
+        return this.columnName;
     }
 
     public void setColumnName(String columnName) {

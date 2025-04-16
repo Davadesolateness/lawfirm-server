@@ -51,7 +51,7 @@ spring:
   transaction:
     default-timeout: 30s
     rollback-on-commit-failure: true
-    
+
   # Jackson配置
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

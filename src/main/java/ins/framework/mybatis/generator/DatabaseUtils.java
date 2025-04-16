@@ -9,6 +9,8 @@ import ins.framework.mybatis.generator.schema.Column;
 import ins.framework.mybatis.generator.schema.Database;
 import ins.framework.mybatis.generator.schema.PrimaryKey;
 import ins.framework.mybatis.generator.schema.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -19,14 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 class DatabaseUtils {
     private static final Logger log = LoggerFactory.getLogger(DatabaseUtils.class);
+    Database database = null;
     private Connection conn = null;
     private String schema;
-    Database database = null;
 
     private DatabaseUtils() {
     }

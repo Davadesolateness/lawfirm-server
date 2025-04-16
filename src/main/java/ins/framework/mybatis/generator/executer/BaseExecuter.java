@@ -23,8 +23,6 @@ public abstract class BaseExecuter {
         this.genConfig = genConfig;
     }
 
-    public abstract void build(Table var1) throws IOException;
-
     protected static void buildClassComment(BufferedWriter bw, String prefix, String text) throws IOException {
         bw.newLine();
         bw.write("/**");
@@ -55,6 +53,8 @@ public abstract class BaseExecuter {
     protected static String getObjectName(String field) {
         return WordFileUtils.getBeautyObjectName(field);
     }
+
+    public abstract void build(Table var1) throws IOException;
 
     public String getName(String name) {
         String result = name;

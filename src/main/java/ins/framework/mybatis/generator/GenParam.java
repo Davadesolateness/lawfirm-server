@@ -20,12 +20,12 @@ public class GenParam {
         return this.module;
     }
 
-    public String[] getTables() {
-        return this.tables;
-    }
-
     public void setModule(String module) {
         this.module = module;
+    }
+
+    public String[] getTables() {
+        return this.tables;
     }
 
     public void setTables(String[] tables) {

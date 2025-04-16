@@ -1,9 +1,7 @@
 package com.lawfirm.lawfirmserver.lawyer.api;
 
-import com.lawfirm.lawfirmserver.lawyer.dto.LawyerQueryDTO;
 import com.lawfirm.lawfirmserver.lawyer.service.LawyerService;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
-import ins.framework.mybatis.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -10,17 +10,12 @@ import ins.framework.mybatis.generator.GenFileInfo;
 import ins.framework.mybatis.generator.schema.Column;
 import ins.framework.mybatis.generator.schema.PrimaryKey;
 import ins.framework.mybatis.generator.schema.Table;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.List;
 
 public class MyBatisBaseXmlExecuter extends BaseExecuter {
     private static final Logger log = LoggerFactory.getLogger(MyBatisBaseXmlExecuter.class);
