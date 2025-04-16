@@ -4,15 +4,19 @@ import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
+import com.lawfirm.lawfirmserver.lawyer.dto.LawyerQueryDTO;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyRelationVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
+import ins.framework.mybatis.Page;
+import ins.framework.mybatis.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +38,7 @@ public class LawyerService {
      *
      * @param lawyerVo 包含律师信息和专长关联信息的视图对象
      */
-    public void updateLawyer(LawyerVo lawyerVo) {
+    public LawyerVo updateLawyer(LawyerVo lawyerVo) {
         // 创建 Lawyer 对象并复制律师信息
         Lawyer lawyer = new Lawyer();
         CommonUtil.copyProperties(lawyerVo, lawyer);
@@ -101,6 +105,8 @@ public class LawyerService {
                 lawyerSpecialtyRelationDao.deleteBatchByPrimaryKeys(deleteList);
             }
         }
+
+        return lawyerVo;
     }
 
     /**
@@ -149,5 +155,54 @@ public class LawyerService {
         return lawyerVo;
     }
 
-
+//    /**
+//     * 多维度筛选查询律师
+//     *
+//     * @param queryDTO 查询条件
+//     * @return 分页的律师信息列表
+//     */
+//    public Page<LawyerVo> searchLawyers(LawyerQueryDTO queryDTO) {
+//        // 创建查询条件对象
+//        Lawyer queryCondition = new Lawyer();
+//
+//        // 设置查询条件
+//        if (StringUtils.hasText(queryDTO.getField())) {
+//            queryCondition.setField(queryDTO.getField());
+//        }
+//        if (StringUtils.hasText(queryDTO.getRegion())) {
+//            queryCondition.setRegion(queryDTO.getRegion());
+//        }
+//
+//        // 创建分页参数对象
+//        PageParam pageParam = new PageParam();
+//        pageParam.setPageNo(queryDTO.getPageNum());
+//        pageParam.setPageSize(queryDTO.getPageSize());
+//
+//        // 添加排序条件
+//        if (queryDTO.getMinExperienceYears() != null || queryDTO.getMaxExperienceYears() != null) {
+//            pageParam.addCondition("experienceYears >= ", queryDTO.getMinExperienceYears());
+//            pageParam.addCondition("experienceYears <= ", queryDTO.getMaxExperienceYears());
+//        }
+//
+//        if (queryDTO.getMinRating() != null || queryDTO.getMaxRating() != null) {
+//            pageParam.addCondition("rating >= ", queryDTO.getMinRating());
+//            pageParam.addCondition("rating <= ", queryDTO.getMaxRating());
+//        }
+//
+//        // 设置默认排序
+//        pageParam.setOrderBy("rating DESC");
+//
+//        // 执行分页查询
+//        Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
+//
+//        // 转换结果为VO对象
+//        Page<LawyerVo> resultPage = new Page<>(lawyerPage.getPaginator());
+//        for (Lawyer lawyer : lawyerPage) {
+//            LawyerVo vo = new LawyerVo();
+//            CommonUtil.copyProperties(lawyer, vo);
+//            resultPage.add(vo);
+//        }
+//
+//        return resultPage;
+//    }
 }

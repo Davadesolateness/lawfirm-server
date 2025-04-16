@@ -10,14 +10,16 @@
     <!-- 通用查询结果对象-->
     <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         <id column="id" property="id"/>
-		<result column="lawyerName" property="lawyerName"/>
+        <result column="lawyerName" property="lawyerName"/>
         <result column="lawFirm" property="lawFirm"/>
         <result column="lawyerLicenseNumber" property="lawyerLicenseNumber"/>
-		<result column="provinceCode" property="provinceCode"/>
-		<result column="cityCode" property="cityCode"/>
-		<result column="districtCode" property="districtCode"/>
-		<result column="lawyerIntroduction" property="lawyerIntroduction"/>
-		<result column="lawyerDetails" property="lawyerDetails"/>
+        <result column="provinceCode" property="provinceCode"/>
+        <result column="cityCode" property="cityCode"/>
+        <result column="districtCode" property="districtCode"/>
+        <result column="lawyerIntroduction" property="lawyerIntroduction"/>
+        <result column="lawyerDetails" property="lawyerDetails"/>
+        <result column="workYears" property="workYears"/>
+        <result column="rating" property="rating"/>
         <result column="isValidFlag" property="isValidFlag"/>
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
@@ -26,9 +28,9 @@
     <!-- 通用查询结果列-->
     <sql id="Base_Column_List">
         id
-		, lawyerName, lawFirm, lawyerLicenseNumber, provinceCode,
-		 cityCode, districtCode, lawyerIntroduction, lawyerDetails, isValidFlag,
-		 insertTimeForHis, operateTimeForHis
+        , lawyerName, lawFirm, lawyerLicenseNumber, provinceCode,
+		 cityCode, districtCode, lawyerIntroduction, lawyerDetails, workYears,
+		 rating, isValidFlag, insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 按对象查询记录的WHERE部分 -->
@@ -36,29 +38,35 @@
         <if test="id != null">
             and id = #{id}
         </if>
-		<if test="lawyerName != null">
-			and lawyerName = #{lawyerName}
-		</if>
+        <if test="lawyerName != null">
+            and lawyerName = #{lawyerName}
+        </if>
         <if test="lawFirm != null">
             and lawFirm = #{lawFirm}
         </if>
         <if test="lawyerLicenseNumber != null">
             and lawyerLicenseNumber = #{lawyerLicenseNumber}
         </if>
-		<if test="provinceCode != null">
-			and provinceCode = #{provinceCode}
-		</if>
-		<if test="cityCode != null">
-			and cityCode = #{cityCode}
-		</if>
-		<if test="districtCode != null">
-			and districtCode = #{districtCode}
-		</if>
-		<if test="lawyerIntroduction != null">
-			and lawyerIntroduction = #{lawyerIntroduction}
-		</if>
-		<if test="lawyerDetails != null">
-			and lawyerDetails = #{lawyerDetails}
+        <if test="provinceCode != null">
+            and provinceCode = #{provinceCode}
+        </if>
+        <if test="cityCode != null">
+            and cityCode = #{cityCode}
+        </if>
+        <if test="districtCode != null">
+            and districtCode = #{districtCode}
+        </if>
+        <if test="lawyerIntroduction != null">
+            and lawyerIntroduction = #{lawyerIntroduction}
+        </if>
+        <if test="lawyerDetails != null">
+            and lawyerDetails = #{lawyerDetails}
+        </if>
+        <if test="workYears != null">
+            and workYears = #{workYears}
+        </if>
+        <if test="rating != null">
+            and rating = #{rating}
         </if>
         <if test="isValidFlag != null">
             and isValidFlag = #{isValidFlag}
@@ -123,12 +131,12 @@
 
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
-		insert into lawyer (id, lawyerName, lawFirm, lawyerLicenseNumber, provinceCode,
-							cityCode, districtCode, lawyerIntroduction, lawyerDetails, isValidFlag,
-                            operateTimeForHis)
-		values (#{id}, #{lawyerName}, #{lawFirm}, #{lawyerLicenseNumber}, #{provinceCode},
-				#{cityCode}, #{districtCode}, #{lawyerIntroduction}, #{lawyerDetails}, #{isValidFlag},
-                now())
+        insert into lawyer (id, lawyerName, lawFirm, lawyerLicenseNumber, provinceCode,
+                            cityCode, districtCode, lawyerIntroduction, lawyerDetails, workYears,
+                            rating, isValidFlag, operateTimeForHis)
+        values (#{id}, #{lawyerName}, #{lawFirm}, #{lawyerLicenseNumber}, #{provinceCode},
+                #{cityCode}, #{districtCode}, #{lawyerIntroduction}, #{lawyerDetails}, #{workYears},
+                #{rating}, #{isValidFlag}, now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
@@ -137,9 +145,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
-			</if>
-			<if test="lawyerName != null">
-				lawyerName,
+            </if>
+            <if test="lawyerName != null">
+                lawyerName,
             </if>
             <if test="lawFirm != null">
                 lawFirm,
@@ -147,20 +155,26 @@
             <if test="lawyerLicenseNumber != null">
                 lawyerLicenseNumber,
             </if>
-			<if test="provinceCode != null">
-				provinceCode,
-			</if>
-			<if test="cityCode != null">
-				cityCode,
-			</if>
-			<if test="districtCode != null">
-				districtCode,
-			</if>
-			<if test="lawyerIntroduction != null">
-				lawyerIntroduction,
-			</if>
-			<if test="lawyerDetails != null">
-				lawyerDetails,
+            <if test="provinceCode != null">
+                provinceCode,
+            </if>
+            <if test="cityCode != null">
+                cityCode,
+            </if>
+            <if test="districtCode != null">
+                districtCode,
+            </if>
+            <if test="lawyerIntroduction != null">
+                lawyerIntroduction,
+            </if>
+            <if test="lawyerDetails != null">
+                lawyerDetails,
+            </if>
+            <if test="workYears != null">
+                workYears,
+            </if>
+            <if test="rating != null">
+                rating,
             </if>
             <if test="isValidFlag != null">
                 isValidFlag,
@@ -171,9 +185,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id},
-			</if>
-			<if test="lawyerName != null">
-				#{lawyerName},
+            </if>
+            <if test="lawyerName != null">
+                #{lawyerName},
             </if>
             <if test="lawFirm != null">
                 #{lawFirm},
@@ -181,20 +195,26 @@
             <if test="lawyerLicenseNumber != null">
                 #{lawyerLicenseNumber},
             </if>
-			<if test="provinceCode != null">
-				#{provinceCode},
-			</if>
-			<if test="cityCode != null">
-				#{cityCode},
-			</if>
-			<if test="districtCode != null">
-				#{districtCode},
-			</if>
-			<if test="lawyerIntroduction != null">
-				#{lawyerIntroduction},
-			</if>
-			<if test="lawyerDetails != null">
-				#{lawyerDetails},
+            <if test="provinceCode != null">
+                #{provinceCode},
+            </if>
+            <if test="cityCode != null">
+                #{cityCode},
+            </if>
+            <if test="districtCode != null">
+                #{districtCode},
+            </if>
+            <if test="lawyerIntroduction != null">
+                #{lawyerIntroduction},
+            </if>
+            <if test="lawyerDetails != null">
+                #{lawyerDetails},
+            </if>
+            <if test="workYears != null">
+                #{workYears},
+            </if>
+            <if test="rating != null">
+                #{rating},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},
@@ -207,29 +227,35 @@
     <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         update lawyer
         <set>
-			<if test="lawyerName != null">
-				lawyerName=#{lawyerName},
-			</if>
+            <if test="lawyerName != null">
+                lawyerName=#{lawyerName},
+            </if>
             <if test="lawFirm != null">
                 lawFirm=#{lawFirm},
             </if>
             <if test="lawyerLicenseNumber != null">
                 lawyerLicenseNumber=#{lawyerLicenseNumber},
             </if>
-			<if test="provinceCode != null">
-				provinceCode=#{provinceCode},
-			</if>
-			<if test="cityCode != null">
-				cityCode=#{cityCode},
-			</if>
-			<if test="districtCode != null">
-				districtCode=#{districtCode},
-			</if>
-			<if test="lawyerIntroduction != null">
-				lawyerIntroduction=#{lawyerIntroduction},
-			</if>
-			<if test="lawyerDetails != null">
-				lawyerDetails=#{lawyerDetails},
+            <if test="provinceCode != null">
+                provinceCode=#{provinceCode},
+            </if>
+            <if test="cityCode != null">
+                cityCode=#{cityCode},
+            </if>
+            <if test="districtCode != null">
+                districtCode=#{districtCode},
+            </if>
+            <if test="lawyerIntroduction != null">
+                lawyerIntroduction=#{lawyerIntroduction},
+            </if>
+            <if test="lawyerDetails != null">
+                lawyerDetails=#{lawyerDetails},
+            </if>
+            <if test="workYears != null">
+                workYears=#{workYears},
+            </if>
+            <if test="rating != null">
+                rating=#{rating},
             </if>
             <if test="isValidFlag != null">
                 isValidFlag=#{isValidFlag},
@@ -242,14 +268,16 @@
     <!-- 完整更新一条记录 -->
     <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.Lawyer">
         update lawyer
-		set lawyerName=#{lawyerName},
-			lawFirm=#{lawFirm},
+        set lawyerName=#{lawyerName},
+            lawFirm=#{lawFirm},
             lawyerLicenseNumber=#{lawyerLicenseNumber},
-			provinceCode=#{provinceCode},
-			cityCode=#{cityCode},
-			districtCode=#{districtCode},
-			lawyerIntroduction=#{lawyerIntroduction},
-			lawyerDetails=#{lawyerDetails},
+            provinceCode=#{provinceCode},
+            cityCode=#{cityCode},
+            districtCode=#{districtCode},
+            lawyerIntroduction=#{lawyerIntroduction},
+            lawyerDetails=#{lawyerDetails},
+            workYears=#{workYears},
+            rating=#{rating},
             isValidFlag=#{isValidFlag},
             operateTimeForHis=now()
         where id = #{id}
