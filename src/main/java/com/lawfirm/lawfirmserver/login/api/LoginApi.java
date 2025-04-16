@@ -1,70 +1,87 @@
 package com.lawfirm.lawfirmserver.login.api;
 
-
+import com.lawfirm.lawfirmserver.common.Result;
+import com.lawfirm.lawfirmserver.login.dto.LoginByCodeDTO;
+import com.lawfirm.lawfirmserver.login.dto.LoginByPasswordDTO;
+import com.lawfirm.lawfirmserver.login.dto.RegisterDTO;
+import com.lawfirm.lawfirmserver.login.dto.WechatLoginDTO;
 import com.lawfirm.lawfirmserver.login.service.LoginService;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
-import com.lawfirm.lawfirmserver.login.vo.PhoneVerifyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 
-@Api(tags = "登录接口")
+/**
+ * @description: 登录认证api层
+ * @author dongzhibo
+ * @date 2025/4/15 21:12
+ * @version 1.0
+ */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@Api(tags = "认证管理", description = "登录、注册、验证码等接口")
 public class LoginApi {
 
-    @Resource
+    @Autowired
     private LoginService loginService;
 
-    @ApiOperation("手机号登录")
-    @PostMapping("/phone-login")
-    public LoginVo phoneLogin(@RequestBody @Valid PhoneVerifyVO dto) {
-        return loginService.phoneLogin(new LoginVo());
-    }
-
-    @ApiOperation("账号密码登录")
-    @PostMapping("/account-login")
-    public LoginVo accountLogin(@RequestBody @Valid LoginVo dto) {
-        return loginService.accountLogin(dto);
+    /**
+     * 验证码登录
+     */
+    @PostMapping("/loginByCode")
+    @ApiOperation("验证码登录")
+    public Result<LoginVo> loginByCode(@RequestBody @Valid LoginByCodeDTO dto) {
+        return loginService.loginByCode(dto);
     }
 
     /**
-     * @description:
-     * @author: dongzhibo 
-     * @date: 2025/4/13 17:50
-     * @param: [dto]
-     * @return: Result<LoginVo>
-     **/
+     * 密码登录
+     */
+    @PostMapping("/loginByPassword")
+    @ApiOperation("密码登录")
+    public Result<LoginVo> loginByPassword(@RequestBody @Valid LoginByPasswordDTO dto) {
+        return loginService.loginByPassword(dto);
+    }
+
+    /**
+     * 微信登录
+     */
+    @PostMapping("/loginByWechat")
     @ApiOperation("微信登录")
-    @PostMapping("/wechat-login")
-    public LoginVo wechatLogin(@RequestBody @Valid LoginVo vo) {
-        return loginService.wechatLogin();
+    public Result<LoginVo> loginByWechat(@RequestBody @Valid WechatLoginDTO dto) {
+        return loginService.loginByWechat(dto);
     }
 
+    /**
+     * 注册
+     */
+    @PostMapping("/register")
+    @ApiOperation("用户注册")
+    public Result<Long> register(@RequestBody @Valid RegisterDTO dto) {
+        return loginService.register(dto);
+    }
+
+    /**
+     * 发送验证码
+     */
+    @PostMapping("/sendCode")
     @ApiOperation("发送验证码")
-    @PostMapping("/send-code")
-    public void sendVerificationCode(@RequestParam String phone) {
-        loginService.sendVerificationCode(phone);
+    public Result<Void> sendCode(
+            @ApiParam(value = "手机号", required = true, example = "13800138000") @RequestParam String phone,
+            @ApiParam(value = "验证码类型: 1-登录验证码，2-注册验证码", required = true, example = "1") @RequestParam Integer type) {
+        return loginService.sendCode(phone, type);
     }
 
-    @ApiOperation("验证手机号")
-    @PostMapping("/verify-phone")
-    public boolean verifyPhone(@RequestParam String phone) {
-        return loginService.verifyPhone(phone);
-    }
-
+    /**
+     * 刷新token
+     */
+    @PostMapping("/refreshToken")
     @ApiOperation("刷新token")
-    @PostMapping("/refresh-token")
-    public String refreshToken() {
-        return loginService.refreshToken();
-    }
-
-    @ApiOperation("退出登录")
-    @PostMapping("/logout")
-    public void logout() {
-        loginService.logout();
+    public Result<LoginVo> refreshToken(@RequestParam String refreshToken) {
+        return loginService.refreshToken(refreshToken);
     }
 }
