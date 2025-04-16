@@ -1,0 +1,40 @@
+# 开发环境配置
+
+# JWT配置
+security:
+  jwt:
+    token:
+      # 开发环境可以使用固定密钥，但生产环境应该使用环境变量
+      secret-key: dev_environment_secret_key_for_jwt_token
+      expire-length: 86400000  # 24小时
+      refresh-expire-length: 2592000000  # 30天
+
+# 服务器配置
+server:
+  port: 8080
+
+# 数据源配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:5001/test_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.lawfirm.lawfirmserver: debug
+    org.springframework.jdbc.core.JdbcTemplate: debug
+  file:
+    name: logs/lawfirm-server-dev.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30 

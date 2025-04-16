@@ -1,0 +1,71 @@
+# 生产环境配置
+
+# JWT配置
+security:
+  jwt:
+    token:
+      # 生产环境必须使用环境变量注入密钥，确保安全性
+      secret-key: ${JWT_SECRET}
+      expire-length: ${JWT_EXPIRE:86400000}
+      refresh-expire-length: ${JWT_REFRESH_EXPIRE:2592000000}
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+    max-connections: 10000
+    accept-count: 1000
+
+# 数据源配置
+spring:
+  datasource:
+    # 生产环境数据库连接，主库
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true&requireSSL=true&verifyServerCertificate=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+      # 连接池配置
+      minimum-idle: 20
+      maximum-pool-size: 50
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      # 为保护生产数据库，设置泄漏检测
+      leak-detection-threshold: 60000
+      
+  # 生产环境缓存配置
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: false
+      
+  # Redis配置
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD}
+    database: 0
+    timeout: 1000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+# 日志配置
+logging:
+  level:
+    root: warn
+    com.lawfirm.lawfirmserver: info
+    org.springframework.jdbc.core.JdbcTemplate: warn
+  file:
+    name: ${LOG_PATH:/var/log/lawfirm}/lawfirm-server-prod.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
+      total-size-cap: 10GB 

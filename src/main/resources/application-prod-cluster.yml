@@ -1,0 +1,109 @@
+# 生产环境集群配置（读写分离）
+
+# JWT配置
+security:
+  jwt:
+    token:
+      # 生产环境必须使用环境变量注入密钥，确保安全性
+      secret-key: ${JWT_SECRET}
+      expire-length: ${JWT_EXPIRE:86400000}
+      refresh-expire-length: ${JWT_REFRESH_EXPIRE:2592000000}
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+    max-connections: 10000
+    accept-count: 1000
+
+# 数据源配置 - 使用读写分离配置
+spring:
+  # 指定该配置为ShardingSphere配置
+  shardingsphere:
+    datasource:
+      names: master,slave1,slave2
+      # 主库配置
+      master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${MYSQL_MASTER_HOST}:${MYSQL_MASTER_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true
+        username: ${MYSQL_MASTER_USERNAME}
+        password: ${MYSQL_MASTER_PASSWORD}
+        hikari:
+          minimum-idle: 20
+          maximum-pool-size: 50
+          idle-timeout: 600000
+          max-lifetime: 1800000
+          connection-timeout: 30000
+          leak-detection-threshold: 60000
+      # 从库1配置
+      slave1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${MYSQL_SLAVE1_HOST}:${MYSQL_SLAVE1_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true
+        username: ${MYSQL_SLAVE1_USERNAME}
+        password: ${MYSQL_SLAVE1_PASSWORD}
+        hikari:
+          minimum-idle: 10
+          maximum-pool-size: 30
+          idle-timeout: 600000
+          max-lifetime: 1800000
+          connection-timeout: 30000
+      # 从库2配置
+      slave2:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${MYSQL_SLAVE2_HOST}:${MYSQL_SLAVE2_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true
+        username: ${MYSQL_SLAVE2_USERNAME}
+        password: ${MYSQL_SLAVE2_PASSWORD}
+        hikari:
+          minimum-idle: 10
+          maximum-pool-size: 30
+          idle-timeout: 600000
+          max-lifetime: 1800000
+          connection-timeout: 30000
+    # 读写分离配置
+    masterslave:
+      load-balance-algorithm-type: round_robin
+      name: ms
+      master-data-source-name: master
+      slave-data-source-names: slave1,slave2
+    # 显示SQL
+    props:
+      sql.show: false
+      
+  # 生产环境缓存配置
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: false
+      
+  # Redis集群配置
+  redis:
+    cluster:
+      nodes: ${REDIS_CLUSTER_NODES}
+    password: ${REDIS_PASSWORD}
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 16
+        min-idle: 8
+        max-wait: -1ms
+
+# 日志配置
+logging:
+  level:
+    root: warn
+    com.lawfirm.lawfirmserver: info
+    org.springframework.jdbc.core.JdbcTemplate: warn
+  file:
+    name: ${LOG_PATH:/var/log/lawfirm}/lawfirm-server-prod.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
+      total-size-cap: 20GB 
