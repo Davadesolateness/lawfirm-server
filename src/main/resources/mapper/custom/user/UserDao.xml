@@ -14,12 +14,20 @@
         where username = #{username}
     </select>
 
-    <!-- 按用户名查询一条记录 -->
+    <!-- 按用户电话号码查询一条记录 -->
     <select id="selectByPhone" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from user
         where phoneNumber = #{phone}
+    </select>
+
+    <!-- 按用户id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{userId}
     </select>
 
     <!-- 插入一条记录(为空的字段不操作) -->
