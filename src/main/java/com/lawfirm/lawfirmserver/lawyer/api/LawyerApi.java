@@ -84,9 +84,9 @@ public class LawyerApi {
      * @param queryDTO 包含查询条件的DTO对象
      * @return 分页的律师信息列表
      */
-    @RequestMapping(value = "/searchLawyers", method = {RequestMethod.POST})
-    public Page<LawyerVo> searchLawyers(@RequestBody LawyerQueryDTO queryDTO) {
-        return lawyerService.searchLawyers(queryDTO);
-    }
+//    @RequestMapping(value = "/searchLawyers", method = {RequestMethod.POST})
+//    public Page<LawyerVo> searchLawyers(@RequestBody LawyerQueryDTO queryDTO) {
+//        return lawyerService.searchLawyers(queryDTO);
+//    }
 
 }
