@@ -7,252 +7,294 @@
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <mapper namespace="com.lawfirm.lawfirmserver.user.dao.UserDao">
-    <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.User">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="passwordUpdateTime" property="passwordUpdateTime"/>
-        <result column="email" property="email"/>
-        <result column="phoneNumber" property="phoneNumber"/>
-        <result column="userType" property="userType"/>
-        <result column="sourceType" property="sourceType"/>
-        <result column="relatedEntityId" property="relatedEntityId"/>
-        <result column="isValidFlag" property="isValidFlag"/>
-        <result column="insertTimeForHis" property="insertTimeForHis"/>
-        <result column="operateTimeForHis" property="operateTimeForHis"/>
-    </resultMap>
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.User">
+		 <id column="id" property="id"/> 
+		 <result column="openId" property="openId"/> 
+		 <result column="username" property="username"/> 
+		 <result column="password" property="password"/> 
+		 <result column="passwordUpdateTime" property="passwordUpdateTime"/> 
+		 <result column="nickName" property="nickName"/> 
+		 <result column="email" property="email"/> 
+		 <result column="phoneNumber" property="phoneNumber"/> 
+		 <result column="userType" property="userType"/> 
+		 <result column="sourceType" property="sourceType"/> 
+		 <result column="relatedEntityId" property="relatedEntityId"/> 
+		 <result column="createTime" property="createTime"/> 
+		 <result column="isValidFlag" property="isValidFlag"/> 
+		 <result column="insertTimeForHis" property="insertTimeForHis"/> 
+		 <result column="operateTimeForHis" property="operateTimeForHis"/> 
+	</resultMap>
 
-    <!-- 通用查询结果列-->
-    <sql id="Base_Column_List">
-        id
-        , username, password, passwordUpdateTime, email,
-		 phoneNumber, userType, sourceType, relatedEntityId, isValidFlag,
-		 insertTimeForHis, operateTimeForHis
-    </sql>
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, openId, username, password, passwordUpdateTime,
+		 nickName, email, phoneNumber, userType, sourceType,
+		 relatedEntityId, createTime, isValidFlag, insertTimeForHis, operateTimeForHis
+		
+	</sql>
 
-    <!-- 按对象查询记录的WHERE部分 -->
-    <sql id="Base_Select_By_Entity_Where">
-        <if test="id != null">
-            and id = #{id}
-        </if>
-        <if test="username != null">
-            and username = #{username}
-        </if>
-        <if test="password != null">
-            and password = #{password}
-        </if>
-        <if test="passwordUpdateTime != null">
-            and passwordUpdateTime = #{passwordUpdateTime}
-        </if>
-        <if test="email != null">
-            and email = #{email}
-        </if>
-        <if test="phoneNumber != null">
-            and phoneNumber = #{phoneNumber}
-        </if>
-        <if test="userType != null">
-            and userType = #{userType}
-        </if>
-        <if test="sourceType != null">
-            and sourceType = #{sourceType}
-        </if>
-        <if test="relatedEntityId != null">
-            and relatedEntityId = #{relatedEntityId}
-        </if>
-        <if test="isValidFlag != null">
-            and isValidFlag = #{isValidFlag}
-        </if>
-        <if test="insertTimeForHis != null">
-            and insertTimeForHis = #{insertTimeForHis}
-        </if>
-        <if test="operateTimeForHis != null">
-            and operateTimeForHis = #{operateTimeForHis}
-        </if>
-    </sql>
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="openId != null" >
+			and openId = #{openId}
+		</if>
+		<if test="username != null" >
+			and username = #{username}
+		</if>
+		<if test="password != null" >
+			and password = #{password}
+		</if>
+		<if test="passwordUpdateTime != null" >
+			and passwordUpdateTime = #{passwordUpdateTime}
+		</if>
+		<if test="nickName != null" >
+			and nickName = #{nickName}
+		</if>
+		<if test="email != null" >
+			and email = #{email}
+		</if>
+		<if test="phoneNumber != null" >
+			and phoneNumber = #{phoneNumber}
+		</if>
+		<if test="userType != null" >
+			and userType = #{userType}
+		</if>
+		<if test="sourceType != null" >
+			and sourceType = #{sourceType}
+		</if>
+		<if test="relatedEntityId != null" >
+			and relatedEntityId = #{relatedEntityId}
+		</if>
+		<if test="createTime != null" >
+			and createTime = #{createTime}
+		</if>
+		<if test="isValidFlag != null" >
+			and isValidFlag = #{isValidFlag}
+		</if>
+		<if test="insertTimeForHis != null" >
+			and insertTimeForHis = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null" >
+			and operateTimeForHis = #{operateTimeForHis}
+		</if>
+	</sql>
 
-    <!-- 按对象查询记录的SQL部分 -->
-    <sql id="Base_Select_By_Entity">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        <where>
-            <include refid="Base_Select_By_Entity_Where"/>
-        </where>
-    </sql>
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from user
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
 
-    <!-- 按主键查询一条记录 -->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        where id = #{param1}
-    </select>
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from user
+		where id = #{param1}
+	</select>
 
-    <!-- 按主键List查询多条记录 -->
-    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from user
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 
-    <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        <include refid="Base_Select_By_Entity"/>
-    </select>
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+		<include refid="Base_Select_By_Entity" />
+	</select>
 
-    <!-- 按主键删除一条记录 -->
-    <delete id="deleteByPrimaryKey" parameterType="map">
-        delete
-        from user
-        where id = #{param1}
-    </delete>
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from user
+		where id = #{param1}
+	</delete>
 
-    <!-- 按主键List删除多条记录 -->
-    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from user
-        where id in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </delete>
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from user
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 
-    <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        insert into user (id, username, password, passwordUpdateTime, email,
-                          phoneNumber, userType, sourceType, relatedEntityId, isValidFlag,
-                          operateTimeForHis)
-        values (#{id}, #{username}, #{password}, #{passwordUpdateTime}, #{email},
-                #{phoneNumber}, #{userType}, #{sourceType}, #{relatedEntityId}, #{isValidFlag},
-                now())
-    </insert>
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+		insert into user (id, openId, username, password, passwordUpdateTime, 
+			nickName, email, phoneNumber, userType, sourceType, 
+			relatedEntityId, createTime, isValidFlag, operateTimeForHis
+			)
+		values(#{id}, #{openId}, #{username}, #{password}, #{passwordUpdateTime}, 
+			#{nickName}, #{email}, #{phoneNumber}, #{userType}, #{sourceType}, 
+			#{relatedEntityId}, #{createTime}, #{isValidFlag}, now()
+			)
+	</insert>
 
-    <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        insert into user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="username != null">
-                username,
-            </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="passwordUpdateTime != null">
-                passwordUpdateTime,
-            </if>
-            <if test="email != null">
-                email,
-            </if>
-            <if test="phoneNumber != null">
-                phoneNumber,
-            </if>
-            <if test="userType != null">
-                userType,
-            </if>
-            <if test="sourceType != null">
-                sourceType,
-            </if>
-            <if test="relatedEntityId != null">
-                relatedEntityId,
-            </if>
-            <if test="isValidFlag != null">
-                isValidFlag,
-            </if>
-            operateTimeForHis,
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id},
-            </if>
-            <if test="username != null">
-                #{username},
-            </if>
-            <if test="password != null">
-                #{password},
-            </if>
-            <if test="passwordUpdateTime != null">
-                #{passwordUpdateTime},
-            </if>
-            <if test="email != null">
-                #{email},
-            </if>
-            <if test="phoneNumber != null">
-                #{phoneNumber},
-            </if>
-            <if test="userType != null">
-                #{userType},
-            </if>
-            <if test="sourceType != null">
-                #{sourceType},
-            </if>
-            <if test="relatedEntityId != null">
-                #{relatedEntityId},
-            </if>
-            <if test="isValidFlag != null">
-                #{isValidFlag},
-            </if>
-            now(),
-        </trim>
-    </insert>
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="openId != null" >
+				openId,
+			</if>
+			<if test="username != null" >
+				username,
+			</if>
+			<if test="password != null" >
+				password,
+			</if>
+			<if test="passwordUpdateTime != null" >
+				passwordUpdateTime,
+			</if>
+			<if test="nickName != null" >
+				nickName,
+			</if>
+			<if test="email != null" >
+				email,
+			</if>
+			<if test="phoneNumber != null" >
+				phoneNumber,
+			</if>
+			<if test="userType != null" >
+				userType,
+			</if>
+			<if test="sourceType != null" >
+				sourceType,
+			</if>
+			<if test="relatedEntityId != null" >
+				relatedEntityId,
+			</if>
+			<if test="createTime != null" >
+				createTime,
+			</if>
+			<if test="isValidFlag != null" >
+				isValidFlag,
+			</if>
+			operateTimeForHis,
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="openId != null" >
+				#{openId},
+			</if>
+			<if test="username != null" >
+				#{username},
+			</if>
+			<if test="password != null" >
+				#{password},
+			</if>
+			<if test="passwordUpdateTime != null" >
+				#{passwordUpdateTime},
+			</if>
+			<if test="nickName != null" >
+				#{nickName},
+			</if>
+			<if test="email != null" >
+				#{email},
+			</if>
+			<if test="phoneNumber != null" >
+				#{phoneNumber},
+			</if>
+			<if test="userType != null" >
+				#{userType},
+			</if>
+			<if test="sourceType != null" >
+				#{sourceType},
+			</if>
+			<if test="relatedEntityId != null" >
+				#{relatedEntityId},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="isValidFlag != null" >
+				#{isValidFlag},
+			</if>
+			now(),
+		</trim>
+	</insert>
 
-    <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        update user
-        <set>
-            <if test="username != null">
-                username=#{username},
-            </if>
-            <if test="password != null">
-                password=#{password},
-            </if>
-            <if test="passwordUpdateTime != null">
-                passwordUpdateTime=#{passwordUpdateTime},
-            </if>
-            <if test="email != null">
-                email=#{email},
-            </if>
-            <if test="phoneNumber != null">
-                phoneNumber=#{phoneNumber},
-            </if>
-            <if test="userType != null">
-                userType=#{userType},
-            </if>
-            <if test="sourceType != null">
-                sourceType=#{sourceType},
-            </if>
-            <if test="relatedEntityId != null">
-                relatedEntityId=#{relatedEntityId},
-            </if>
-            <if test="isValidFlag != null">
-                isValidFlag=#{isValidFlag},
-            </if>
-            operateTimeForHis=now(),
-        </set>
-        where id = #{id}
-    </update>
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+		update user
+		<set>
+			<if test="openId != null" >
+				openId=#{openId},
+			</if>
+			<if test="username != null" >
+				username=#{username},
+			</if>
+			<if test="password != null" >
+				password=#{password},
+			</if>
+			<if test="passwordUpdateTime != null" >
+				passwordUpdateTime=#{passwordUpdateTime},
+			</if>
+			<if test="nickName != null" >
+				nickName=#{nickName},
+			</if>
+			<if test="email != null" >
+				email=#{email},
+			</if>
+			<if test="phoneNumber != null" >
+				phoneNumber=#{phoneNumber},
+			</if>
+			<if test="userType != null" >
+				userType=#{userType},
+			</if>
+			<if test="sourceType != null" >
+				sourceType=#{sourceType},
+			</if>
+			<if test="relatedEntityId != null" >
+				relatedEntityId=#{relatedEntityId},
+			</if>
+			<if test="createTime != null" >
+				createTime=#{createTime},
+			</if>
+			<if test="isValidFlag != null" >
+				isValidFlag=#{isValidFlag},
+			</if>
+			operateTimeForHis=now(),
+		</set>
+		where id = #{id}
+	</update>
 
-    <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        update user
-        set username=#{username},
-            password=#{password},
-            passwordUpdateTime=#{passwordUpdateTime},
-            email=#{email},
-            phoneNumber=#{phoneNumber},
-            userType=#{userType},
-            sourceType=#{sourceType},
-            relatedEntityId=#{relatedEntityId},
-            isValidFlag=#{isValidFlag},
-            operateTimeForHis=now()
-        where id = #{id}
-    </update>
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+		update user
+		set openId=#{openId},
+			username=#{username},
+			password=#{password},
+			passwordUpdateTime=#{passwordUpdateTime},
+			nickName=#{nickName},
+			email=#{email},
+			phoneNumber=#{phoneNumber},
+			userType=#{userType},
+			sourceType=#{sourceType},
+			relatedEntityId=#{relatedEntityId},
+			createTime=#{createTime},
+			isValidFlag=#{isValidFlag},
+			operateTimeForHis=now()
+		where id = #{id}
+	</update>
 
 </mapper>

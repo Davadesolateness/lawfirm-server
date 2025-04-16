@@ -20,13 +20,13 @@ CREATE TABLE User
     operateTimeForHis  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户信息操作时间，自动更新'
 );
 CREATE INDEX idx_User_relatedEntityId ON User (relatedEntityId);
+CREATE INDEX idx_User_createTime ON User (createTime);
 CREATE INDEX idx_User_insertTimeForHis ON User (insertTimeForHis);
 CREATE INDEX idx_User_operateTimeForHis ON User (operateTimeForHis);
-CREATE INDEX idx_User_createTime ON User (createTime);
+
 -- 若需删除 CorporateClient 表，可取消此注释
 -- DROP TABLE IF EXISTS CorporateClient;
 -- 法人客户表，存储法人客户的额外信息
-
 CREATE TABLE CorporateClient
 (
     id                BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '法人客户唯一标识，自增主键',

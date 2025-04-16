@@ -32,6 +32,9 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="openId != null">
+                openId,
+            </if>
             <if test="username != null">
                 username,
             </if>
@@ -40,6 +43,9 @@
             </if>
             <if test="passwordUpdateTime != null">
                 passwordUpdateTime,
+            </if>
+            <if test="nickName != null">
+                nickName,
             </if>
             <if test="email != null">
                 email,
@@ -56,6 +62,9 @@
             <if test="relatedEntityId != null">
                 relatedEntityId,
             </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
             <if test="isValidFlag != null">
                 isValidFlag,
             </if>
@@ -66,6 +75,9 @@
             <if test="id != null">
                 #{id},
             </if>
+            <if test="openId != null">
+                #{openId},
+            </if>
             <if test="username != null">
                 #{username},
             </if>
@@ -74,6 +86,9 @@
             </if>
             <if test="passwordUpdateTime != null">
                 #{passwordUpdateTime},
+            </if>
+            <if test="nickName != null">
+                #{nickName},
             </if>
             <if test="email != null">
                 #{email},
@@ -89,6 +104,9 @@
             </if>
             <if test="relatedEntityId != null">
                 #{relatedEntityId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
             </if>
             <if test="isValidFlag != null">
                 #{isValidFlag},
