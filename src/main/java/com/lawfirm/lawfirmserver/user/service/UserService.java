@@ -227,7 +227,7 @@ public class UserService {
         
         // 填充用户信息
         corporateDetailsVo.setUserId(user.getId());
-        corporateDetailsVo.setUsername(user.getUsername());
+        corporateDetailsVo.setUserName(user.getUsername());
         corporateDetailsVo.setNickName(user.getNickName());
         corporateDetailsVo.setEmail(user.getEmail());
         corporateDetailsVo.setPhoneNumber(user.getPhoneNumber());

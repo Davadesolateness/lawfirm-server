@@ -29,7 +29,7 @@ public class CorporateDetailsVo implements Serializable {
      * 用户名
      */
     @ApiModelProperty("用户名")
-    private String username;
+    private String userName;
     
     /**
      * 用户昵称
