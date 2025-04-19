@@ -13,6 +13,8 @@ import com.lawfirm.lawfirmserver.user.po.CorporateClient;
 import com.lawfirm.lawfirmserver.user.po.IndividualClient;
 import com.lawfirm.lawfirmserver.user.po.User;
 import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
+import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,5 +163,84 @@ public class UserService {
         CommonUtil.copyProperties(administrator, userPageVo.getAdministratorVo());
         // 设置操作结果为成功
         userPageVo.setResult(true);
+    }
+
+    /**
+     * 获取个人用户详情信息
+     * 
+     * @param userId 用户ID
+     * @return 个人用户详情信息
+     */
+    public IndividualDetailsVo getIndividualDetails(Long userId) {
+        IndividualDetailsVo individualDetailsVo = new IndividualDetailsVo();
+        
+        // 获取用户基本信息
+        User user = userDao.selectByPrimaryKey(userId);
+        if (user == null) {
+            return individualDetailsVo;
+        }
+        
+        // 获取个人客户信息
+        IndividualClient individualClient = individualClientDao.selectByPrimaryKey(user.getRelatedEntityId());
+        if (individualClient == null) {
+            return individualDetailsVo;
+        }
+        
+        // 填充用户信息
+        individualDetailsVo.setUserId(user.getId());
+        individualDetailsVo.setUsername(user.getUsername());
+        individualDetailsVo.setNickName(user.getNickName());
+        individualDetailsVo.setEmail(user.getEmail());
+        individualDetailsVo.setPhoneNumber(user.getPhoneNumber());
+        individualDetailsVo.setCreateTime(user.getCreateTime());
+        
+        // 填充个人客户信息
+        individualDetailsVo.setIndividualId(individualClient.getId());
+        individualDetailsVo.setFullName(individualClient.getFullName());
+        individualDetailsVo.setGender(individualClient.getGender());
+        individualDetailsVo.setBirthDate(individualClient.getBirthDate());
+        individualDetailsVo.setIsValidFlag(individualClient.getIsValidFlag());
+        
+        return individualDetailsVo;
+    }
+    
+    /**
+     * 获取法人用户详情信息
+     * 
+     * @param userId 用户ID
+     * @return 法人用户详情信息
+     */
+    public CorporateDetailsVo getCorporateDetails(String userId) {
+        CorporateDetailsVo corporateDetailsVo = new CorporateDetailsVo();
+        
+        // 获取用户基本信息
+        User user = userDao.selectByPrimaryKey(Long.valueOf(userId));
+        if (user == null) {
+            return corporateDetailsVo;
+        }
+        
+        // 获取法人客户信息
+        CorporateClient corporateClient = corporateClientDao.selectByPrimaryKey(user.getRelatedEntityId());
+        if (corporateClient == null) {
+            return corporateDetailsVo;
+        }
+        
+        // 填充用户信息
+        corporateDetailsVo.setUserId(user.getId());
+        corporateDetailsVo.setUsername(user.getUsername());
+        corporateDetailsVo.setNickName(user.getNickName());
+        corporateDetailsVo.setEmail(user.getEmail());
+        corporateDetailsVo.setPhoneNumber(user.getPhoneNumber());
+        corporateDetailsVo.setCreateTime(user.getCreateTime());
+        
+        // 填充法人客户信息
+        corporateDetailsVo.setCorporateId(corporateClient.getId());
+        corporateDetailsVo.setCompanyName(corporateClient.getCompanyName());
+        corporateDetailsVo.setCertificateType(corporateClient.getCertificateType());
+        corporateDetailsVo.setCertificateNumber(corporateClient.getCertificateNumber());
+        corporateDetailsVo.setContactPerson(corporateClient.getContactPerson());
+        corporateDetailsVo.setIsValidFlag(corporateClient.getIsValidFlag());
+        
+        return corporateDetailsVo;
     }
 }

@@ -19,5 +19,5 @@ public interface LoginLogDao extends MybatisBaseDao<LoginLog, Long> {
      * @param loginLog 登录日志对象
      * @return 影响的行数
      */
-    int insertLoginLog(LoginLog loginLog);
+    void insertLoginLog(LoginLog loginLog);
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lawfirm.lawfirmserver.login.dao.LoginLogMapper">
+<mapper namespace="com.lawfirm.lawfirmserver.login.dao.LoginLogDao">
 
     <insert id="insertLoginLog" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO login_log (

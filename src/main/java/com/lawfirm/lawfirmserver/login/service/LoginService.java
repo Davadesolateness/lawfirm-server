@@ -120,10 +120,9 @@ public class LoginService {
 
         // 4. 生成token
         String token = jwtTokenProvider.generateToken(user.getId().toString());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId().toString());
 
         // 5. 记录登录日志
-        //saveLoginLog(dto.getPhone(), 1, user.getId(), "登录成功");
+        saveLoginLog(dto.getPhone(), 1, user.getId(), "登录成功");
 
         return Result.success(new LoginVo(token, user));
     }
