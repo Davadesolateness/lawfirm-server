@@ -56,7 +56,7 @@ public class UserApi {
     public UserPageVo changePassword(@RequestBody UserPageVo userPageVo, HttpServletRequest request) {
         String username = userPageVo.getUserVo().getUsername();
         String oldPassword = userPageVo.getUserVo().getPassword();
-        String newPassword = userPageVo.getUserVo().getNewPassword();
+        String newPassword = null;//userPageVo.getUserVo().getNewPassword();
 
         boolean result = userService.changePassword(username, oldPassword, newPassword);
         userPageVo.setResult(result);

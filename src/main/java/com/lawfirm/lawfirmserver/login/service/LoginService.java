@@ -2,9 +2,11 @@ package com.lawfirm.lawfirmserver.login.service;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
-import com.lawfirm.lawfirmserver.login.dao.LoginLogMapper;
+import com.lawfirm.lawfirmserver.common.util.WebUtils;
+import com.lawfirm.lawfirmserver.login.dao.LoginLogDao;
 import com.lawfirm.lawfirmserver.login.dao.SmsVerificationDao;
 import com.lawfirm.lawfirmserver.login.dto.*;
+import com.lawfirm.lawfirmserver.login.po.LoginLog;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import com.lawfirm.lawfirmserver.security.JwtTokenProvider;
 import com.lawfirm.lawfirmserver.user.dao.UserDao;
@@ -31,13 +33,13 @@ public class LoginService {
     private static final Logger log = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired
-    private UserDao userMapper;
+    private UserDao userDao;
 
     @Autowired
     private SmsVerificationDao smsCodeMapper;
 
     @Autowired
-    private LoginLogMapper loginLogMapper;
+    private LoginLogDao loginLogDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -95,25 +97,26 @@ public class LoginService {
      */
     public Result<LoginVo> loginByPassword(LoginByPasswordDTO dto) {
         // 1. 查询用户
-        User user = null;//userMapper.selectByPhone(dto.getPhone());
+        User user = userDao.selectByPhone(dto.getPhone());
         if (user == null) {
-            //saveLoginLog(dto.getPhone(), 1, null, "用户不存在");
+            saveLoginLog(dto.getPhone(), 1, null, "用户不存在");
             return Result.fail("用户不存在");
         }
 
         if (CommonUtil.equals(user.getIsValidFlag(), "0")) {
-           // saveLoginLog(dto.getPhone(), 1, user.getId(), "账号已禁用");
+            saveLoginLog(dto.getPhone(), 1, user.getId(), "账号已禁用");
             return Result.fail("账号已禁用");
         }
-
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        System.out.println(passwordEncoder.encode(dto.getPassword() ));
         // 2. 验证密码
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-           // saveLoginLog(dto.getPhone(), 1, user.getId(), "密码错误");
+            saveLoginLog(dto.getPhone(), 1, user.getId(), "密码错误");
             return Result.fail("密码错误");
         }
 
         // 3. 更新用户登录信息
-       // updateUserLoginInfo(user, dto.getIp());
+        // updateUserLoginInfo(user, dto.getIp());
 
         // 4. 生成token
         String token = jwtTokenProvider.generateToken(user.getId().toString());
@@ -141,7 +144,7 @@ public class LoginService {
             String sessionKey = wxResult.getSessionKey();
 
             // 2. 检查用户是否已存在
-            User user = null;//userMapper.selectByOpenId(openId);
+            User user = null;//userDao.selectByOpenId(openId);
 
             // 3. 如果用户不存在，则创建新用户
             if (user == null) {
@@ -157,23 +160,19 @@ public class LoginService {
                 user.setUnionId(wxResult.getUnionid());
                 user.setNickname(userInfo != null ? userInfo.getNickName() : "微信用户");*/
                 //user.setAvatarUrl(userInfo != null ? userInfo.getAvatarUrl() : "");
-             /*   user.setGender(userInfo != null ? userInfo.getGender() : 0);*/
+                /*   user.setGender(userInfo != null ? userInfo.getGender() : 0);*/
                 user.setUserType("USER");
                 user.setIsValidFlag("1");
                 /*user.setCreateTime(new Date());*/
-                userMapper.insert(user);
+                userDao.insert(user);
             }
 
-            // 4. 更新用户登录信息
-            //updateUserLoginInfo(user, dto.getIp());
-
-            // 5. 生成token
+            // 4. 生成token
             String token = jwtTokenProvider.generateToken(user.getId().toString());
             String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId().toString());
 
-            // 6. 记录登录日志
-           // saveLoginLog(user.getPhoneNumber() != null ? user.getPhoneNumber() : "微信用户", 3, user.getId(), "登录成功");
-
+            // 5. 记录登录日志
+            saveLoginLog(user.getPhoneNumber() != null ? user.getPhoneNumber() : "微信用户", 3, user.getId(), "登录成功");
             return Result.success(new LoginVo(token, user));
         } catch (Exception e) {
             log.error("微信登录异常", e);
@@ -233,7 +232,7 @@ public class LoginService {
 
         // 2. 如果是注册验证码，检查手机号是否已注册
         if (type == 2) {
-            User user = userMapper.selectByPhone(phone);
+            User user = userDao.selectByPhone(phone);
             if (user != null) {
                 return Result.fail("手机号已注册");
             }
@@ -273,7 +272,7 @@ public class LoginService {
             }
 
             // 3. 查询用户
-            User user = userMapper.selectById(Long.valueOf(userId));
+            User user = userDao.selectById(Long.valueOf(userId));
             if (user == null) {
                 return Result.fail("用户不存在");
             }
@@ -300,12 +299,12 @@ public class LoginService {
         }
     }
 
-   /* private void updateUserLoginInfo(User user, String ip) {
-        user.setLastLoginTime(new Date());
-        user.setLastLoginIp(ip);
-        userMapper.updateById(user);
-    }
-
+    /* private void updateUserLoginInfo(User user, String ip) {
+         user.setLastLoginTime(new Date());
+         user.setLastLoginIp(ip);
+         userDao.updateById(user);
+     }
+ */
     private void saveLoginLog(String phone, Integer loginType, Long userId, String remark) {
         LoginLog log = new LoginLog();
         log.setPhone(phone);
@@ -316,6 +315,6 @@ public class LoginService {
         log.setDevice(WebUtils.getDeviceInfo());
         log.setRemark(remark);
         log.setCreateTime(new Date());
-        loginLogMapper.insert(log);
-    }*/
+        loginLogDao.insertLoginLog(log);
+    }
 }
