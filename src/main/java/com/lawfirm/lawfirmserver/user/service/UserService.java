@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Calendar;
 
 @Service
 @Transactional
@@ -212,11 +213,22 @@ public class UserService {
             individualDetailsVo.setRemainingServiceMinutes(serviceInfo.getRemainingServiceMinutes());
             individualDetailsVo.setServiceInfoUpdateTime(serviceInfo.getUpdateTime());
             individualDetailsVo.setServiceLevel(serviceInfo.getServiceLevel());
+            // 设置服务开始和到期时间
+            individualDetailsVo.setServiceStartTime(serviceInfo.getServiceStartTime());
+            individualDetailsVo.setServiceExpireTime(serviceInfo.getServiceExpireTime());
         } else {
             // 设置默认值
             individualDetailsVo.setRemainingServiceCount(0);
             individualDetailsVo.setRemainingServiceMinutes(0);
             individualDetailsVo.setServiceLevel(1); // 默认基础级别
+            // 设置默认的服务开始和到期时间
+            Date now = new Date();
+            individualDetailsVo.setServiceStartTime(now);
+            // 默认设置到期时间为当前时间后一年
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.YEAR, 1);
+            individualDetailsVo.setServiceExpireTime(calendar.getTime());
         }
         
         return individualDetailsVo;
@@ -267,12 +279,23 @@ public class UserService {
             corporateDetailsVo.setServiceInfoUpdateTime(serviceInfo.getUpdateTime());
             corporateDetailsVo.setServiceLevel(serviceInfo.getServiceLevel());
             corporateDetailsVo.setMaxEmployeeCount(serviceInfo.getMaxEmployeeCount());
+            // 设置服务开始和到期时间
+            corporateDetailsVo.setServiceStartTime(serviceInfo.getServiceStartTime());
+            corporateDetailsVo.setServiceExpireTime(serviceInfo.getServiceExpireTime());
         } else {
             // 设置默认值
             corporateDetailsVo.setRemainingServiceCount(0);
             corporateDetailsVo.setRemainingServiceMinutes(0);
             corporateDetailsVo.setServiceLevel(1); // 默认基础级别
             corporateDetailsVo.setMaxEmployeeCount(5); // 默认员工数量上限
+            // 设置默认的服务开始和到期时间
+            Date now = new Date();
+            corporateDetailsVo.setServiceStartTime(now);
+            // 默认设置到期时间为当前时间后一年
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.YEAR, 1);
+            corporateDetailsVo.setServiceExpireTime(calendar.getTime());
         }
         
         return corporateDetailsVo;

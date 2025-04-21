@@ -122,4 +122,16 @@ public class CorporateDetailsVo implements Serializable {
      */
     @ApiModelProperty("企业员工数量上限")
     private Integer maxEmployeeCount;
+    
+    /**
+     * 服务包开始时间
+     */
+    @ApiModelProperty("服务包开始时间")
+    private Date serviceStartTime;
+    
+    /**
+     * 服务包到期时间
+     */
+    @ApiModelProperty("服务包到期时间")
+    private Date serviceExpireTime;
 } 

@@ -110,4 +110,16 @@ public class IndividualDetailsVo implements Serializable {
      */
     @ApiModelProperty("服务级别：1-基础，2-标准，3-高级，4-VIP")
     private Integer serviceLevel;
+    
+    /**
+     * 服务包开始时间
+     */
+    @ApiModelProperty("服务包开始时间")
+    private Date serviceStartTime;
+    
+    /**
+     * 服务包到期时间
+     */
+    @ApiModelProperty("服务包到期时间")
+    private Date serviceExpireTime;
 } 
