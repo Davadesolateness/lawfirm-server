@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * @description: 登录认证api层
  * @author dongzhibo
- * @date 2025/4/15 21:12
  * @version 1.0
+ * @description: 登录认证api层
+ * @date 2025/4/15 21:12
  */
 @RestController
 @RequestMapping("/auth")
@@ -87,7 +87,7 @@ public class LoginApi {
 
     @RequestMapping("/refreshToken1")
     public void test() {
-        Result aaa =  loginService.refreshToken("refreshToken");
+        Result aaa = loginService.refreshToken("refreshToken");
         return;
     }
 }

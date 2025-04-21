@@ -73,14 +73,14 @@ spring:
     # 显示SQL
     props:
       sql.show: false
-      
+
   # 生产环境缓存配置
   cache:
     type: redis
     redis:
       time-to-live: 3600000
       cache-null-values: false
-      
+
   # Redis集群配置
   redis:
     cluster:

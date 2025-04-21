@@ -29,6 +29,10 @@ public class UserVo implements Serializable {
      */
     private String password;
     /**
+     * 新密码，修改密码时使用
+     */
+    private String newPassword;
+    /**
      * 对应字段：passwordUpdateTime,备注：用户密码修改时间，初始为当前时间
      */
     private Date passwordUpdateTime;

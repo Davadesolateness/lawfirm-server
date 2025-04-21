@@ -4,27 +4,19 @@ import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
-import com.lawfirm.lawfirmserver.user.dao.AdministratorDao;
-import com.lawfirm.lawfirmserver.user.dao.CorporateClientDao;
-import com.lawfirm.lawfirmserver.user.dao.IndividualClientDao;
-import com.lawfirm.lawfirmserver.user.dao.UserDao;
-import com.lawfirm.lawfirmserver.user.po.Administrator;
-import com.lawfirm.lawfirmserver.user.po.CorporateClient;
-import com.lawfirm.lawfirmserver.user.po.IndividualClient;
-import com.lawfirm.lawfirmserver.user.po.User;
-import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
-import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
+import com.lawfirm.lawfirmserver.user.dao.*;
+import com.lawfirm.lawfirmserver.user.po.*;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
-import com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao;
-import com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo;
+import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -172,25 +164,25 @@ public class UserService {
 
     /**
      * 获取个人用户详情信息
-     * 
+     *
      * @param userId 用户ID
      * @return 个人用户详情信息
      */
     public IndividualDetailsVo getIndividualDetails(Long userId) {
         IndividualDetailsVo individualDetailsVo = new IndividualDetailsVo();
-        
+
         // 获取用户基本信息
         User user = userDao.selectByPrimaryKey(userId);
         if (user == null) {
             return individualDetailsVo;
         }
-        
+
         // 获取个人客户信息
         IndividualClient individualClient = individualClientDao.selectByPrimaryKey(user.getRelatedEntityId());
         if (individualClient == null) {
             return individualDetailsVo;
         }
-        
+
         // 填充用户信息
         individualDetailsVo.setUserId(user.getId());
         individualDetailsVo.setUsername(user.getUsername());
@@ -198,14 +190,14 @@ public class UserService {
         individualDetailsVo.setEmail(user.getEmail());
         individualDetailsVo.setPhoneNumber(user.getPhoneNumber());
         individualDetailsVo.setCreateTime(user.getCreateTime());
-        
+
         // 填充个人客户信息
         individualDetailsVo.setIndividualId(individualClient.getId());
         individualDetailsVo.setFullName(individualClient.getFullName());
         individualDetailsVo.setGender(individualClient.getGender());
         individualDetailsVo.setBirthDate(individualClient.getBirthDate());
         individualDetailsVo.setIsValidFlag(individualClient.getIsValidFlag());
-        
+
         // 获取并填充客户服务信息
         CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(userId);
         if (serviceInfo != null) {
@@ -230,31 +222,31 @@ public class UserService {
             calendar.add(Calendar.YEAR, 1);
             individualDetailsVo.setServiceExpireTime(calendar.getTime());
         }
-        
+
         return individualDetailsVo;
     }
-    
+
     /**
      * 获取法人用户详情信息
-     * 
+     *
      * @param userId 用户ID
      * @return 法人用户详情信息
      */
     public CorporateDetailsVo getCorporateDetails(String userId) {
         CorporateDetailsVo corporateDetailsVo = new CorporateDetailsVo();
-        
+
         // 获取用户基本信息
         User user = userDao.selectByPrimaryKey(Long.valueOf(userId));
         if (user == null) {
             return corporateDetailsVo;
         }
-        
+
         // 获取法人客户信息
         CorporateClient corporateClient = corporateClientDao.selectByPrimaryKey(user.getRelatedEntityId());
         if (corporateClient == null) {
             return corporateDetailsVo;
         }
-        
+
         // 填充用户信息
         corporateDetailsVo.setUserId(user.getId());
         corporateDetailsVo.setUsername(user.getUsername());
@@ -262,7 +254,7 @@ public class UserService {
         corporateDetailsVo.setEmail(user.getEmail());
         corporateDetailsVo.setPhoneNumber(user.getPhoneNumber());
         corporateDetailsVo.setCreateTime(user.getCreateTime());
-        
+
         // 填充法人客户信息
         corporateDetailsVo.setCorporateId(corporateClient.getId());
         corporateDetailsVo.setCompanyName(corporateClient.getCompanyName());
@@ -270,7 +262,7 @@ public class UserService {
         corporateDetailsVo.setCertificateNumber(corporateClient.getCertificateNumber());
         corporateDetailsVo.setContactPerson(corporateClient.getContactPerson());
         corporateDetailsVo.setIsValidFlag(corporateClient.getIsValidFlag());
-        
+
         // 获取并填充客户服务信息
         CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(Long.valueOf(userId));
         if (serviceInfo != null) {
@@ -297,7 +289,7 @@ public class UserService {
             calendar.add(Calendar.YEAR, 1);
             corporateDetailsVo.setServiceExpireTime(calendar.getTime());
         }
-        
+
         return corporateDetailsVo;
     }
 }

@@ -50,7 +50,8 @@ security:
 
 ### 4.2 数据源配置
 
-项目默认使用HikariCP连接池，配置详见`application.yml`。如需使用多数据源，请参考`application-multi-datasource.yml`文件并修改`DataSourceConfig`类。如需使用Druid连接池，请参考`application-druid.yml`文件。
+项目默认使用HikariCP连接池，配置详见`application.yml`。如需使用多数据源，请参考`application-multi-datasource.yml`
+文件并修改`DataSourceConfig`类。如需使用Druid连接池，请参考`application-druid.yml`文件。
 
 ## 5. API接口说明
 

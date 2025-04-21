@@ -137,11 +137,11 @@
     <!-- 完整插入一条记录-->
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
         insert into user (id, openId, username, password, passwordUpdateTime,
-        nickName, email, phoneNumber, userType, sourceType,
-        relatedEntityId, createTime, isValidFlag, operateTimeForHis)
+                          nickName, email, phoneNumber, userType, sourceType,
+                          relatedEntityId, createTime, isValidFlag, operateTimeForHis)
         values (#{id}, #{openId}, #{username}, #{password}, #{passwordUpdateTime},
-        #{nickName}, #{email}, #{phoneNumber}, #{userType}, #{sourceType},
-        #{relatedEntityId}, #{createTime}, #{isValidFlag}, now())
+                #{nickName}, #{email}, #{phoneNumber}, #{userType}, #{sourceType},
+                #{relatedEntityId}, #{createTime}, #{isValidFlag}, now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
@@ -283,18 +283,18 @@
     <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
         update user
         set openId=#{openId},
-        username=#{username},
-        password=#{password},
-        passwordUpdateTime=#{passwordUpdateTime},
-        nickName=#{nickName},
-        email=#{email},
-        phoneNumber=#{phoneNumber},
-        userType=#{userType},
-        sourceType=#{sourceType},
-        relatedEntityId=#{relatedEntityId},
-        createTime=#{createTime},
-        isValidFlag=#{isValidFlag},
-        operateTimeForHis=now()
+            username=#{username},
+            password=#{password},
+            passwordUpdateTime=#{passwordUpdateTime},
+            nickName=#{nickName},
+            email=#{email},
+            phoneNumber=#{phoneNumber},
+            userType=#{userType},
+            sourceType=#{sourceType},
+            relatedEntityId=#{relatedEntityId},
+            createTime=#{createTime},
+            isValidFlag=#{isValidFlag},
+            operateTimeForHis=now()
         where id = #{id}
     </update>
 
