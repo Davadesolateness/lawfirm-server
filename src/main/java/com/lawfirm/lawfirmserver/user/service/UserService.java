@@ -15,6 +15,8 @@ import com.lawfirm.lawfirmserver.user.po.User;
 import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
+import com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao;
+import com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class UserService {
     private IndividualClientDao individualClientDao;
     @Autowired
     private AdministratorDao administratorDao;
+    @Autowired
+    private CustomerServiceInfoDao customerServiceInfoDao;
 
     /**
      * 验证用户登录信息的方法。
@@ -201,6 +205,20 @@ public class UserService {
         individualDetailsVo.setBirthDate(individualClient.getBirthDate());
         individualDetailsVo.setIsValidFlag(individualClient.getIsValidFlag());
         
+        // 获取并填充客户服务信息
+        CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(userId);
+        if (serviceInfo != null) {
+            individualDetailsVo.setRemainingServiceCount(serviceInfo.getRemainingServiceCount());
+            individualDetailsVo.setRemainingServiceMinutes(serviceInfo.getRemainingServiceMinutes());
+            individualDetailsVo.setServiceInfoUpdateTime(serviceInfo.getUpdateTime());
+            individualDetailsVo.setServiceLevel(serviceInfo.getServiceLevel());
+        } else {
+            // 设置默认值
+            individualDetailsVo.setRemainingServiceCount(0);
+            individualDetailsVo.setRemainingServiceMinutes(0);
+            individualDetailsVo.setServiceLevel(1); // 默认基础级别
+        }
+        
         return individualDetailsVo;
     }
     
@@ -227,7 +245,7 @@ public class UserService {
         
         // 填充用户信息
         corporateDetailsVo.setUserId(user.getId());
-        corporateDetailsVo.setUserName(user.getUsername());
+        corporateDetailsVo.setUsername(user.getUsername());
         corporateDetailsVo.setNickName(user.getNickName());
         corporateDetailsVo.setEmail(user.getEmail());
         corporateDetailsVo.setPhoneNumber(user.getPhoneNumber());
@@ -240,6 +258,22 @@ public class UserService {
         corporateDetailsVo.setCertificateNumber(corporateClient.getCertificateNumber());
         corporateDetailsVo.setContactPerson(corporateClient.getContactPerson());
         corporateDetailsVo.setIsValidFlag(corporateClient.getIsValidFlag());
+        
+        // 获取并填充客户服务信息
+        CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(Long.valueOf(userId));
+        if (serviceInfo != null) {
+            corporateDetailsVo.setRemainingServiceCount(serviceInfo.getRemainingServiceCount());
+            corporateDetailsVo.setRemainingServiceMinutes(serviceInfo.getRemainingServiceMinutes());
+            corporateDetailsVo.setServiceInfoUpdateTime(serviceInfo.getUpdateTime());
+            corporateDetailsVo.setServiceLevel(serviceInfo.getServiceLevel());
+            corporateDetailsVo.setMaxEmployeeCount(serviceInfo.getMaxEmployeeCount());
+        } else {
+            // 设置默认值
+            corporateDetailsVo.setRemainingServiceCount(0);
+            corporateDetailsVo.setRemainingServiceMinutes(0);
+            corporateDetailsVo.setServiceLevel(1); // 默认基础级别
+            corporateDetailsVo.setMaxEmployeeCount(5); // 默认员工数量上限
+        }
         
         return corporateDetailsVo;
     }

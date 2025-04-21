@@ -29,7 +29,7 @@ public class CorporateDetailsVo implements Serializable {
      * 用户名
      */
     @ApiModelProperty("用户名")
-    private String userName;
+    private String username;
     
     /**
      * 用户昵称
@@ -90,4 +90,36 @@ public class CorporateDetailsVo implements Serializable {
      */
     @ApiModelProperty("是否有效标志：1-有效，0-无效")
     private String isValidFlag;
+
+    // 客户服务信息相关字段
+
+    /**
+     * 剩余服务次数
+     */
+    @ApiModelProperty("剩余服务次数")
+    private Integer remainingServiceCount;
+
+    /**
+     * 剩余服务时长（分钟）
+     */
+    @ApiModelProperty("剩余服务时长（分钟）")
+    private Integer remainingServiceMinutes;
+
+    /**
+     * 服务信息更新时间
+     */
+    @ApiModelProperty("服务信息更新时间")
+    private Date serviceInfoUpdateTime;
+
+    /**
+     * 服务级别
+     */
+    @ApiModelProperty("服务级别：1-基础，2-标准，3-高级，4-企业VIP")
+    private Integer serviceLevel;
+
+    /**
+     * 企业员工数量上限
+     */
+    @ApiModelProperty("企业员工数量上限")
+    private Integer maxEmployeeCount;
 } 

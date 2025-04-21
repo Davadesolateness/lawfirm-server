@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="client_id" jdbcType="BIGINT" property="clientId" />
+        <result column="client_type" jdbcType="VARCHAR" property="clientType" />
+        <result column="remaining_service_count" jdbcType="INTEGER" property="remainingServiceCount" />
+        <result column="remaining_service_minutes" jdbcType="INTEGER" property="remainingServiceMinutes" />
+        <result column="service_level" jdbcType="INTEGER" property="serviceLevel" />
+        <result column="max_employee_count" jdbcType="INTEGER" property="maxEmployeeCount" />
+        <result column="service_start_time" jdbcType="TIMESTAMP" property="serviceStartTime" />
+        <result column="service_expire_time" jdbcType="TIMESTAMP" property="serviceExpireTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_valid_flag" jdbcType="CHAR" property="isValidFlag" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, client_id, client_type, remaining_service_count, remaining_service_minutes,
+        service_level, max_employee_count, service_start_time, service_expire_time, update_time,
+        is_valid_flag, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from customer_service_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from customer_service_info
+        where user_id = #{userId,jdbcType=BIGINT}
+        and is_valid_flag = '1'
+    </select>
+    
+    <select id="selectByClientInfo" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from customer_service_info
+        where client_id = #{clientId,jdbcType=BIGINT}
+        and client_type = #{clientType,jdbcType=VARCHAR}
+        and is_valid_flag = '1'
+    </select>
+    
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        insert into customer_service_info (
+            id, user_id, client_id, client_type, remaining_service_count,
+            remaining_service_minutes, service_level, max_employee_count, 
+            service_start_time, service_expire_time, update_time,
+            is_valid_flag, create_time
+        )
+        values (
+            #{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{clientId,jdbcType=BIGINT}, 
+            #{clientType,jdbcType=VARCHAR}, #{remainingServiceCount,jdbcType=INTEGER},
+            #{remainingServiceMinutes,jdbcType=INTEGER}, #{serviceLevel,jdbcType=INTEGER}, 
+            #{maxEmployeeCount,jdbcType=INTEGER}, #{serviceStartTime,jdbcType=TIMESTAMP}, 
+            #{serviceExpireTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{isValidFlag,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        insert into customer_service_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="clientId != null">
+                client_id,
+            </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
+            <if test="remainingServiceCount != null">
+                remaining_service_count,
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remaining_service_minutes,
+            </if>
+            <if test="serviceLevel != null">
+                service_level,
+            </if>
+            <if test="maxEmployeeCount != null">
+                max_employee_count,
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time,
+            </if>
+            <if test="serviceExpireTime != null">
+                service_expire_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="remainingServiceCount != null">
+                #{remainingServiceCount,jdbcType=INTEGER},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                #{remainingServiceMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="serviceLevel != null">
+                #{serviceLevel,jdbcType=INTEGER},
+            </if>
+            <if test="maxEmployeeCount != null">
+                #{maxEmployeeCount,jdbcType=INTEGER},
+            </if>
+            <if test="serviceStartTime != null">
+                #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceExpireTime != null">
+                #{serviceExpireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into customer_service_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="clientId != null">
+                client_id,
+            </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
+            <if test="remainingServiceCount != null">
+                remaining_service_count,
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remaining_service_minutes,
+            </if>
+            <if test="serviceLevel != null">
+                service_level,
+            </if>
+            <if test="maxEmployeeCount != null">
+                max_employee_count,
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time,
+            </if>
+            <if test="serviceExpireTime != null">
+                service_expire_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="remainingServiceCount != null">
+                #{remainingServiceCount,jdbcType=INTEGER},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                #{remainingServiceMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="serviceLevel != null">
+                #{serviceLevel,jdbcType=INTEGER},
+            </if>
+            <if test="maxEmployeeCount != null">
+                #{maxEmployeeCount,jdbcType=INTEGER},
+            </if>
+            <if test="serviceStartTime != null">
+                #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceExpireTime != null">
+                #{serviceExpireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        update customer_service_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="clientId != null">
+                client_id = #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientType != null">
+                client_type = #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="remainingServiceCount != null">
+                remaining_service_count = #{remainingServiceCount,jdbcType=INTEGER},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remaining_service_minutes = #{remainingServiceMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="serviceLevel != null">
+                service_level = #{serviceLevel,jdbcType=INTEGER},
+            </if>
+            <if test="maxEmployeeCount != null">
+                max_employee_count = #{maxEmployeeCount,jdbcType=INTEGER},
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time = #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceExpireTime != null">
+                service_expire_time = #{serviceExpireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag = #{isValidFlag,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByUserId" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        update customer_service_info
+        <set>
+            <if test="clientId != null">
+                client_id = #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientType != null">
+                client_type = #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="remainingServiceCount != null">
+                remaining_service_count = #{remainingServiceCount,jdbcType=INTEGER},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remaining_service_minutes = #{remainingServiceMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="serviceLevel != null">
+                service_level = #{serviceLevel,jdbcType=INTEGER},
+            </if>
+            <if test="maxEmployeeCount != null">
+                max_employee_count = #{maxEmployeeCount,jdbcType=INTEGER},
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time = #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceExpireTime != null">
+                service_expire_time = #{serviceExpireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValidFlag != null">
+                is_valid_flag = #{isValidFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+</mapper> 

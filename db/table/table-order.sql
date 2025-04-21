@@ -45,22 +45,34 @@ CREATE TABLE lawyer_service_stats
     PRIMARY KEY (lawyer_id)
 );
 
--- 记录客户服务基本信息
-CREATE TABLE customer_service_info
-(
-    id                         BIGINT AUTO_INCREMENT COMMENT '自增主键',
-    customer_id                BIGINT COMMENT '客户 ID',
-    customer_type              VARCHAR(20) COMMENT '客户类型',
-    remaining_service_count    BIGINT COMMENT '客户剩余服务次数',
-    remaining_service_duration BIGINT COMMENT '客户剩余服务时长，单位为分钟',
-    insert_time_for_his        DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '记录插入时间',
-    operate_time_for_his       DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
-    PRIMARY KEY (id)
-);
--- 为 customer_service_info 表添加索引
-CREATE INDEX idx_customer_service_info_id ON customer_service_info (id);
-CREATE INDEX idx_customer_service_info_customer_id ON customer_service_info (customer_id);
-CREATE INDEX idx_customer_service_info_customer_type ON customer_service_info (customer_type);
+
+-- 创建客户服务信息表
+DROP TABLE IF EXISTS customer_service_info;
+CREATE TABLE IF NOT EXISTS customer_service_info (
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    user_id BIGINT NOT NULL COMMENT '用户ID，关联user表',
+    client_id BIGINT COMMENT '客户ID，可能关联individual_client或corporate_client表',
+    client_type VARCHAR(20) COMMENT '客户类型：individual - 个人客户，corporate - 法人客户',
+    remaining_service_count INT DEFAULT 0 COMMENT '剩余服务次数',
+    remaining_service_minutes INT DEFAULT 0 COMMENT '剩余服务时长（分钟）',
+    service_level INT DEFAULT 1 COMMENT '服务级别：1-基础，2-标准，3-高级，4-VIP/企业VIP',
+    max_employee_count INT DEFAULT 5 COMMENT '企业客户专用：员工数量上限',
+    service_start_time DATETIME COMMENT '服务包开始时间',
+    service_expire_time DATETIME COMMENT '服务包到期时间',
+    update_time DATETIME COMMENT '上次更新时间',
+    is_valid_flag CHAR(1) DEFAULT '1' COMMENT '是否有效：1-有效，0-无效',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_user_id (user_id),
+    INDEX idx_client_info (client_id, client_type)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户服务信息表';
+
+-- 初始化一些测试数据
+INSERT INTO customer_service_info (user_id, client_id, client_type, remaining_service_count, remaining_service_minutes, service_level, service_start_time, service_expire_time, update_time)
+VALUES
+    (1, 1, 'individual', 5, 300, 2, DATE_SUB(NOW(), INTERVAL 1 MONTH), DATE_ADD(NOW(), INTERVAL 11 MONTH), NOW()),
+    (2, 1, 'corporate', 10, 600, 3, DATE_SUB(NOW(), INTERVAL 2 MONTH), DATE_ADD(NOW(), INTERVAL 10 MONTH), NOW()),
+    (3, 2, 'individual', 3, 180, 1, DATE_SUB(NOW(), INTERVAL 3 MONTH), DATE_ADD(NOW(), INTERVAL 9 MONTH), NOW());
+
 
 -- 记录福利发放到哪些客户
 CREATE TABLE welfare_distribution_customers
@@ -75,3 +87,5 @@ CREATE TABLE welfare_distribution_customers
 -- 为 welfare_distribution_customers 表添加索引
 CREATE INDEX idx_welfare_distribution_customers_order_id ON welfare_distribution_customers (order_id);
 CREATE INDEX idx_welfare_distribution_customers_user_id ON welfare_distribution_customers (user_id);
+
+
