@@ -65,23 +65,23 @@ public class LoginVo implements Serializable {
      */
     public LoginVo(String token, Object user) {
         this.token = token;
-        
+
         if (user instanceof User) {
             User userObj = (User) user;
             this.userId = String.valueOf(userObj.getId());
             this.userName = userObj.getUsername();
             this.userType = userObj.getUserType();
             this.phone = userObj.getPhoneNumber();
-            
+
             // 设置token过期时间（例如：2小时后过期）
             this.tokenExpireTime = System.currentTimeMillis() + 2 * 60 * 60 * 1000;
-            
+
             // 设置刷新token和过期时间（例如：7天后过期）
             this.refreshToken = token + "_refresh";
             this.refreshTokenExpireTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000;
         }
     }
-    
+
     /**
      * 设置律师相关信息
      */
@@ -99,10 +99,10 @@ public class LoginVo implements Serializable {
                     this.title = "初级律师";
                 }
             }
-            
+
             // 设置律师经验，直接使用工作年限
             this.experience = lawyer.getWorkYears() != null ? lawyer.getWorkYears() + "年" : "";
-            
+
             // 设置律师专长
             this.specialty = lawyer.getLawyerIntroduction();
         }

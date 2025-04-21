@@ -4,26 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawfirm.lawfirmserver.login.dao.LoginLogDao">
 
-    <insert id="insertLoginLog" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO login_log (
-            user_id,
-            phone,
-            login_type,
-            status,
-            ip,
-            device,
-            remark,
-            create_time
-        ) VALUES (
-                     #{userId},
-                     #{phone},
-                     #{loginType},
-                     #{status},
-                     #{ip},
-                     #{device},
-                     #{remark},
-                     #{createTime}
-                 )
+    <insert id="insertLoginLog" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO login_log (user_id,
+                               phone,
+                               login_type,
+                               status,
+                               ip,
+                               device,
+                               remark,
+                               create_time)
+        VALUES (#{userId},
+                #{phone},
+                #{loginType},
+                #{status},
+                #{ip},
+                #{device},
+                #{remark},
+                #{createTime})
     </insert>
 
 </mapper>

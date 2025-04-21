@@ -2,9 +2,9 @@ package com.lawfirm.lawfirmserver.user.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.user.service.UserService;
-import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
-import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -38,7 +38,7 @@ public class UserApi {
         Boolean result = userService.validateLogin(userPageVo.getUserVo().getUsername(), userPageVo.getUserVo().getPassword());
         // 将验证结果设置到 UserPageVo 对象的 result 属性中
         userPageVo.setResult(result);
-        
+
         if (result) {
             return Result.success("登录成功", userPageVo);
         } else {
@@ -66,7 +66,7 @@ public class UserApi {
         String newPassword = null;//userPageVo.getUserVo().getNewPassword();
 
         boolean result = userService.changePassword(username, oldPassword, newPassword);
-        
+
         if (result) {
             return Result.success("密码修改成功", null);
         } else {
@@ -91,7 +91,7 @@ public class UserApi {
         // 调用 UserService 的 saveOrUpdateUser 方法，将 UserPageVo 对象传递进去
         // 该方法会将用户信息保存或更新到数据库中
         userService.saveOrUpdateUser(userPageVo);
-        
+
         return Result.success("用户信息保存成功", userPageVo);
     }
 
@@ -105,7 +105,7 @@ public class UserApi {
     @RequestMapping(value = "/getIndividualDetails/{userId}", method = {RequestMethod.GET})
     @ApiOperation("获取个人用户详情")
     public Result<IndividualDetailsVo> getIndividualDetails(
-            @ApiParam(value = "用户ID", required = true, example = "1") 
+            @ApiParam(value = "用户ID", required = true, example = "1")
             @PathVariable("userId") Long userId) {
         IndividualDetailsVo details = userService.getIndividualDetails(userId);
         if (details != null && details.getUserId() != null) {
@@ -125,8 +125,8 @@ public class UserApi {
     @GetMapping(value = "/getCorporateDetails")
     @ApiOperation("获取法人用户详情")
     public Result<CorporateDetailsVo> getCorporateDetails(
-            @ApiParam(value = "用户ID", required = true, example = "1") 
-            @RequestParam(value="userId") String userId) {
+            @ApiParam(value = "用户ID", required = true, example = "1")
+            @RequestParam(value = "userId") String userId) {
         CorporateDetailsVo details = userService.getCorporateDetails(userId);
         if (details != null && details.getUserId() != null) {
             return Result.success("获取法人用户详情成功", details);

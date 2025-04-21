@@ -161,17 +161,17 @@ LOG_PATH=/var/log/lawfirm
 
 系统中使用的主要环境变量：
 
-| 环境变量                  | 描述                  | 默认值                          | 使用环境              |
-|-------------------------|-----------------------|--------------------------------|---------------------|
-| SPRING_PROFILES_ACTIVE  | 激活的环境配置            | dev                             | 所有                 |
-| MYSQL_HOST              | 数据库主机              | localhost                       | 所有                 |
-| MYSQL_PORT              | 数据库端口              | 5001 (dev), 3306 (其他)          | 所有                 |
-| MYSQL_DATABASE          | 数据库名称              | lawfirm_dev/lawfirm_test/lawfirm | 所有                 |
-| MYSQL_USERNAME          | 数据库用户名            | root                            | 所有                 |
-| MYSQL_PASSWORD          | 数据库密码              | root                            | 所有                 |
-| JWT_SECRET              | JWT签名密钥            | dev/test环境有默认值，生产环境必须设置    | 所有                 |
-| REDIS_HOST              | Redis主机             | localhost                       | prod, prod-cluster  |
-| REDIS_PORT              | Redis端口             | 6379                            | prod, prod-cluster  |
-| REDIS_PASSWORD          | Redis密码             | 无默认值                         | prod, prod-cluster  |
-| SERVER_PORT             | 服务器端口             | 8080                            | 所有                 |
-| LOG_PATH                | 日志路径              | logs/ (dev/test), /var/log/lawfirm (prod) | 所有        | 
+| 环境变量                   | 描述      | 默认值                                       | 使用环境               |
+|------------------------|---------|-------------------------------------------|--------------------|
+| SPRING_PROFILES_ACTIVE | 激活的环境配置 | dev                                       | 所有                 |
+| MYSQL_HOST             | 数据库主机   | localhost                                 | 所有                 |
+| MYSQL_PORT             | 数据库端口   | 5001 (dev), 3306 (其他)                     | 所有                 |
+| MYSQL_DATABASE         | 数据库名称   | lawfirm_dev/lawfirm_test/lawfirm          | 所有                 |
+| MYSQL_USERNAME         | 数据库用户名  | root                                      | 所有                 |
+| MYSQL_PASSWORD         | 数据库密码   | root                                      | 所有                 |
+| JWT_SECRET             | JWT签名密钥 | dev/test环境有默认值，生产环境必须设置                   | 所有                 |
+| REDIS_HOST             | Redis主机 | localhost                                 | prod, prod-cluster |
+| REDIS_PORT             | Redis端口 | 6379                                      | prod, prod-cluster |
+| REDIS_PASSWORD         | Redis密码 | 无默认值                                      | prod, prod-cluster |
+| SERVER_PORT            | 服务器端口   | 8080                                      | 所有                 |
+| LOG_PATH               | 日志路径    | logs/ (dev/test), /var/log/lawfirm (prod) | 所有                 | 

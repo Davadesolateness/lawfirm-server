@@ -108,7 +108,7 @@ public class LoginService {
             return Result.fail("账号已禁用");
         }
         String salt = RandomStringUtils.randomAlphanumeric(20);
-        System.out.println(passwordEncoder.encode(dto.getPassword() ));
+        System.out.println(passwordEncoder.encode(dto.getPassword()));
         // 2. 验证密码
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             saveLoginLog(dto.getPhone(), 1, user.getId(), "密码错误");

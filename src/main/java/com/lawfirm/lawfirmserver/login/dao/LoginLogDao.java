@@ -1,11 +1,8 @@
 package com.lawfirm.lawfirmserver.login.dao;
 
 import com.lawfirm.lawfirmserver.login.po.LoginLog;
-import com.lawfirm.lawfirmserver.login.po.SmsVerification;
 import ins.framework.mybatis.MybatisBaseDao;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 
 /**
  * 登录日志Mapper接口
