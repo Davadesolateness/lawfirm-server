@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.order.dao.OrderTimeDao">
+
+    <!-- 基本结果映射 -->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        <id column="order_time_id" property="orderTimeId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="time_node" property="timeNode"/>
+        <result column="time_value" property="timeValue"/>
+        <result column="insert_time_for_his" property="insertTimeForHis"/>
+        <result column="operate_time_for_his" property="operateTimeForHis"/>
+    </resultMap>
+    
+    <!-- 基本列 -->
+    <sql id="Base_Column_List">
+        order_time_id, order_id, time_node, time_value, insert_time_for_his, operate_time_for_his
+    </sql>
+    
+    <!-- 根据订单ID查询订单时间列表 -->
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM order_times
+        WHERE order_id = #{orderId}
+        ORDER BY time_value ASC
+    </select>
+    
+</mapper> 
