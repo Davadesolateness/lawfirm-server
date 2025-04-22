@@ -6,26 +6,107 @@
 
     <!-- 基本结果映射 -->
     <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.OrderTime">
-        <id column="order_time_id" property="orderTimeId"/>
-        <result column="order_id" property="orderId"/>
-        <result column="time_node" property="timeNode"/>
-        <result column="time_value" property="timeValue"/>
-        <result column="insert_time_for_his" property="insertTimeForHis"/>
-        <result column="operate_time_for_his" property="operateTimeForHis"/>
+        <id column="orderTimeId" property="orderTimeId"/>
+        <result column="orderId" property="orderId"/>
+        <result column="timeNode" property="timeNode"/>
+        <result column="timeValue" property="timeValue"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
     
     <!-- 基本列 -->
     <sql id="Base_Column_List">
-        order_time_id, order_id, time_node, time_value, insert_time_for_his, operate_time_for_his
+        orderTimeId, orderId, timeNode, timeValue, insertTimeForHis, operateTimeForHis
     </sql>
     
     <!-- 根据订单ID查询订单时间列表 -->
     <select id="selectByOrderId" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM order_times
-        WHERE order_id = #{orderId}
-        ORDER BY time_value ASC
+        FROM orderTimes
+        WHERE orderId = #{orderId}
+        ORDER BY timeValue ASC
     </select>
     
+    <!-- 根据订单ID和时间节点类型查询订单时间 -->
+    <select id="selectByOrderIdAndTimeNode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orderTimes
+        WHERE orderId = #{orderId}
+        AND timeNode = #{timeNode}
+    </select>
+    
+    <!-- 根据ID查询订单时间 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orderTimes
+        WHERE orderTimeId = #{orderTimeId}
+    </select>
+    
+    <!-- 插入订单时间记录 -->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime" useGeneratedKeys="true" keyProperty="orderTimeId">
+        INSERT INTO orderTimes (
+            orderId, timeNode, timeValue
+        ) VALUES (
+            #{orderId}, #{timeNode}, #{timeValue}
+        )
+    </insert>
+    
+    <!-- 批量插入订单时间记录 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO orderTimes (
+            orderId, timeNode, timeValue
+        ) VALUES 
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.orderId}, #{item.timeNode}, #{item.timeValue}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 更新订单时间记录 -->
+    <update id="update" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        UPDATE orderTimes
+        <set>
+            <if test="orderId != null">
+                orderId = #{orderId},
+            </if>
+            <if test="timeNode != null">
+                timeNode = #{timeNode},
+            </if>
+            <if test="timeValue != null">
+                timeValue = #{timeValue},
+            </if>
+        </set>
+        WHERE orderTimeId = #{orderTimeId}
+    </update>
+    
+    <!-- 根据订单ID和时间节点类型更新时间值 -->
+    <update id="updateTimeValueByOrderIdAndTimeNode">
+        UPDATE orderTimes
+        SET timeValue = #{timeValue}
+        WHERE orderId = #{orderId}
+        AND timeNode = #{timeNode}
+    </update>
+    
+    <!-- 根据订单ID删除所有时间记录 -->
+    <delete id="deleteByOrderId">
+        DELETE FROM orderTimes
+        WHERE orderId = #{orderId}
+    </delete>
+    
+    <!-- 根据ID删除订单时间记录 -->
+    <delete id="deleteById">
+        DELETE FROM orderTimes
+        WHERE orderTimeId = #{orderTimeId}
+    </delete>
+    
+    <!-- 统计订单的时间节点数量 -->
+    <select id="countByOrderId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM orderTimes
+        WHERE orderId = #{orderId}
+    </select>
 </mapper> 

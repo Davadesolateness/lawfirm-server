@@ -39,11 +39,11 @@ public class OrderService {
      * @param userId 用户ID
      * @return 订单列表
      */
-    public List<OrderVo> getOrdersByUserId(Long userId) {
+    public List<OrderVo> getOrdersByUserId(String userId) {
         logger.info("根据用户ID获取订单列表, userId: {}", userId);
         
         // 查询用户的所有订单
-        List<Order> orders = orderDao.selectByUserId(userId);
+        List<Order> orders = orderDao.selectByUserId(Long.valueOf(userId));
         if (orders == null || orders.isEmpty()) {
             return new ArrayList<>();
         }

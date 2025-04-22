@@ -35,7 +35,7 @@ public class OrderApi {
     @ApiOperation("获取用户的所有订单")
     public Result<List<OrderVo>> getUserOrders(
             @ApiParam(value = "用户ID", required = true, example = "1") 
-            @RequestParam("userId") Long userId) {
+            @RequestParam("userId") String userId) {
         List<OrderVo> orders = orderService.getOrdersByUserId(userId);
         return Result.success("获取用户订单成功", orders);
     }
