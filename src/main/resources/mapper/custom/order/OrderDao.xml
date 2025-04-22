@@ -19,6 +19,28 @@
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
     
+    <!-- 订单详情结果映射 -->
+    <resultMap id="OrderDetailResultMap" type="com.lawfirm.lawfirmserver.order.vo.OrderDetailVO">
+        <id column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="userType" property="userType"/>
+        <result column="lawyerId" property="lawyerId"/>
+        <result column="lawyerName" property="lawyerName"/>
+        <result column="lawyerTitle" property="lawyerTitle"/>
+        <result column="lawyerAvatar" property="lawyerAvatar"/>
+        <result column="orderType" property="orderType"/>
+        <result column="serviceDuration" property="serviceDuration"/>
+        <result column="serviceCount" property="serviceCount"/>
+        <result column="purchaseAmount" property="purchaseAmount"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="inputTime" property="inputTime"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+        <result column="serviceArea" property="serviceArea"/>
+        <result column="serviceMethod" property="serviceMethod"/>
+    </resultMap>
+    
     <!-- 基本列 -->
     <sql id="Base_Column_List">
         orderId, userId, userType, orderType, serviceDuration, serviceCount, 
@@ -40,6 +62,52 @@
         <include refid="Base_Column_List"/>
         FROM orders
         WHERE orderId = #{orderId}
+    </select>
+    
+    <!-- 获取订单详情，包含用户名、律师信息和订单数据 -->
+    <select id="getOrderDetail" resultMap="OrderDetailResultMap">
+        SELECT 
+            o.orderId, o.userId, o.userType, o.orderType, o.serviceDuration, 
+            o.serviceCount, o.purchaseAmount, o.orderStatus, o.inputTime, 
+            o.insertTimeForHis, o.operateTimeForHis,
+            u.username AS userName,
+            l.id AS lawyerId, l.name AS lawyerName, l.title AS lawyerTitle, 
+            l.avatar AS lawyerAvatar,
+            ot.serviceArea, ot.serviceMethod
+        FROM 
+            orders o
+        LEFT JOIN 
+            users u ON o.userId = u.id
+        LEFT JOIN 
+            lawyers l ON o.lawyerId = l.id
+        LEFT JOIN 
+            order_time ot ON o.orderId = ot.orderId
+        WHERE 
+            o.orderId = #{orderId}
+    </select>
+    
+    <!-- 获取用户的订单详情列表 -->
+    <select id="getOrderDetailsByUserId" resultMap="OrderDetailResultMap">
+        SELECT 
+            o.orderId, o.userId, o.userType, o.orderType, o.serviceDuration, 
+            o.serviceCount, o.purchaseAmount, o.orderStatus, o.inputTime, 
+            o.insertTimeForHis, o.operateTimeForHis,
+            u.username AS userName,
+            l.id AS lawyerId, l.name AS lawyerName, l.title AS lawyerTitle, 
+            l.avatar AS lawyerAvatar,
+            ot.serviceArea, ot.serviceMethod
+        FROM 
+            orders o
+        LEFT JOIN 
+            users u ON o.userId = u.id
+        LEFT JOIN 
+            lawyers l ON o.lawyerId = l.id
+        LEFT JOIN 
+            order_time ot ON o.orderId = ot.orderId
+        WHERE 
+            o.userId = #{userId}
+        ORDER BY 
+            o.inputTime DESC
     </select>
     
     <!-- 按条件搜索订单 -->

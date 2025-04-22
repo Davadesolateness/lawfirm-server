@@ -2,6 +2,7 @@ package com.lawfirm.lawfirmserver.order.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.order.service.OrderService;
+import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,5 +58,39 @@ public class OrderApi {
         } else {
             return Result.fail("订单不存在");
         }
+    }
+    
+    /**
+     * 获取包含用户名和律师信息的完整订单详情
+     * 
+     * @param orderId 订单ID
+     * @return 包含详细信息的订单详情
+     */
+    @GetMapping("/getCompleteOrderDetail")
+    @ApiOperation("获取包含用户和律师信息的完整订单详情")
+    public Result<OrderDetailVO> getCompleteOrderDetail(
+            @ApiParam(value = "订单ID", required = true, example = "1") 
+            @RequestParam("orderId") Long orderId) {
+        OrderDetailVO orderDetail = orderService.getOrderDetail(orderId);
+        if (orderDetail != null) {
+            return Result.success("获取完整订单详情成功", orderDetail);
+        } else {
+            return Result.fail("订单不存在或无法获取完整详情");
+        }
+    }
+    
+    /**
+     * 获取用户的所有详细订单
+     * 
+     * @param userId 用户ID
+     * @return 包含详细信息的订单列表
+     */
+    @GetMapping("/getUserOrderDetails")
+    @ApiOperation("获取用户的所有详细订单")
+    public Result<List<OrderDetailVO>> getUserOrderDetails(
+            @ApiParam(value = "用户ID", required = true, example = "1") 
+            @RequestParam("userId") Long userId) {
+        List<OrderDetailVO> orderDetails = orderService.getOrderDetailsByUserId(userId);
+        return Result.success("获取用户详细订单成功", orderDetails);
     }
 } 

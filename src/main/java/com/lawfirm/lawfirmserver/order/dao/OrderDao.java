@@ -1,6 +1,7 @@
 package com.lawfirm.lawfirmserver.order.dao;
 
 import com.lawfirm.lawfirmserver.order.po.Order;
+import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,20 @@ public interface OrderDao extends MybatisBaseDao<Order, Long> {
      * @return 订单
      */
     Order selectByOrderId(@Param("orderId") Long orderId);
+    
+    /**
+     * 获取订单详情，包含用户名、律师信息和订单数据
+     * 
+     * @param orderId 订单ID
+     * @return 包含详细信息的订单详情对象
+     */
+    OrderDetailVO getOrderDetail(@Param("orderId") Long orderId);
+    
+    /**
+     * 获取用户的订单详情列表
+     * 
+     * @param userId 用户ID
+     * @return 包含详细信息的订单详情列表
+     */
+    List<OrderDetailVO> getOrderDetailsByUserId(@Param("userId") Long userId);
 } 

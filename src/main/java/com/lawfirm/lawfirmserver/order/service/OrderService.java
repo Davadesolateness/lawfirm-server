@@ -4,6 +4,7 @@ import com.lawfirm.lawfirmserver.order.dao.OrderDao;
 import com.lawfirm.lawfirmserver.order.dao.OrderTimeDao;
 import com.lawfirm.lawfirmserver.order.po.Order;
 import com.lawfirm.lawfirmserver.order.po.OrderTime;
+import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.vo.OrderTimeVo;
 import com.lawfirm.lawfirmserver.order.vo.OrderVo;
 import org.slf4j.Logger;
@@ -101,5 +102,46 @@ public class OrderService {
         }
         
         return orderVo;
+    }
+    
+    /**
+     * 获取包含用户名和律师信息的订单详情
+     *
+     * @param orderId 订单ID
+     * @return 详细的订单信息
+     */
+    public OrderDetailVO getOrderDetail(Long orderId) {
+        logger.info("获取订单详情（包含用户和律师信息）, orderId: {}", orderId);
+        
+        // 直接调用Dao层的方法获取详细信息
+        OrderDetailVO orderDetail = orderDao.getOrderDetail(orderId);
+        if (orderDetail == null) {
+            logger.warn("未找到订单详情, orderId: {}", orderId);
+            return null;
+        }
+        
+        logger.info("成功获取订单详情, orderId: {}, userName: {}, lawyerName: {}", 
+                    orderId, orderDetail.getUserName(), orderDetail.getLawyerName());
+        return orderDetail;
+    }
+    
+    /**
+     * 获取用户的详细订单列表
+     *
+     * @param userId 用户ID
+     * @return 详细的订单列表
+     */
+    public List<OrderDetailVO> getOrderDetailsByUserId(Long userId) {
+        logger.info("获取用户的详细订单列表, userId: {}", userId);
+        
+        // 调用Dao层方法获取详细订单列表
+        List<OrderDetailVO> orderDetails = orderDao.getOrderDetailsByUserId(userId);
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("用户没有订单记录, userId: {}", userId);
+            return new ArrayList<>();
+        }
+        
+        logger.info("成功获取用户的详细订单列表, userId: {}, 订单数量: {}", userId, orderDetails.size());
+        return orderDetails;
     }
 }
