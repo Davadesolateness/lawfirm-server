@@ -1,5 +1,7 @@
+-- 若需删除 order 表，可取消此注释
+-- DROP TABLE IF EXISTS order;
 -- 记录订单的详细信息
-CREATE TABLE orders
+CREATE TABLE order
 (
     orderId           BIGINT AUTO_INCREMENT COMMENT '订单唯一标识，自增主键',
     userId            BIGINT COMMENT '下单的用户 ID',
@@ -15,15 +17,17 @@ CREATE TABLE orders
     operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '订单记录更新时间',
     PRIMARY KEY (orderId)
 );
--- 为 orders 表添加索引
-CREATE INDEX idx_orders_userId ON orders (userId);
-CREATE INDEX idx_orders_userType ON orders (userType);
-CREATE INDEX idx_orders_orderType ON orders (orderType);
-CREATE INDEX idx_orders_lawyerId ON orders (lawyerId);
-CREATE INDEX idx_orders_orderStatus ON orders (orderStatus);
+-- 为 order 表添加索引
+CREATE INDEX idx_order_userId ON order (userId);
+CREATE INDEX idx_order_userType ON order (userType);
+CREATE INDEX idx_order_orderType ON order (orderType);
+CREATE INDEX idx_order_lawyerId ON order (lawyerId);
+CREATE INDEX idx_order_orderStatus ON order (orderStatus);
 
+-- 若需删除 orderTime 表，可取消此注释
+-- DROP TABLE IF EXISTS orderTime;
 -- 记录订单的时间相关信息，可能用于跟踪订单的时间节点
-CREATE TABLE orderTimes
+CREATE TABLE orderTime
 (
     orderTimeId       BIGINT AUTO_INCREMENT COMMENT '订单时间记录唯一标识，自增主键',
     orderId           BIGINT COMMENT '关联的订单 ID',
@@ -33,11 +37,13 @@ CREATE TABLE orderTimes
     operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '时间记录更新时间',
     PRIMARY KEY (orderTimeId)
 );
--- 为 orderTimes 表添加索引
-CREATE INDEX idx_orderTimes_orderId ON orderTimes (orderId);
+-- 为 orderTime 表添加索引
+CREATE INDEX idx_orderTime_orderId ON orderTime (orderId);
 
+-- 若需删除 lawyerServiceStat 表，可取消此注释
+-- DROP TABLE IF EXISTS lawyerServiceStat;
 -- 记录律师的服务次数和时长统计信息
-CREATE TABLE lawyerServiceStats
+CREATE TABLE lawyerServiceStat
 (
     lawyerId             BIGINT COMMENT '律师 ID',
     totalServiceCount    BIGINT COMMENT '律师总的服务次数',
@@ -47,32 +53,15 @@ CREATE TABLE lawyerServiceStats
     PRIMARY KEY (lawyerId)
 );
 
+-- 若需删除 customerServiceInfo 表，可取消此注释
+-- DROP TABLE IF EXISTS customerServiceInfo;
 -- 创建客户服务信息表
-DROP TABLE IF EXISTS customerServiceInfo;
 CREATE TABLE IF NOT EXISTS customerServiceInfo
 (
-    id
-    BIGINT
-    PRIMARY
-    KEY
-    AUTO_INCREMENT
-    COMMENT
-    '主键ID',
-    userId
-    BIGINT
-    NOT
-    NULL
-    COMMENT
-    '用户ID，关联user表',
-    clientId
-    BIGINT
-    COMMENT
-    '客户ID，可能关联individual_client或corporate_client表',
-    clientType
-    VARCHAR
-(
-    20
-) COMMENT '客户类型：individual - 个人客户，corporate - 法人客户',
+    id                  BIGINT AUTO_INCREMENT COMMENT '主键ID',
+    userId              BIGINT NOT NULL COMMENT '用户ID，关联user表',
+    clientId            BIGINT COMMENT '客户ID，可能关联individual_client或corporate_client表',
+    clientType          VARCHAR(20) COMMENT '客户类型：individual - 个人客户，corporate - 法人客户',
     remainingServiceCount INT DEFAULT 0 COMMENT '剩余服务次数',
     remainingServiceMinutes INT DEFAULT 0 COMMENT '剩余服务时长（分钟）',
     serviceLevel INT DEFAULT 1 COMMENT '服务级别：1-基础，2-标准，3-高级，4-VIP/企业VIP',
@@ -80,25 +69,21 @@ CREATE TABLE IF NOT EXISTS customerServiceInfo
     serviceStartTime DATETIME COMMENT '服务包开始时间',
     serviceExpireTime DATETIME COMMENT '服务包到期时间',
     updateTime DATETIME COMMENT '上次更新时间',
-    isValidFlag CHAR
-(
-    1
-) DEFAULT '1' COMMENT '是否有效：1-有效，0-无效',
+    isValidFlag CHAR(1) DEFAULT '1' COMMENT '是否有效：1-有效，0-无效',
     createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    INDEX idx_user_id
-(
-    userId
-),
-    INDEX idx_client_info
-(
-    clientId,
-    clientType
-)
+    insertTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间，默认为当前时间',
+    operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间，自动更新',
+    PRIMARY KEY (id)  -- 按照要求调整主键格式
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户服务信息表';
 
+-- 为 customerServiceInfo 表添加索引
+CREATE INDEX idx_customerServiceInfo_userId ON customerServiceInfo (userId);
+CREATE INDEX idx_customerServiceInfo_clientId_clientType ON customerServiceInfo (clientId, clientType);
 
+-- 若需删除 welfareDistributionCustomer 表，可取消此注释
+-- DROP TABLE IF EXISTS welfareDistributionCustomer;
 -- 记录福利发放到哪些客户
-CREATE TABLE welfareDistributionCustomers
+CREATE TABLE welfareDistributionCustomer
 (
     distributionId    BIGINT AUTO_INCREMENT COMMENT '福利发放记录唯一标识，自增主键',
     orderId           BIGINT COMMENT '关联的福利发放订单 ID',
@@ -107,6 +92,6 @@ CREATE TABLE welfareDistributionCustomers
     operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
     PRIMARY KEY (distributionId)
 );
--- 为 welfareDistributionCustomers 表添加索引
-CREATE INDEX idx_welfareDistributionCustomers_orderId ON welfareDistributionCustomers (orderId);
-CREATE INDEX idx_welfareDistributionCustomers_userId ON welfareDistributionCustomers (userId);
+-- 为 welfareDistributionCustomer 表添加索引
+CREATE INDEX idx_welfareDistributionCustomer_orderId ON welfareDistributionCustomer (orderId);
+CREATE INDEX idx_welfareDistributionCustomer_userId ON welfareDistributionCustomer (userId);
