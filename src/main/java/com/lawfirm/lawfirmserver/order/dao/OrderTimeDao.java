@@ -12,10 +12,10 @@ import java.util.List;
  */
 @Mapper
 public interface OrderTimeDao extends MybatisBaseDao<OrderTime, Long> {
-    
+
     /**
      * 根据订单ID查询订单时间列表
-     * 
+     *
      * @param orderId 订单ID
      * @return 订单时间列表
      */

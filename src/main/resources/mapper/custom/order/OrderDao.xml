@@ -18,13 +18,14 @@
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
-    
+
     <!-- 基本列 -->
     <sql id="Base_Column_List">
-        orderId, userId, userType, orderType, serviceDuration, serviceCount, 
+        orderId
+        , userId, userType, orderType, serviceDuration, serviceCount,
         purchaseAmount, orderStatus, inputTime, insertTimeForHis, operateTimeForHis
     </sql>
-    
+
     <!-- 根据用户ID查询订单列表 -->
     <select id="selectByUserId" resultMap="BaseResultMap">
         SELECT
@@ -33,7 +34,7 @@
         WHERE userId = #{userId}
         ORDER BY inputTime DESC
     </select>
-    
+
     <!-- 根据订单ID查询订单 -->
     <select id="selectByOrderId" resultMap="BaseResultMap">
         SELECT
@@ -41,7 +42,7 @@
         FROM orders
         WHERE orderId = #{orderId}
     </select>
-    
+
     <!-- 按条件搜索订单 -->
     <select id="searchOrders" resultMap="BaseResultMap">
         SELECT
@@ -68,8 +69,8 @@
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (
-                    userId IN (SELECT userId FROM users WHERE username LIKE CONCAT('%', #{keyword}, '%'))
-                    OR orderId LIKE CONCAT('%', #{keyword}, '%')
+                userId IN (SELECT userId FROM users WHERE username LIKE CONCAT('%', #{keyword}, '%'))
+                OR orderId LIKE CONCAT('%', #{keyword}, '%')
                 )
             </if>
         </where>
@@ -78,7 +79,7 @@
             LIMIT #{pageSize} OFFSET (#{pageNum} - 1) * #{pageSize}
         </if>
     </select>
-    
+
     <!-- 分页获取订单列表 -->
     <select id="getOrdersPage" resultMap="BaseResultMap">
         SELECT
@@ -101,7 +102,7 @@
         ORDER BY inputTime DESC
         LIMIT #{pageSize} OFFSET (#{pageNum} - 1) * #{pageSize}
     </select>
-    
+
     <!-- 统计符合条件的订单数量 -->
     <select id="countOrders" resultType="java.lang.Integer">
         SELECT COUNT(*)
@@ -127,18 +128,16 @@
             </if>
         </where>
     </select>
-    
+
     <!-- 插入订单 -->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.Order" useGeneratedKeys="true" keyProperty="orderId">
-        INSERT INTO orders (
-            userId, userType, orderType, serviceDuration, serviceCount,
-            purchaseAmount, orderStatus, inputTime
-        ) VALUES (
-            #{userId}, #{userType}, #{orderType}, #{serviceDuration}, #{serviceCount},
-            #{purchaseAmount}, #{orderStatus}, #{inputTime}
-        )
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.Order" useGeneratedKeys="true"
+            keyProperty="orderId">
+        INSERT INTO orders (userId, userType, orderType, serviceDuration, serviceCount,
+                            purchaseAmount, orderStatus, inputTime)
+        VALUES (#{userId}, #{userType}, #{orderType}, #{serviceDuration}, #{serviceCount},
+                #{purchaseAmount}, #{orderStatus}, #{inputTime})
     </insert>
-    
+
     <!-- 更新订单 -->
     <update id="update" parameterType="com.lawfirm.lawfirmserver.order.po.Order">
         UPDATE orders
@@ -170,26 +169,26 @@
         </set>
         WHERE orderId = #{orderId}
     </update>
-    
+
     <!-- 根据订单ID删除订单（逻辑删除，将状态改为cancelled） -->
     <update id="deleteByOrderId">
         UPDATE orders
         SET orderStatus = 'cancelled'
         WHERE orderId = #{orderId}
     </update>
-    
+
     <!-- 根据用户ID统计订单数量 -->
     <select id="countByUserId" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM orders
         WHERE userId = #{userId}
     </select>
-    
+
     <!-- 根据用户ID和订单状态统计订单数量 -->
     <select id="countByUserIdAndStatus" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM orders
         WHERE userId = #{userId}
-        AND orderStatus = #{orderStatus}
+          AND orderStatus = #{orderStatus}
     </select>
 </mapper>

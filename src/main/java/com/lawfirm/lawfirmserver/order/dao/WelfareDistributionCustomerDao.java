@@ -12,18 +12,18 @@ import java.util.List;
  */
 @Mapper
 public interface WelfareDistributionCustomerDao extends MybatisBaseDao<WelfareDistributionCustomer, Long> {
-    
+
     /**
      * 根据订单ID查询福利发放客户列表
-     * 
+     *
      * @param orderId 订单ID
      * @return 福利发放客户列表
      */
     List<WelfareDistributionCustomer> selectByOrderId(@Param("orderId") Long orderId);
-    
+
     /**
      * 根据用户ID查询福利发放客户列表
-     * 
+     *
      * @param userId 用户ID
      * @return 福利发放客户列表
      */

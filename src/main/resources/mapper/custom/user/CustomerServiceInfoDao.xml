@@ -18,7 +18,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, userId, clientId, clientType, remainingServiceCount, remainingServiceMinutes,
+        id
+        , userId, clientId, clientType, remainingServiceCount, remainingServiceMinutes,
         serviceLevel, maxEmployeeCount, serviceStartTime, serviceExpireTime, updateTime,
         isValidFlag, createTime
     </sql>
@@ -49,9 +50,9 @@
 
     <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
         insert into customerServiceInfo (id, userId, clientId, clientType, remainingServiceCount,
-                                       remainingServiceMinutes, serviceLevel, maxEmployeeCount,
-                                       serviceStartTime, serviceExpireTime, updateTime,
-                                       isValidFlag, createTime)
+                                         remainingServiceMinutes, serviceLevel, maxEmployeeCount,
+                                         serviceStartTime, serviceExpireTime, updateTime,
+                                         isValidFlag, createTime)
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{clientId,jdbcType=BIGINT},
                 #{clientType,jdbcType=VARCHAR}, #{remainingServiceCount,jdbcType=INTEGER},
                 #{remainingServiceMinutes,jdbcType=INTEGER}, #{serviceLevel,jdbcType=INTEGER},
@@ -306,45 +307,45 @@
         </set>
         where userId = #{userId,jdbcType=BIGINT}
     </update>
-    
+
     <!-- 减少客户服务次数 -->
     <update id="decrementServiceCount">
         update customerServiceInfo
         set remainingServiceCount = remainingServiceCount - #{count,jdbcType=INTEGER},
             updateTime = NOW()
         where userId = #{userId,jdbcType=BIGINT}
-        and isValidFlag = '1'
-        and remainingServiceCount >= #{count,jdbcType=INTEGER}
+          and isValidFlag = '1'
+          and remainingServiceCount >= #{count,jdbcType=INTEGER}
     </update>
-    
+
     <!-- 减少客户服务时长 -->
     <update id="decrementServiceMinutes">
         update customerServiceInfo
         set remainingServiceMinutes = remainingServiceMinutes - #{minutes,jdbcType=INTEGER},
             updateTime = NOW()
         where userId = #{userId,jdbcType=BIGINT}
-        and isValidFlag = '1'
-        and remainingServiceMinutes >= #{minutes,jdbcType=INTEGER}
+          and isValidFlag = '1'
+          and remainingServiceMinutes >= #{minutes,jdbcType=INTEGER}
     </update>
-    
+
     <!-- 增加客户服务次数 -->
     <update id="incrementServiceCount">
         update customerServiceInfo
         set remainingServiceCount = remainingServiceCount + #{count,jdbcType=INTEGER},
             updateTime = NOW()
         where userId = #{userId,jdbcType=BIGINT}
-        and isValidFlag = '1'
+          and isValidFlag = '1'
     </update>
-    
+
     <!-- 增加客户服务时长 -->
     <update id="incrementServiceMinutes">
         update customerServiceInfo
         set remainingServiceMinutes = remainingServiceMinutes + #{minutes,jdbcType=INTEGER},
             updateTime = NOW()
         where userId = #{userId,jdbcType=BIGINT}
-        and isValidFlag = '1'
+          and isValidFlag = '1'
     </update>
-    
+
     <!-- 查询服务即将到期的客户 -->
     <select id="selectBySoonExpire" resultMap="BaseResultMap">
         select
@@ -362,7 +363,7 @@
         where serviceLevel = #{serviceLevel,jdbcType=INTEGER}
         and isValidFlag = '1'
     </select>
-    
+
     <!-- 根据客户类型查询客户服务信息 -->
     <select id="selectByClientType" resultMap="BaseResultMap">
         select
@@ -371,6 +372,6 @@
         where clientType = #{clientType,jdbcType=VARCHAR}
         and isValidFlag = '1'
     </select>
-    
+
 
 </mapper>

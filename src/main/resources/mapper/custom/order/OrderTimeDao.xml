@@ -13,12 +13,13 @@
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
-    
+
     <!-- 基本列 -->
     <sql id="Base_Column_List">
-        orderTimeId, orderId, timeNode, timeValue, insertTimeForHis, operateTimeForHis
+        orderTimeId
+        , orderId, timeNode, timeValue, insertTimeForHis, operateTimeForHis
     </sql>
-    
+
     <!-- 根据订单ID查询订单时间列表 -->
     <select id="selectByOrderId" resultMap="BaseResultMap">
         SELECT
@@ -27,7 +28,7 @@
         WHERE orderId = #{orderId}
         ORDER BY timeValue ASC
     </select>
-    
+
     <!-- 根据订单ID和时间节点类型查询订单时间 -->
     <select id="selectByOrderIdAndTimeNode" resultMap="BaseResultMap">
         SELECT
@@ -36,7 +37,7 @@
         WHERE orderId = #{orderId}
         AND timeNode = #{timeNode}
     </select>
-    
+
     <!-- 根据ID查询订单时间 -->
     <select id="selectById" resultMap="BaseResultMap">
         SELECT
@@ -44,28 +45,26 @@
         FROM orderTimes
         WHERE orderTimeId = #{orderTimeId}
     </select>
-    
+
     <!-- 插入订单时间记录 -->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime" useGeneratedKeys="true" keyProperty="orderTimeId">
-        INSERT INTO orderTimes (
-            orderId, timeNode, timeValue
-        ) VALUES (
-            #{orderId}, #{timeNode}, #{timeValue}
-        )
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime" useGeneratedKeys="true"
+            keyProperty="orderTimeId">
+        INSERT INTO orderTimes (orderId, timeNode, timeValue)
+        VALUES (#{orderId}, #{timeNode}, #{timeValue})
     </insert>
-    
+
     <!-- 批量插入订单时间记录 -->
     <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO orderTimes (
-            orderId, timeNode, timeValue
-        ) VALUES 
+        orderId, timeNode, timeValue
+        ) VALUES
         <foreach collection="list" item="item" separator=",">
             (
-                #{item.orderId}, #{item.timeNode}, #{item.timeValue}
+            #{item.orderId}, #{item.timeNode}, #{item.timeValue}
             )
         </foreach>
     </insert>
-    
+
     <!-- 更新订单时间记录 -->
     <update id="update" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
         UPDATE orderTimes
@@ -82,27 +81,29 @@
         </set>
         WHERE orderTimeId = #{orderTimeId}
     </update>
-    
+
     <!-- 根据订单ID和时间节点类型更新时间值 -->
     <update id="updateTimeValueByOrderIdAndTimeNode">
         UPDATE orderTimes
         SET timeValue = #{timeValue}
         WHERE orderId = #{orderId}
-        AND timeNode = #{timeNode}
+          AND timeNode = #{timeNode}
     </update>
-    
+
     <!-- 根据订单ID删除所有时间记录 -->
     <delete id="deleteByOrderId">
-        DELETE FROM orderTimes
+        DELETE
+        FROM orderTimes
         WHERE orderId = #{orderId}
     </delete>
-    
+
     <!-- 根据ID删除订单时间记录 -->
     <delete id="deleteById">
-        DELETE FROM orderTimes
+        DELETE
+        FROM orderTimes
         WHERE orderTimeId = #{orderTimeId}
     </delete>
-    
+
     <!-- 统计订单的时间节点数量 -->
     <select id="countByOrderId" resultType="java.lang.Integer">
         SELECT COUNT(*)

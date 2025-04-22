@@ -12,18 +12,18 @@ import java.util.List;
  */
 @Mapper
 public interface OrderDao extends MybatisBaseDao<Order, Long> {
-    
+
     /**
      * 根据用户ID查询订单列表
-     * 
+     *
      * @param userId 用户ID
      * @return 订单列表
      */
     List<Order> selectByUserId(@Param("userId") Long userId);
-    
+
     /**
      * 根据订单ID查询订单
-     * 
+     *
      * @param orderId 订单ID
      * @return 订单
      */

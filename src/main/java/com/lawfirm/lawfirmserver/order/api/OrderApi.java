@@ -7,15 +7,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
- * @description: 订单接口控制器
  * @author dongzhibo
- * @date 2025/4/21 21:40
  * @version 1.0
+ * @description: 订单接口控制器
+ * @date 2025/4/21 21:40
  */
 @RestController
 @RequestMapping("/order")
@@ -27,14 +30,14 @@ public class OrderApi {
 
     /**
      * 获取用户的所有订单
-     * 
+     *
      * @param userId 用户ID
      * @return 订单列表
      */
     @GetMapping("/getUserOrders")
     @ApiOperation("获取用户的所有订单")
     public Result<List<OrderVo>> getUserOrders(
-            @ApiParam(value = "用户ID", required = true, example = "1") 
+            @ApiParam(value = "用户ID", required = true, example = "1")
             @RequestParam("userId") String userId) {
         List<OrderVo> orders = orderService.getOrdersByUserId(userId);
         return Result.success("获取用户订单成功", orders);
@@ -42,14 +45,14 @@ public class OrderApi {
 
     /**
      * 获取订单详情
-     * 
+     *
      * @param orderId 订单ID
      * @return 订单详情
      */
     @GetMapping("/getOrderDetail")
     @ApiOperation("获取订单详情")
     public Result<OrderVo> getOrderDetail(
-            @ApiParam(value = "订单ID", required = true, example = "1") 
+            @ApiParam(value = "订单ID", required = true, example = "1")
             @RequestParam("orderId") Long orderId) {
         OrderVo order = orderService.getOrderById(orderId);
         if (order != null) {

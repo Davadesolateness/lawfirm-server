@@ -17,22 +17,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @description: 订单服务类
  * @author dongzhibo
- * @date 2025/4/21 21:31
  * @version 1.0
+ * @description: 订单服务类
+ * @date 2025/4/21 21:31
  */
 @Service
 public class OrderService {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
-    
+
     @Autowired
     private OrderDao orderDao;
-    
+
     @Autowired
     private OrderTimeDao orderTimeDao;
-    
+
     /**
      * 根据用户ID获取订单列表
      *
@@ -41,18 +41,18 @@ public class OrderService {
      */
     public List<OrderVo> getOrdersByUserId(String userId) {
         logger.info("根据用户ID获取订单列表, userId: {}", userId);
-        
+
         // 查询用户的所有订单
         List<Order> orders = orderDao.selectByUserId(Long.valueOf(userId));
         if (orders == null || orders.isEmpty()) {
             return new ArrayList<>();
         }
-        
+
         // 转换为VO对象
         List<OrderVo> orderVos = orders.stream().map(order -> {
             OrderVo orderVo = new OrderVo();
             BeanUtils.copyProperties(order, orderVo);
-            
+
             // 查询订单关联的时间信息
             List<OrderTime> orderTimes = orderTimeDao.selectByOrderId(order.getOrderId());
             if (orderTimes != null && !orderTimes.isEmpty()) {
@@ -63,13 +63,13 @@ public class OrderService {
                 }).collect(Collectors.toList());
                 orderVo.setOrderTimes(orderTimeVos);
             }
-            
+
             return orderVo;
         }).collect(Collectors.toList());
-        
+
         return orderVos;
     }
-    
+
     /**
      * 根据订单ID获取订单详情
      *
@@ -78,17 +78,17 @@ public class OrderService {
      */
     public OrderVo getOrderById(Long orderId) {
         logger.info("根据订单ID获取订单详情, orderId: {}", orderId);
-        
+
         // 查询订单
         Order order = orderDao.selectByOrderId(orderId);
         if (order == null) {
             return null;
         }
-        
+
         // 转换为VO对象
         OrderVo orderVo = new OrderVo();
         BeanUtils.copyProperties(order, orderVo);
-        
+
         // 查询订单关联的时间信息
         List<OrderTime> orderTimes = orderTimeDao.selectByOrderId(orderId);
         if (orderTimes != null && !orderTimes.isEmpty()) {
@@ -99,7 +99,7 @@ public class OrderService {
             }).collect(Collectors.toList());
             orderVo.setOrderTimes(orderTimeVos);
         }
-        
+
         return orderVo;
     }
 }
