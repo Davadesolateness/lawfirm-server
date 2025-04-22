@@ -1,7 +1,7 @@
--- 若需删除 order 表，可取消此注释
--- DROP TABLE IF EXISTS order;
+-- 若需删除 orders 表，可取消此注释
+-- DROP TABLE IF EXISTS orders;
 -- 记录订单的详细信息
-CREATE TABLE order
+CREATE TABLE orders
 (
     orderId           BIGINT AUTO_INCREMENT COMMENT '订单唯一标识，自增主键',
     userId            BIGINT COMMENT '下单的用户 ID',
@@ -17,12 +17,12 @@ CREATE TABLE order
     operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '订单记录更新时间',
     PRIMARY KEY (orderId)
 );
--- 为 order 表添加索引
-CREATE INDEX idx_order_userId ON order (userId);
-CREATE INDEX idx_order_userType ON order (userType);
-CREATE INDEX idx_order_orderType ON order (orderType);
-CREATE INDEX idx_order_lawyerId ON order (lawyerId);
-CREATE INDEX idx_order_orderStatus ON order (orderStatus);
+-- 为 orders 表添加索引
+CREATE INDEX idx_orders_userId ON orders (userId);
+CREATE INDEX idx_orders_userType ON orders (userType);
+CREATE INDEX idx_orders_orderType ON orders (orderType);
+CREATE INDEX idx_orders_lawyerId ON orders (lawyerId);
+CREATE INDEX idx_orders_orderStatus ON orders (orderStatus);
 
 -- 若需删除 orderTime 表，可取消此注释
 -- DROP TABLE IF EXISTS orderTime;
@@ -56,7 +56,7 @@ CREATE TABLE lawyerServiceStat
 -- 若需删除 customerServiceInfo 表，可取消此注释
 -- DROP TABLE IF EXISTS customerServiceInfo;
 -- 创建客户服务信息表
-CREATE TABLE IF NOT EXISTS customerServiceInfo
+CREATE TABLE customerServiceInfo
 (
     id                  BIGINT AUTO_INCREMENT COMMENT '主键ID',
     userId              BIGINT NOT NULL COMMENT '用户ID，关联user表',
@@ -73,9 +73,8 @@ CREATE TABLE IF NOT EXISTS customerServiceInfo
     createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     insertTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间，默认为当前时间',
     operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间，自动更新',
-    PRIMARY KEY (id)  -- 按照要求调整主键格式
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户服务信息表';
-
+    PRIMARY KEY (id)
+    );
 -- 为 customerServiceInfo 表添加索引
 CREATE INDEX idx_customerServiceInfo_userId ON customerServiceInfo (userId);
 CREATE INDEX idx_customerServiceInfo_clientId_clientType ON customerServiceInfo (clientId, clientType);
