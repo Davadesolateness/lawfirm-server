@@ -1,6 +1,6 @@
 package com.lawfirm.lawfirmserver.order.vo;
 
-import com.lawfirm.lawfirmserver.order.po.Order;
+import com.lawfirm.lawfirmserver.order.po.Orders;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -46,7 +46,7 @@ public class OrderDetailVO {
      * @param order 基础订单
      * @return 详情对象
      */
-    public static OrderDetailVO fromOrder(Order order) {
+    public static OrderDetailVO fromOrder(Orders order) {
         if (order == null) {
             return null;
         }
@@ -56,7 +56,7 @@ public class OrderDetailVO {
         vo.setUserId(order.getUserId());
         vo.setUserType(order.getUserType());
         vo.setOrderType(order.getOrderType());
-        vo.setPurchaseAmount(order.getPurchaseAmount());
+        vo.setPurchaseAmount(order.getAmount());
         vo.setServiceDuration(order.getServiceDuration());
         vo.setServiceCount(order.getServiceCount());
         vo.setOrderStatus(order.getOrderStatus());

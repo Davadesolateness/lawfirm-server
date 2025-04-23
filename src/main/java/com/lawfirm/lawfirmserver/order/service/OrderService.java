@@ -29,7 +29,7 @@ public class OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
-    private OrdersDao orderDao;
+    private OrdersDao ordersDao;
 
     @Autowired
     private OrderTimeDao orderTimeDao;
@@ -44,13 +44,13 @@ public class OrderService {
         logger.info("根据用户ID获取订单列表, userId: {}", userId);
 
         // 查询用户的所有订单
-        List<Orders> orders = orderDao.selectByUserId(Long.valueOf(userId));
+        List<Orders> orders = ordersDao.selectByUserId(Long.valueOf(userId));
         if (orders == null || orders.isEmpty()) {
             return new ArrayList<>();
         }
 
         // 转换为VO对象
-        List<OrdersVo> orderVos = orders.stream().map(order -> {
+        List<OrdersVo> ordersVos = orders.stream().map(order -> {
             OrdersVo ordersVo = new OrdersVo();
             BeanUtils.copyProperties(order, ordersVo);
 
@@ -68,7 +68,7 @@ public class OrderService {
             return ordersVo;
         }).collect(Collectors.toList());
 
-        return orderVos;
+        return ordersVos;
     }
 
     /**
@@ -81,14 +81,14 @@ public class OrderService {
         logger.info("根据订单ID获取订单详情, orderId: {}", orderId);
 
         // 查询订单
-        Orders order = orderDao.selectByOrderId(orderId);
+        Orders order = ordersDao.selectByOrderId(orderId);
         if (order == null) {
             return null;
         }
 
         // 转换为VO对象
-        OrdersVo orderVo = new OrdersVo();
-        BeanUtils.copyProperties(order, orderVo);
+        OrdersVo ordersVo = new OrdersVo();
+        BeanUtils.copyProperties(order, ordersVo);
 
         // 查询订单关联的时间信息
         List<OrderTime> orderTimes = orderTimeDao.selectByOrderId(orderId);
@@ -98,10 +98,10 @@ public class OrderService {
                 BeanUtils.copyProperties(orderTime, orderTimeVo);
                 return orderTimeVo;
             }).collect(Collectors.toList());
-            orderVo.setOrderTimes(orderTimeVos);
+            ordersVo.setOrderTimes(orderTimeVos);
         }
 
-        return orderVo;
+        return ordersVo;
     }
 
     /**
@@ -114,7 +114,7 @@ public class OrderService {
         logger.info("获取订单详情（包含用户和律师信息）, orderId: {}", orderId);
 
         // 直接调用Dao层的方法获取详细信息
-        OrderDetailVO orderDetail = orderDao.getOrderDetail(orderId);
+        OrderDetailVO orderDetail = ordersDao.getOrderDetail(orderId);
         if (orderDetail == null) {
             logger.warn("未找到订单详情, orderId: {}", orderId);
             return null;
@@ -135,7 +135,7 @@ public class OrderService {
         logger.info("获取用户的详细订单列表, userId: {}", userId);
 
         // 调用Dao层方法获取详细订单列表
-        List<OrderDetailVO> orderDetails = orderDao.getOrderDetailsByUserId(userId);
+        List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByUserId(userId);
         if (orderDetails == null || orderDetails.isEmpty()) {
             logger.info("用户没有订单记录, userId: {}", userId);
             return new ArrayList<>();
