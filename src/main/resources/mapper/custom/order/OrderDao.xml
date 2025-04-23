@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.order.dao.OrderDao">
+
+    <!-- 基本结果映射 -->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.Order">
+        <id column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="userType" property="userType"/>
+        <result column="orderType" property="orderType"/>
+        <result column="serviceDuration" property="serviceDuration"/>
+        <result column="serviceCount" property="serviceCount"/>
+        <result column="purchaseAmount" property="purchaseAmount"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="inputTime" property="inputTime"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+    
+    <!-- 订单详情结果映射 -->
+    <resultMap id="OrderDetailResultMap" type="com.lawfirm.lawfirmserver.order.vo.OrderDetailVO">
+        <id column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="userType" property="userType"/>
+        <result column="lawyerId" property="lawyerId"/>
+        <result column="lawyerName" property="lawyerName"/>
+        <result column="lawyerTitle" property="lawyerTitle"/>
+        <result column="lawyerAvatar" property="lawyerAvatar"/>
+        <result column="orderType" property="orderType"/>
+        <result column="serviceDuration" property="serviceDuration"/>
+        <result column="serviceCount" property="serviceCount"/>
+        <result column="purchaseAmount" property="purchaseAmount"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="inputTime" property="inputTime"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+        <result column="serviceArea" property="serviceArea"/>
+        <result column="serviceMethod" property="serviceMethod"/>
+    </resultMap>
+    
+    <!-- 基本列 -->
+    <sql id="Base_Column_List">
+        orderId, userId, userType, orderType, serviceDuration, serviceCount, 
+        purchaseAmount, orderStatus, inputTime, insertTimeForHis, operateTimeForHis
+    </sql>
+    
+    <!-- 根据用户ID查询订单列表 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        WHERE userId = #{userId}
+        ORDER BY inputTime DESC
+    </select>
+    
+    <!-- 根据订单ID查询订单 -->
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        WHERE orderId = #{orderId}
+    </select>
+    
+    <!-- 获取订单详情，包含用户名、律师信息和订单数据 -->
+    <select id="getOrderDetail" resultMap="OrderDetailResultMap">
+        SELECT 
+            o.orderId, o.userId, o.userType, o.orderType, o.serviceDuration, 
+            o.serviceCount, o.purchaseAmount, o.orderStatus, o.inputTime, 
+            o.insertTimeForHis, o.operateTimeForHis,
+            u.username AS userName,
+            l.id AS lawyerId, l.name AS lawyerName, l.title AS lawyerTitle, 
+            l.avatar AS lawyerAvatar,
+            ot.serviceArea, ot.serviceMethod
+        FROM 
+            orders o
+        LEFT JOIN 
+            users u ON o.userId = u.id
+        LEFT JOIN 
+            lawyers l ON o.lawyerId = l.id
+        LEFT JOIN 
+            order_time ot ON o.orderId = ot.orderId
+        WHERE 
+            o.orderId = #{orderId}
+    </select>
+    
+    <!-- 获取用户的订单详情列表 -->
+    <select id="getOrderDetailsByUserId" resultMap="OrderDetailResultMap">
+        SELECT 
+            o.orderId, o.userId, o.userType, o.orderType, o.serviceDuration, 
+            o.serviceCount, o.purchaseAmount, o.orderStatus, o.inputTime, 
+            o.insertTimeForHis, o.operateTimeForHis,
+            u.username AS userName,
+            l.id AS lawyerId, l.name AS lawyerName, l.title AS lawyerTitle, 
+            l.avatar AS lawyerAvatar,
+            ot.serviceArea, ot.serviceMethod
+        FROM 
+            orders o
+        LEFT JOIN 
+            users u ON o.userId = u.id
+        LEFT JOIN 
+            lawyers l ON o.lawyerId = l.id
+        LEFT JOIN 
+            order_time ot ON o.orderId = ot.orderId
+        WHERE 
+            o.userId = #{userId}
+        ORDER BY 
+            o.inputTime DESC
+    </select>
+    
+    <!-- 按条件搜索订单 -->
+    <select id="searchOrders" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        <where>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND userType = #{userType}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND orderStatus = #{orderStatus}
+            </if>
+            <if test="startTime != null">
+                AND inputTime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND inputTime &lt;= #{endTime}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    userId IN (SELECT userId FROM users WHERE username LIKE CONCAT('%', #{keyword}, '%'))
+                    OR orderId LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        ORDER BY inputTime DESC
+        <if test="pageSize != null and pageNum != null">
+            LIMIT #{pageSize} OFFSET (#{pageNum} - 1) * #{pageSize}
+        </if>
+    </select>
+    
+    <!-- 分页获取订单列表 -->
+    <select id="getOrdersPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        <where>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND userType = #{userType}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND orderStatus = #{orderStatus}
+            </if>
+        </where>
+        ORDER BY inputTime DESC
+        LIMIT #{pageSize} OFFSET (#{pageNum} - 1) * #{pageSize}
+    </select>
+    
+    <!-- 统计符合条件的订单数量 -->
+    <select id="countOrders" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM orders
+        <where>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND userType = #{userType}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND orderStatus = #{orderStatus}
+            </if>
+            <if test="startTime != null">
+                AND inputTime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND inputTime &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+    
+    <!-- 插入订单 -->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.Order" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO orders (
+            userId, userType, orderType, serviceDuration, serviceCount,
+            purchaseAmount, orderStatus, inputTime
+        ) VALUES (
+            #{userId}, #{userType}, #{orderType}, #{serviceDuration}, #{serviceCount},
+            #{purchaseAmount}, #{orderStatus}, #{inputTime}
+        )
+    </insert>
+    
+    <!-- 更新订单 -->
+    <update id="update" parameterType="com.lawfirm.lawfirmserver.order.po.Order">
+        UPDATE orders
+        <set>
+            <if test="userId != null">
+                userId = #{userId},
+            </if>
+            <if test="userType != null">
+                userType = #{userType},
+            </if>
+            <if test="orderType != null">
+                orderType = #{orderType},
+            </if>
+            <if test="serviceDuration != null">
+                serviceDuration = #{serviceDuration},
+            </if>
+            <if test="serviceCount != null">
+                serviceCount = #{serviceCount},
+            </if>
+            <if test="purchaseAmount != null">
+                purchaseAmount = #{purchaseAmount},
+            </if>
+            <if test="orderStatus != null">
+                orderStatus = #{orderStatus},
+            </if>
+            <if test="inputTime != null">
+                inputTime = #{inputTime},
+            </if>
+        </set>
+        WHERE orderId = #{orderId}
+    </update>
+    
+    <!-- 根据订单ID删除订单（逻辑删除，将状态改为cancelled） -->
+    <update id="deleteByOrderId">
+        UPDATE orders
+        SET orderStatus = 'cancelled'
+        WHERE orderId = #{orderId}
+    </update>
+    
+    <!-- 根据用户ID统计订单数量 -->
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE userId = #{userId}
+    </select>
+    
+    <!-- 根据用户ID和订单状态统计订单数量 -->
+    <select id="countByUserIdAndStatus" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE userId = #{userId}
+        AND orderStatus = #{orderStatus}
+    </select>
+</mapper>
