@@ -4,21 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawfirm.lawfirmserver.order.dao.WelfareDistributionCustomerDao">
 
-    <!-- 基本结果映射 -->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.WelfareDistributionCustomer">
-        <id column="distributionId" property="distributionId"/>
-        <result column="orderId" property="orderId"/>
-        <result column="userId" property="userId"/>
-        <result column="insertTimeForHis" property="insertTimeForHis"/>
-        <result column="operateTimeForHis" property="operateTimeForHis"/>
-    </resultMap>
-
-    <!-- 基本列 -->
-    <sql id="Base_Column_List">
-        distributionId
-        , orderId, userId, insertTimeForHis, operateTimeForHis
-    </sql>
-
     <!-- 根据订单ID查询福利发放客户列表 -->
     <select id="selectByOrderId" resultMap="BaseResultMap">
         SELECT
@@ -34,94 +19,4 @@
         FROM welfare_distribution_customers
         WHERE userId = #{userId}
     </select>
-
-    <!-- 根据分发ID查询福利发放客户 -->
-    <select id="selectByDistributionId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM welfare_distribution_customers
-        WHERE distributionId = #{distributionId}
-    </select>
-
-    <!-- 查询用户是否已经接收了指定订单的福利 -->
-    <select id="checkUserReceived" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM welfare_distribution_customers
-        WHERE orderId = #{orderId}
-          AND userId = #{userId}
-    </select>
-
-    <!-- 分页查询订单的福利发放客户列表 -->
-    <select id="selectByOrderIdWithPage" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM welfare_distribution_customers
-        WHERE orderId = #{orderId}
-        LIMIT #{pageSize} OFFSET (#{pageNum} - 1) * #{pageSize}
-    </select>
-
-    <!-- 统计订单的福利发放客户数量 -->
-    <select id="countByOrderId" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM welfare_distribution_customers
-        WHERE orderId = #{orderId}
-    </select>
-
-    <!-- 统计用户接收的福利数量 -->
-    <select id="countByUserId" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM welfare_distribution_customers
-        WHERE userId = #{userId}
-    </select>
-
-    <!-- 插入福利发放客户记录 -->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.WelfareDistributionCustomer"
-            useGeneratedKeys="true" keyProperty="distributionId">
-        INSERT INTO welfare_distribution_customers (orderId, userId)
-        VALUES (#{orderId}, #{userId})
-    </insert>
-
-    <!-- 批量插入福利发放客户记录 -->
-    <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO welfare_distribution_customers (
-        orderId, userId
-        ) VALUES
-        <foreach collection="list" item="item" separator=",">
-            (
-            #{item.orderId}, #{item.userId}
-            )
-        </foreach>
-    </insert>
-
-    <!-- 删除福利发放客户记录 -->
-    <delete id="deleteByDistributionId">
-        DELETE
-        FROM welfare_distribution_customers
-        WHERE distributionId = #{distributionId}
-    </delete>
-
-    <!-- 根据订单ID删除所有福利发放客户记录 -->
-    <delete id="deleteByOrderId">
-        DELETE
-        FROM welfare_distribution_customers
-        WHERE orderId = #{orderId}
-    </delete>
-
-    <!-- 根据用户ID和订单ID删除福利发放客户记录 -->
-    <delete id="deleteByUserIdAndOrderId">
-        DELETE
-        FROM welfare_distribution_customers
-        WHERE userId = #{userId}
-          AND orderId = #{orderId}
-    </delete>
-
-    <!-- 查询最近一段时间内用户接收福利的记录 -->
-    <select id="selectRecentByUserId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM welfare_distribution_customers
-        WHERE userId = #{userId}
-        AND insertTimeForHis >= #{startTime}
-        ORDER BY insertTimeForHis DESC
-    </select>
-</mapper> 
+</mapper>

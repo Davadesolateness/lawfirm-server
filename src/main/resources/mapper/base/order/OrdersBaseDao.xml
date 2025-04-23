@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.order.dao.OrdersDao">
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.Orders">
+		 <id column="orderId" property="orderId"/> 
+		 <result column="userId" property="userId"/> 
+		 <result column="userType" property="userType"/> 
+		 <result column="orderType" property="orderType"/> 
+		 <result column="serviceDuration" property="serviceDuration"/> 
+		 <result column="serviceCount" property="serviceCount"/> 
+		 <result column="lawyerId" property="lawyerId"/> 
+		 <result column="amount" property="amount"/> 
+		 <result column="orderStatus" property="orderStatus"/> 
+		 <result column="inputTime" property="inputTime"/> 
+		 <result column="insertTimeForHis" property="insertTimeForHis"/> 
+		 <result column="operateTimeForHis" property="operateTimeForHis"/> 
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 orderId, userId, userType, orderType, serviceDuration,
+		 serviceCount, lawyerId, amount, orderStatus, inputTime,
+		 insertTimeForHis, operateTimeForHis
+	</sql>
+
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="orderId != null" >
+			and orderId = #{orderId}
+		</if>
+		<if test="userId != null" >
+			and userId = #{userId}
+		</if>
+		<if test="userType != null" >
+			and userType = #{userType}
+		</if>
+		<if test="orderType != null" >
+			and orderType = #{orderType}
+		</if>
+		<if test="serviceDuration != null" >
+			and serviceDuration = #{serviceDuration}
+		</if>
+		<if test="serviceCount != null" >
+			and serviceCount = #{serviceCount}
+		</if>
+		<if test="lawyerId != null" >
+			and lawyerId = #{lawyerId}
+		</if>
+		<if test="amount != null" >
+			and amount = #{amount}
+		</if>
+		<if test="orderStatus != null" >
+			and orderStatus = #{orderStatus}
+		</if>
+		<if test="inputTime != null" >
+			and inputTime = #{inputTime}
+		</if>
+		<if test="insertTimeForHis != null" >
+			and insertTimeForHis = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null" >
+			and operateTimeForHis = #{operateTimeForHis}
+		</if>
+	</sql>
+
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from orders
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
+
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from orders
+		where orderId = #{param1}
+	</select>
+
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from orders
+		where orderId in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.order.po.Orders">
+		<include refid="Base_Select_By_Entity" />
+	</select>
+
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from orders
+		where orderId = #{param1}
+	</delete>
+
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from orders
+		where orderId in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.Orders">
+		insert into orders (orderId, userId, userType, orderType, serviceDuration, 
+			serviceCount, lawyerId, amount, orderStatus, inputTime, 
+			operateTimeForHis)
+		values(#{orderId}, #{userId}, #{userType}, #{orderType}, #{serviceDuration}, 
+			#{serviceCount}, #{lawyerId}, #{amount}, #{orderStatus}, #{inputTime}, 
+			now())
+	</insert>
+
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.order.po.Orders">
+		insert into orders
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="orderId != null" >
+				orderId,
+			</if>
+			<if test="userId != null" >
+				userId,
+			</if>
+			<if test="userType != null" >
+				userType,
+			</if>
+			<if test="orderType != null" >
+				orderType,
+			</if>
+			<if test="serviceDuration != null" >
+				serviceDuration,
+			</if>
+			<if test="serviceCount != null" >
+				serviceCount,
+			</if>
+			<if test="lawyerId != null" >
+				lawyerId,
+			</if>
+			<if test="amount != null" >
+				amount,
+			</if>
+			<if test="orderStatus != null" >
+				orderStatus,
+			</if>
+			<if test="inputTime != null" >
+				inputTime,
+			</if>
+			operateTimeForHis,
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="orderId != null" >
+				#{orderId},
+			</if>
+			<if test="userId != null" >
+				#{userId},
+			</if>
+			<if test="userType != null" >
+				#{userType},
+			</if>
+			<if test="orderType != null" >
+				#{orderType},
+			</if>
+			<if test="serviceDuration != null" >
+				#{serviceDuration},
+			</if>
+			<if test="serviceCount != null" >
+				#{serviceCount},
+			</if>
+			<if test="lawyerId != null" >
+				#{lawyerId},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="orderStatus != null" >
+				#{orderStatus},
+			</if>
+			<if test="inputTime != null" >
+				#{inputTime},
+			</if>
+			now(),
+		</trim>
+	</insert>
+
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.order.po.Orders">
+		update orders
+		<set>
+			<if test="userId != null" >
+				userId=#{userId},
+			</if>
+			<if test="userType != null" >
+				userType=#{userType},
+			</if>
+			<if test="orderType != null" >
+				orderType=#{orderType},
+			</if>
+			<if test="serviceDuration != null" >
+				serviceDuration=#{serviceDuration},
+			</if>
+			<if test="serviceCount != null" >
+				serviceCount=#{serviceCount},
+			</if>
+			<if test="lawyerId != null" >
+				lawyerId=#{lawyerId},
+			</if>
+			<if test="amount != null" >
+				amount=#{amount},
+			</if>
+			<if test="orderStatus != null" >
+				orderStatus=#{orderStatus},
+			</if>
+			<if test="inputTime != null" >
+				inputTime=#{inputTime},
+			</if>
+			operateTimeForHis=now(),
+		</set>
+		where orderId = #{orderId}
+	</update>
+
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.order.po.Orders">
+		update orders
+		set userId=#{userId},
+			userType=#{userType},
+			orderType=#{orderType},
+			serviceDuration=#{serviceDuration},
+			serviceCount=#{serviceCount},
+			lawyerId=#{lawyerId},
+			amount=#{amount},
+			orderStatus=#{orderStatus},
+			inputTime=#{inputTime},
+			operateTimeForHis=now()
+		where orderId = #{orderId}
+	</update>
+
+</mapper>

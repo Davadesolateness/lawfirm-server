@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="clientId" property="clientId"/>
+        <result column="clientType" property="clientType"/>
+        <result column="remainingServiceCount" property="remainingServiceCount"/>
+        <result column="remainingServiceMinutes" property="remainingServiceMinutes"/>
+        <result column="serviceLevel" property="serviceLevel"/>
+        <result column="maxEmployeeCount" property="maxEmployeeCount"/>
+        <result column="serviceStartTime" property="serviceStartTime"/>
+        <result column="serviceExpireTime" property="serviceExpireTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="isValidFlag" property="isValidFlag"/>
+        <result column="createTime" property="createTime"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id
+        , userId, clientId, clientType, remainingServiceCount,
+		 remainingServiceMinutes, serviceLevel, maxEmployeeCount, serviceStartTime, serviceExpireTime,
+		 updateTime, isValidFlag, createTime, insertTimeForHis, operateTimeForHis
+
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="userId != null">
+            and userId = #{userId}
+        </if>
+        <if test="clientId != null">
+            and clientId = #{clientId}
+        </if>
+        <if test="clientType != null">
+            and clientType = #{clientType}
+        </if>
+        <if test="remainingServiceCount != null">
+            and remainingServiceCount = #{remainingServiceCount}
+        </if>
+        <if test="remainingServiceMinutes != null">
+            and remainingServiceMinutes = #{remainingServiceMinutes}
+        </if>
+        <if test="serviceLevel != null">
+            and serviceLevel = #{serviceLevel}
+        </if>
+        <if test="maxEmployeeCount != null">
+            and maxEmployeeCount = #{maxEmployeeCount}
+        </if>
+        <if test="serviceStartTime != null">
+            and serviceStartTime = #{serviceStartTime}
+        </if>
+        <if test="serviceExpireTime != null">
+            and serviceExpireTime = #{serviceExpireTime}
+        </if>
+        <if test="updateTime != null">
+            and updateTime = #{updateTime}
+        </if>
+        <if test="isValidFlag != null">
+            and isValidFlag = #{isValidFlag}
+        </if>
+        <if test="createTime != null">
+            and createTime = #{createTime}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insertTimeForHis = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operateTimeForHis = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from customerserviceinfo
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from customerserviceinfo
+        where id = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from customerserviceinfo
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap"
+            parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from customerserviceinfo
+        where id = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from customerserviceinfo
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        insert into customerserviceinfo (id, userId, clientId, clientType, remainingServiceCount,
+                                         remainingServiceMinutes, serviceLevel, maxEmployeeCount, serviceStartTime,
+                                         serviceExpireTime,
+                                         updateTime, isValidFlag, createTime, operateTimeForHis)
+        values (#{id}, #{userId}, #{clientId}, #{clientType}, #{remainingServiceCount},
+                #{remainingServiceMinutes}, #{serviceLevel}, #{maxEmployeeCount}, #{serviceStartTime},
+                #{serviceExpireTime},
+                #{updateTime}, #{isValidFlag}, #{createTime}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        insert into customerserviceinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="clientId != null">
+                clientId,
+            </if>
+            <if test="clientType != null">
+                clientType,
+            </if>
+            <if test="remainingServiceCount != null">
+                remainingServiceCount,
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remainingServiceMinutes,
+            </if>
+            <if test="serviceLevel != null">
+                serviceLevel,
+            </if>
+            <if test="maxEmployeeCount != null">
+                maxEmployeeCount,
+            </if>
+            <if test="serviceStartTime != null">
+                serviceStartTime,
+            </if>
+            <if test="serviceExpireTime != null">
+                serviceExpireTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="isValidFlag != null">
+                isValidFlag,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="clientId != null">
+                #{clientId},
+            </if>
+            <if test="clientType != null">
+                #{clientType},
+            </if>
+            <if test="remainingServiceCount != null">
+                #{remainingServiceCount},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                #{remainingServiceMinutes},
+            </if>
+            <if test="serviceLevel != null">
+                #{serviceLevel},
+            </if>
+            <if test="maxEmployeeCount != null">
+                #{maxEmployeeCount},
+            </if>
+            <if test="serviceStartTime != null">
+                #{serviceStartTime},
+            </if>
+            <if test="serviceExpireTime != null">
+                #{serviceExpireTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        update customerserviceinfo
+        <set>
+            <if test="userId != null">
+                userId=#{userId},
+            </if>
+            <if test="clientId != null">
+                clientId=#{clientId},
+            </if>
+            <if test="clientType != null">
+                clientType=#{clientType},
+            </if>
+            <if test="remainingServiceCount != null">
+                remainingServiceCount=#{remainingServiceCount},
+            </if>
+            <if test="remainingServiceMinutes != null">
+                remainingServiceMinutes=#{remainingServiceMinutes},
+            </if>
+            <if test="serviceLevel != null">
+                serviceLevel=#{serviceLevel},
+            </if>
+            <if test="maxEmployeeCount != null">
+                maxEmployeeCount=#{maxEmployeeCount},
+            </if>
+            <if test="serviceStartTime != null">
+                serviceStartTime=#{serviceStartTime},
+            </if>
+            <if test="serviceExpireTime != null">
+                serviceExpireTime=#{serviceExpireTime},
+            </if>
+            <if test="updateTime != null">
+                updateTime=#{updateTime},
+            </if>
+            <if test="isValidFlag != null">
+                isValidFlag=#{isValidFlag},
+            </if>
+            <if test="createTime != null">
+                createTime=#{createTime},
+            </if>
+            operateTimeForHis=now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo">
+        update customerserviceinfo
+        set userId=#{userId},
+            clientId=#{clientId},
+            clientType=#{clientType},
+            remainingServiceCount=#{remainingServiceCount},
+            remainingServiceMinutes=#{remainingServiceMinutes},
+            serviceLevel=#{serviceLevel},
+            maxEmployeeCount=#{maxEmployeeCount},
+            serviceStartTime=#{serviceStartTime},
+            serviceExpireTime=#{serviceExpireTime},
+            updateTime=#{updateTime},
+            isValidFlag=#{isValidFlag},
+            createTime=#{createTime},
+            operateTimeForHis=now()
+        where id = #{id}
+    </update>
+
+</mapper>

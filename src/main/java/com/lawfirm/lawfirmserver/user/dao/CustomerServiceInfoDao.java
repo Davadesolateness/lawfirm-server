@@ -1,6 +1,7 @@
 package com.lawfirm.lawfirmserver.user.dao;
 
 import com.lawfirm.lawfirmserver.user.po.CustomerServiceInfo;
+import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,15 +9,8 @@ import org.apache.ibatis.annotations.Param;
  * 客户服务信息DAO接口
  */
 @Mapper
-public interface CustomerServiceInfoDao {
+public interface CustomerServiceInfoDao extends MybatisBaseDao<CustomerServiceInfo, Long> {
 
-    /**
-     * 根据主键ID查询
-     *
-     * @param id 主键ID
-     * @return 客户服务信息
-     */
-    CustomerServiceInfo selectByPrimaryKey(Long id);
 
     /**
      * 根据用户ID查询
@@ -35,21 +29,6 @@ public interface CustomerServiceInfoDao {
      */
     CustomerServiceInfo selectByClientInfo(@Param("clientId") Long clientId, @Param("clientType") String clientType);
 
-    /**
-     * 插入记录
-     *
-     * @param customerServiceInfo 客户服务信息
-     * @return 影响行数
-     */
-    int insert(CustomerServiceInfo customerServiceInfo);
-
-    /**
-     * 选择性插入记录
-     *
-     * @param customerServiceInfo 客户服务信息
-     * @return 影响行数
-     */
-    int insertSelective(CustomerServiceInfo customerServiceInfo);
 
     /**
      * 选择性插入记录并返回ID
@@ -59,13 +38,6 @@ public interface CustomerServiceInfoDao {
      */
     int insertSelectiveAndBackId(CustomerServiceInfo customerServiceInfo);
 
-    /**
-     * 根据主键选择性更新
-     *
-     * @param customerServiceInfo 客户服务信息
-     * @return 影响行数
-     */
-    int updateSelectiveByPrimaryKey(CustomerServiceInfo customerServiceInfo);
 
     /**
      * 根据用户ID更新

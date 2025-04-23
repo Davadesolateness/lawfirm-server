@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.order.dao.OrderTimeDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        <id column="orderTimeId" property="orderTimeId"/>
+        <result column="orderId" property="orderId"/>
+        <result column="timeNode" property="timeNode"/>
+        <result column="timeValue" property="timeValue"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        orderTimeId
+        , orderId, timeNode, timeValue, insertTimeForHis,
+		 operateTimeForHis
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="orderTimeId != null">
+            and orderTimeId = #{orderTimeId}
+        </if>
+        <if test="orderId != null">
+            and orderId = #{orderId}
+        </if>
+        <if test="timeNode != null">
+            and timeNode = #{timeNode}
+        </if>
+        <if test="timeValue != null">
+            and timeValue = #{timeValue}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insertTimeForHis = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operateTimeForHis = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from ordertime
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from ordertime
+        where orderTimeId = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from ordertime
+        where orderTimeId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from ordertime
+        where orderTimeId = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from ordertime
+        where orderTimeId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        insert into ordertime (orderTimeId, orderId, timeNode, timeValue, operateTimeForHis)
+        values (#{orderTimeId}, #{orderId}, #{timeNode}, #{timeValue}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        insert into ordertime
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderTimeId != null">
+                orderTimeId,
+            </if>
+            <if test="orderId != null">
+                orderId,
+            </if>
+            <if test="timeNode != null">
+                timeNode,
+            </if>
+            <if test="timeValue != null">
+                timeValue,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderTimeId != null">
+                #{orderTimeId},
+            </if>
+            <if test="orderId != null">
+                #{orderId},
+            </if>
+            <if test="timeNode != null">
+                #{timeNode},
+            </if>
+            <if test="timeValue != null">
+                #{timeValue},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        update ordertime
+        <set>
+            <if test="orderId != null">
+                orderId=#{orderId},
+            </if>
+            <if test="timeNode != null">
+                timeNode=#{timeNode},
+            </if>
+            <if test="timeValue != null">
+                timeValue=#{timeValue},
+            </if>
+            operateTimeForHis=now(),
+        </set>
+        where orderTimeId = #{orderTimeId}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.order.po.OrderTime">
+        update ordertime
+        set orderId=#{orderId},
+            timeNode=#{timeNode},
+            timeValue=#{timeValue},
+            operateTimeForHis=now()
+        where orderTimeId = #{orderTimeId}
+    </update>
+
+</mapper>

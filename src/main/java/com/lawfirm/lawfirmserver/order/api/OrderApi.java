@@ -2,7 +2,7 @@ package com.lawfirm.lawfirmserver.order.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.order.service.OrderService;
-import com.lawfirm.lawfirmserver.order.vo.OrderVo;
+import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,10 +36,10 @@ public class OrderApi {
      */
     @GetMapping("/getUserOrders")
     @ApiOperation("获取用户的所有订单")
-    public Result<List<OrderVo>> getUserOrders(
+    public Result<List<OrdersVo>> getUserOrders(
             @ApiParam(value = "用户ID", required = true, example = "1")
             @RequestParam("userId") String userId) {
-        List<OrderVo> orders = orderService.getOrdersByUserId(userId);
+        List<OrdersVo> orders = orderService.getOrdersByUserId(userId);
         return Result.success("获取用户订单成功", orders);
     }
 
@@ -51,10 +51,10 @@ public class OrderApi {
      */
     @GetMapping("/getOrderDetail")
     @ApiOperation("获取订单详情")
-    public Result<OrderVo> getOrderDetail(
+    public Result<OrdersVo> getOrderDetail(
             @ApiParam(value = "订单ID", required = true, example = "1")
             @RequestParam("orderId") Long orderId) {
-        OrderVo order = orderService.getOrderById(orderId);
+        OrdersVo order = orderService.getOrderById(orderId);
         if (order != null) {
             return Result.success("获取订单详情成功", order);
         } else {

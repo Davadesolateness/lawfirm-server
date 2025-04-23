@@ -53,32 +53,6 @@ CREATE TABLE lawyerServiceStat
     PRIMARY KEY (lawyerId)
 );
 
--- 若需删除 customerServiceInfo 表，可取消此注释
--- DROP TABLE IF EXISTS customerServiceInfo;
--- 创建客户服务信息表
-CREATE TABLE customerServiceInfo
-(
-    id                  BIGINT AUTO_INCREMENT COMMENT '主键ID',
-    userId              BIGINT NOT NULL COMMENT '用户ID，关联user表',
-    clientId            BIGINT COMMENT '客户ID，可能关联individual_client或corporate_client表',
-    clientType          VARCHAR(20) COMMENT '客户类型：individual - 个人客户，corporate - 法人客户',
-    remainingServiceCount INT DEFAULT 0 COMMENT '剩余服务次数',
-    remainingServiceMinutes INT DEFAULT 0 COMMENT '剩余服务时长（分钟）',
-    serviceLevel INT DEFAULT 1 COMMENT '服务级别：1-基础，2-标准，3-高级，4-VIP/企业VIP',
-    maxEmployeeCount INT DEFAULT 5 COMMENT '企业客户专用：员工数量上限',
-    serviceStartTime DATETIME COMMENT '服务包开始时间',
-    serviceExpireTime DATETIME COMMENT '服务包到期时间',
-    updateTime DATETIME COMMENT '上次更新时间',
-    isValidFlag CHAR(1) DEFAULT '1' COMMENT '是否有效：1-有效，0-无效',
-    createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    insertTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间，默认为当前时间',
-    operateTimeForHis DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间，自动更新',
-    PRIMARY KEY (id)
-    );
--- 为 customerServiceInfo 表添加索引
-CREATE INDEX idx_customerServiceInfo_userId ON customerServiceInfo (userId);
-CREATE INDEX idx_customerServiceInfo_clientId_clientType ON customerServiceInfo (clientId, clientType);
-
 -- 若需删除 welfareDistributionCustomer 表，可取消此注释
 -- DROP TABLE IF EXISTS welfareDistributionCustomer;
 -- 记录福利发放到哪些客户

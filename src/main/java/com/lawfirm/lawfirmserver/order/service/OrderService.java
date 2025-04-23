@@ -1,11 +1,11 @@
 package com.lawfirm.lawfirmserver.order.service;
 
-import com.lawfirm.lawfirmserver.order.dao.OrderDao;
+import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
 import com.lawfirm.lawfirmserver.order.dao.OrderTimeDao;
-import com.lawfirm.lawfirmserver.order.po.Order;
+import com.lawfirm.lawfirmserver.order.po.Orders;
 import com.lawfirm.lawfirmserver.order.po.OrderTime;
 import com.lawfirm.lawfirmserver.order.vo.OrderTimeVo;
-import com.lawfirm.lawfirmserver.order.vo.OrderVo;
+import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +28,7 @@ public class OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
-    private OrderDao orderDao;
+    private OrdersDao orderDao;
 
     @Autowired
     private OrderTimeDao orderTimeDao;
@@ -39,19 +39,19 @@ public class OrderService {
      * @param userId 用户ID
      * @return 订单列表
      */
-    public List<OrderVo> getOrdersByUserId(String userId) {
+    public List<OrdersVo> getOrdersByUserId(String userId) {
         logger.info("根据用户ID获取订单列表, userId: {}", userId);
 
         // 查询用户的所有订单
-        List<Order> orders = orderDao.selectByUserId(Long.valueOf(userId));
+        List<Orders> orders = orderDao.selectByUserId(Long.valueOf(userId));
         if (orders == null || orders.isEmpty()) {
             return new ArrayList<>();
         }
 
         // 转换为VO对象
-        List<OrderVo> orderVos = orders.stream().map(order -> {
-            OrderVo orderVo = new OrderVo();
-            BeanUtils.copyProperties(order, orderVo);
+        List<OrdersVo> orderVos = orders.stream().map(order -> {
+            OrdersVo ordersVo = new OrdersVo();
+            BeanUtils.copyProperties(order, ordersVo);
 
             // 查询订单关联的时间信息
             List<OrderTime> orderTimes = orderTimeDao.selectByOrderId(order.getOrderId());
@@ -61,10 +61,10 @@ public class OrderService {
                     BeanUtils.copyProperties(orderTime, orderTimeVo);
                     return orderTimeVo;
                 }).collect(Collectors.toList());
-                orderVo.setOrderTimes(orderTimeVos);
+                ordersVo.setOrderTimes(orderTimeVos);
             }
 
-            return orderVo;
+            return ordersVo;
         }).collect(Collectors.toList());
 
         return orderVos;
@@ -76,17 +76,17 @@ public class OrderService {
      * @param orderId 订单ID
      * @return 订单详情
      */
-    public OrderVo getOrderById(Long orderId) {
+    public OrdersVo getOrderById(Long orderId) {
         logger.info("根据订单ID获取订单详情, orderId: {}", orderId);
 
         // 查询订单
-        Order order = orderDao.selectByOrderId(orderId);
+        Orders order = orderDao.selectByOrderId(orderId);
         if (order == null) {
             return null;
         }
 
         // 转换为VO对象
-        OrderVo orderVo = new OrderVo();
+        OrdersVo orderVo = new OrdersVo();
         BeanUtils.copyProperties(order, orderVo);
 
         // 查询订单关联的时间信息

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerServiceStatDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        <id column="lawyerId" property="lawyerId"/>
+        <result column="totalServiceCount" property="totalServiceCount"/>
+        <result column="totalServiceDuration" property="totalServiceDuration"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        lawyerId
+        , totalServiceCount, totalServiceDuration, insertTimeForHis, operateTimeForHis
+
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="lawyerId != null">
+            and lawyerId = #{lawyerId}
+        </if>
+        <if test="totalServiceCount != null">
+            and totalServiceCount = #{totalServiceCount}
+        </if>
+        <if test="totalServiceDuration != null">
+            and totalServiceDuration = #{totalServiceDuration}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insertTimeForHis = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operateTimeForHis = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyerservicestat
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyerservicestat
+        where lawyerId = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from lawyerservicestat
+        where lawyerId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap"
+            parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from lawyerservicestat
+        where lawyerId = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from lawyerservicestat
+        where lawyerId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        insert into lawyerservicestat (lawyerId, totalServiceCount, totalServiceDuration, operateTimeForHis)
+        values (#{lawyerId}, #{totalServiceCount}, #{totalServiceDuration}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        insert into lawyerservicestat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lawyerId != null">
+                lawyerId,
+            </if>
+            <if test="totalServiceCount != null">
+                totalServiceCount,
+            </if>
+            <if test="totalServiceDuration != null">
+                totalServiceDuration,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lawyerId != null">
+                #{lawyerId},
+            </if>
+            <if test="totalServiceCount != null">
+                #{totalServiceCount},
+            </if>
+            <if test="totalServiceDuration != null">
+                #{totalServiceDuration},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        update lawyerservicestat
+        <set>
+            <if test="totalServiceCount != null">
+                totalServiceCount=#{totalServiceCount},
+            </if>
+            <if test="totalServiceDuration != null">
+                totalServiceDuration=#{totalServiceDuration},
+            </if>
+            operateTimeForHis=now(),
+        </set>
+        where lawyerId = #{lawyerId}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat">
+        update lawyerservicestat
+        set totalServiceCount=#{totalServiceCount},
+            totalServiceDuration=#{totalServiceDuration},
+            operateTimeForHis=now()
+        where lawyerId = #{lawyerId}
+    </update>
+
+</mapper>
