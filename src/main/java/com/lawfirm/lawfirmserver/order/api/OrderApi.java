@@ -3,7 +3,6 @@ package com.lawfirm.lawfirmserver.order.api;
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.order.service.OrderService;
 import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
-import com.lawfirm.lawfirmserver.order.vo.OrderVo;
 import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

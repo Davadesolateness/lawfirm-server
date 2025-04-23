@@ -3,8 +3,8 @@ package com.lawfirm.lawfirmserver.order.service;
 import com.lawfirm.lawfirmserver.order.dao.OrderTimeDao;
 import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
 import com.lawfirm.lawfirmserver.order.po.OrderTime;
-import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.po.Orders;
+import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.vo.OrderTimeVo;
 import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
 import org.slf4j.Logger;
@@ -121,7 +121,7 @@ public class OrderService {
         }
 
         logger.info("成功获取订单详情, orderId: {}, userName: {}, lawyerName: {}",
-                    orderId, orderDetail.getUserName(), orderDetail.getLawyerName());
+                orderId, orderDetail.getUserName(), orderDetail.getLawyerName());
         return orderDetail;
     }
 
