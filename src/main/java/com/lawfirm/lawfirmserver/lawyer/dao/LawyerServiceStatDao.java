@@ -1,9 +1,8 @@
 package com.lawfirm.lawfirmserver.lawyer.dao;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerServiceStat;
 import ins.framework.mybatis.MybatisBaseDao;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 表lawyerservicestat对应的基于MyBatis实现的Dao接口<br/>

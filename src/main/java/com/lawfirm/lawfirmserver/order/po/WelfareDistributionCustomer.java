@@ -6,10 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表welfaredistributioncustomer的PO对象<br/>
  * 对应表名：welfaredistributioncustomer
- *
  */
 @Data
 public class WelfareDistributionCustomer implements Serializable {
@@ -30,7 +28,9 @@ public class WelfareDistributionCustomer implements Serializable {
      * 对应字段：insertTimeForHis,备注：记录插入时间
      */
     private Date insertTimeForHis;
-    /** 对应字段：operateTimeForHis,备注：记录更新时间 */
+    /**
+     * 对应字段：operateTimeForHis,备注：记录更新时间
+     */
     private Date operateTimeForHis;
 
 }

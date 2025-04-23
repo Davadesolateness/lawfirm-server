@@ -6,10 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表customerserviceinfo的PO对象<br/>
  * 对应表名：customerserviceinfo
- *
  */
 @Data
 public class CustomerServiceInfo implements Serializable {

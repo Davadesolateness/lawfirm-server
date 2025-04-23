@@ -1,9 +1,9 @@
 package com.lawfirm.lawfirmserver.user.vo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * 通过ins-framework-mybatis工具自动生成，表customerserviceinfo的VO对象<br/>
