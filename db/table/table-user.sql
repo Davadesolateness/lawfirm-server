@@ -1,7 +1,7 @@
--- 若需删除 user 表，可取消此注释
--- DROP TABLE IF EXISTS user;
+-- 若需删除 users 表，可取消此注释
+-- DROP TABLE IF EXISTS users;
 -- 用户表，存储所有类型用户的通用信息
-CREATE TABLE user
+CREATE TABLE users
 (
     id                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '用户唯一标识，自增主键',
     openId             VARCHAR(100) COMMENT '开放平台的唯一标识',
@@ -19,10 +19,10 @@ CREATE TABLE user
     insertTimeForHis   TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '用户信息插入时间，默认为当前时间',
     operateTimeForHis  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户信息操作时间，自动更新'
 );
-CREATE INDEX idx_user_relatedEntityId ON user (relatedEntityId);
-CREATE INDEX idx_user_createTime ON user (createTime);
-CREATE INDEX idx_user_insertTimeForHis ON user (insertTimeForHis);
-CREATE INDEX idx_user_operateTimeForHis ON user (operateTimeForHis);
+CREATE INDEX idx_users_relatedEntityId ON users (relatedEntityId);
+CREATE INDEX idx_users_createTime ON users (createTime);
+CREATE INDEX idx_users_insertTimeForHis ON users (insertTimeForHis);
+CREATE INDEX idx_users_operateTimeForHis ON users (operateTimeForHis);
 
 -- 若需删除 corporateClient 表，可取消此注释
 -- DROP TABLE IF EXISTS corporateClient;

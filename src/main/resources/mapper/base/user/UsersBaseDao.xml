@@ -6,9 +6,9 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UserDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UsersDao">
     <!-- 通用查询结果对象-->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.User">
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.user.po.Users">
         <id column="id" property="id"/>
         <result column="openId" property="openId"/>
         <result column="username" property="username"/>
@@ -88,7 +88,7 @@
     <sql id="Base_Select_By_Entity">
         select
         <include refid="Base_Column_List"/>
-        from user
+		from users
         <where>
             <include refid="Base_Select_By_Entity_Where"/>
         </where>
@@ -98,7 +98,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from user
+		from users
         where id = #{param1}
     </select>
 
@@ -106,7 +106,7 @@
     <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from user
+		from users
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -114,20 +114,20 @@
     </select>
 
     <!-- 按对象查询一页记录（多条记录） -->
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         <include refid="Base_Select_By_Entity"/>
     </select>
 
     <!-- 按主键删除一条记录 -->
     <delete id="deleteByPrimaryKey" parameterType="map">
         delete
-        from user
+		from users
         where id = #{param1}
     </delete>
 
     <!-- 按主键List删除多条记录 -->
     <delete id="deleteBatchByPrimaryKeys" parameterType="map">
-        delete from user
+		delete from users
         where id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -135,18 +135,18 @@
     </delete>
 
     <!-- 完整插入一条记录-->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        insert into user (id, openId, username, password, passwordUpdateTime,
-                          nickName, email, phoneNumber, userType, sourceType,
-                          relatedEntityId, createTime, isValidFlag, operateTimeForHis)
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
+		insert into users (id, openId, username, password, passwordUpdateTime,
+						   nickName, email, phoneNumber, userType, sourceType,
+						   relatedEntityId, createTime, isValidFlag, operateTimeForHis)
         values (#{id}, #{openId}, #{username}, #{password}, #{passwordUpdateTime},
                 #{nickName}, #{email}, #{phoneNumber}, #{userType}, #{sourceType},
                 #{relatedEntityId}, #{createTime}, #{isValidFlag}, now())
     </insert>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        insert into user
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
+		insert into users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -235,8 +235,8 @@
     </insert>
 
     <!-- 更新一条记录(为空的字段不操作) -->
-    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        update user
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
+		update users
         <set>
             <if test="openId != null">
                 openId=#{openId},
@@ -280,8 +280,8 @@
     </update>
 
     <!-- 完整更新一条记录 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.User">
-        update user
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
+		update users
         set openId=#{openId},
             username=#{username},
             password=#{password},

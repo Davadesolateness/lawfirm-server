@@ -34,3 +34,4 @@ build/
 .vscode/
 /logs/lawfirm-server-dev.log
 /logs/lawfirm-server-test.log
+/logs/lawfirm-server-test.log.2025-04-23.0.gz

@@ -9,8 +9,8 @@ import com.lawfirm.lawfirmserver.login.dto.*;
 import com.lawfirm.lawfirmserver.login.po.LoginLog;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import com.lawfirm.lawfirmserver.security.JwtTokenProvider;
-import com.lawfirm.lawfirmserver.user.dao.UserDao;
-import com.lawfirm.lawfirmserver.user.po.User;
+import com.lawfirm.lawfirmserver.user.dao.UsersDao;
+import com.lawfirm.lawfirmserver.user.po.Users;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class LoginService {
     private static final Logger log = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired
-    private UserDao userDao;
+    private UsersDao userDao;
 
     @Autowired
     private SmsVerificationDao smsCodeMapper;
@@ -97,7 +97,7 @@ public class LoginService {
      */
     public Result<LoginVo> loginByPassword(LoginByPasswordDTO dto) {
         // 1. 查询用户
-        User user = userDao.selectByPhone(dto.getPhone());
+        Users user = userDao.selectByPhone(dto.getPhone());
         if (user == null) {
             saveLoginLog(dto.getPhone(), 1, null, "用户不存在");
             return Result.fail("用户不存在");
@@ -143,7 +143,7 @@ public class LoginService {
             String sessionKey = wxResult.getSessionKey();
 
             // 2. 检查用户是否已存在
-            User user = null;//userDao.selectByOpenId(openId);
+            Users user = null;//userDao.selectByOpenId(openId);
 
             // 3. 如果用户不存在，则创建新用户
             if (user == null) {
@@ -154,7 +154,7 @@ public class LoginService {
                 }
 
                 // 创建新用户
-                user = new User();
+                user = new Users();
            /*     user.setOpenId(openId);
                 user.setUnionId(wxResult.getUnionid());
                 user.setNickname(userInfo != null ? userInfo.getNickName() : "微信用户");*/
@@ -231,7 +231,7 @@ public class LoginService {
 
         // 2. 如果是注册验证码，检查手机号是否已注册
         if (type == 2) {
-            User user = userDao.selectByPhone(phone);
+            Users user = userDao.selectByPhone(phone);
             if (user != null) {
                 return Result.fail("手机号已注册");
             }
@@ -271,7 +271,7 @@ public class LoginService {
             }
 
             // 3. 查询用户
-            User user = userDao.selectById(Long.valueOf(userId));
+            Users user = userDao.selectById(Long.valueOf(userId));
             if (user == null) {
                 return Result.fail("用户不存在");
             }

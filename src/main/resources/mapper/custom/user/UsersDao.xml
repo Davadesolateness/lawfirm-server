@@ -3,14 +3,14 @@
 <!-- ============================================================== -->
 <!-- ================可直接使用Base配置文件中定义的节点！================ -->
 <!-- ============================================================== -->
-<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UserDao">
+<mapper namespace="com.lawfirm.lawfirmserver.user.dao.UsersDao">
     <!-- 请在下方添加自定义配置-->
 
     <!-- 按用户名查询一条记录 -->
     <select id="selectUserByUserName" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from user
+        from users
         where username = #{username}
     </select>
 
@@ -18,7 +18,7 @@
     <select id="selectByPhone" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from user
+        from users
         where phoneNumber = #{phone}
     </select>
 
@@ -26,16 +26,16 @@
     <select id="selectById" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from user
+        from users
         where id = #{userId}
     </select>
 
     <!-- 插入一条记录(为空的字段不操作) -->
-    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.User">
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.Users">
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID() AS value
         </selectKey>
-        insert into user
+        insert into users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,

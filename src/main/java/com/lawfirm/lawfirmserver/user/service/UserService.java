@@ -8,7 +8,7 @@ import com.lawfirm.lawfirmserver.user.dao.*;
 import com.lawfirm.lawfirmserver.user.po.*;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
-import com.lawfirm.lawfirmserver.user.vo.UserPageVo;
+import com.lawfirm.lawfirmserver.user.vo.UsersPageVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    private UserDao userDao;
+    private UsersDao userDao;
     @Autowired
     private LawyerDao lawyerDao;
     @Autowired
@@ -48,7 +48,7 @@ public class UserService {
      */
     public boolean validateLogin(String username, String plainPassword) {
         // 调用 userDao 的 selectUserByUserName 方法，根据传入的用户名从数据库中查询对应的用户信息
-        User user = userDao.selectUserByUserName(username);
+        Users user = userDao.selectUserByUserName(username);
         // 初始化验证结果为 false，表示默认登录验证失败
         Boolean result = false;
         // 判断根据用户名查询到的用户是否存在
@@ -70,21 +70,21 @@ public class UserService {
      */
     public boolean changePassword(String username, String oldPassword, String newPassword) {
         // 根据用户名查询用户信息
-        User user = userDao.selectUserByUserName(username);
-        if (user == null) {
+        Users users = userDao.selectUserByUserName(username);
+        if (users == null) {
             return false;
         }
         // 验证旧密码是否正确
-        if (!CommonUtil.checkPassword(oldPassword, user.getPassword())) {
+        if (!CommonUtil.checkPassword(oldPassword, users.getPassword())) {
             return false;
         }
         // 对新密码进行加密处理
         String encryptedNewPassword = CommonUtil.encryptPassword(newPassword);
-        user.setPassword(encryptedNewPassword);
+        users.setPassword(encryptedNewPassword);
         // 更新密码修改时间为当前时间
-        user.setPasswordUpdateTime(new Date());
+        users.setPasswordUpdateTime(new Date());
         // 将更新后的用户信息保存到数据库
-        userDao.updateSelectiveByPrimaryKey(user);
+        userDao.updateSelectiveByPrimaryKey(users);
         // 密码修改成功，返回 true
         return true;
     }
@@ -98,62 +98,62 @@ public class UserService {
      *
      * @param userPageVo 包含用户信息和关联实体信息的 UserPageVo 对象
      */
-    public void saveOrUpdateUser(UserPageVo userPageVo) {
+    public void saveOrUpdateUser(UsersPageVo userPageVo) {
         // 创建用于存储不同类型信息的对象
-        User user = new User();
+        Users users = new Users();
         CorporateClient corporateClient = new CorporateClient();
         IndividualClient individualClient = new IndividualClient();
         Lawyer lawyer = new Lawyer();
         Administrator administrator = new Administrator();
 
         // 将 userPageVo 中的各部分信息复制到对应的对象中
-        CommonUtil.copyProperties(userPageVo.getUserVo(), user);
+        CommonUtil.copyProperties(userPageVo.getUsersVo(), users);
         CommonUtil.copyProperties(userPageVo.getCorporateClientVo(), corporateClient);
         CommonUtil.copyProperties(userPageVo.getIndividualClientVo(), individualClient);
         CommonUtil.copyProperties(userPageVo.getLawyerVo(), lawyer);
         CommonUtil.copyProperties(userPageVo.getAdministratorVo(), administrator);
 
-        if (userPageVo.getUserVo().getId() == null) {
+        if (userPageVo.getUsersVo().getId() == null) {
             // 插入用户信息并获取插入后的 ID
-            userDao.insertSelectiveAndBackId(user);
+            userDao.insertSelectiveAndBackId(users);
             // 加密用户密码并更新密码更新时间
-            user.setPassword(CommonUtil.encryptPassword(userPageVo.getUserVo().getPassword()));
-            user.setPasswordUpdateTime(new Date());
+            users.setPassword(CommonUtil.encryptPassword(userPageVo.getUsersVo().getPassword()));
+            users.setPasswordUpdateTime(new Date());
 
             // 根据用户类型插入关联实体信息并建立关联
-            if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
+            if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
                 corporateClientDao.insertSelectiveAndBackId(corporateClient);
-                user.setRelatedEntityId(corporateClient.getId());
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
+                users.setRelatedEntityId(corporateClient.getId());
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
                 individualClientDao.insertSelectiveAndBackId(individualClient);
-                user.setRelatedEntityId(individualClient.getId());
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
+                users.setRelatedEntityId(individualClient.getId());
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.insertSelectiveAndBackId(lawyer);
-                user.setRelatedEntityId(lawyer.getId());
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
+                users.setRelatedEntityId(lawyer.getId());
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
                 administratorDao.insertSelectiveAndBackId(administrator);
-                user.setRelatedEntityId(administrator.getId());
+                users.setRelatedEntityId(administrator.getId());
             }
             // 更新用户信息到数据库
-            userDao.updateSelectiveByPrimaryKey(user);
+            userDao.updateSelectiveByPrimaryKey(users);
         } else {
             // 更新用户信息到数据库
-            userDao.updateSelectiveByPrimaryKey(user);
+            userDao.updateSelectiveByPrimaryKey(users);
 
             // 根据用户类型更新关联实体信息
-            if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
+            if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_CORPORATE)) {
                 corporateClientDao.updateSelectiveByPrimaryKey(corporateClient);
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_INDIVIDUAL)) {
                 individualClientDao.updateSelectiveByPrimaryKey(individualClient);
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_LAWYER)) {
                 lawyerDao.updateSelectiveByPrimaryKey(lawyer);
-            } else if (CommonUtil.equals(userPageVo.getUserVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
+            } else if (CommonUtil.equals(userPageVo.getUsersVo().getUserType(), UserContant.USERTYPE_ADMIN)) {
                 administratorDao.updateSelectiveByPrimaryKey(administrator);
             }
         }
 
         // 将更新后的信息复制回 userPageVo 中
-        CommonUtil.copyProperties(user, userPageVo.getUserVo());
+        CommonUtil.copyProperties(users, userPageVo.getUsersVo());
         CommonUtil.copyProperties(corporateClient, userPageVo.getCorporateClientVo());
         CommonUtil.copyProperties(individualClient, userPageVo.getIndividualClientVo());
         CommonUtil.copyProperties(lawyer, userPageVo.getLawyerVo());
@@ -172,24 +172,24 @@ public class UserService {
         IndividualDetailsVo individualDetailsVo = new IndividualDetailsVo();
 
         // 获取用户基本信息
-        User user = userDao.selectByPrimaryKey(userId);
-        if (user == null) {
+        Users users = userDao.selectByPrimaryKey(userId);
+        if (users == null) {
             return individualDetailsVo;
         }
 
         // 获取个人客户信息
-        IndividualClient individualClient = individualClientDao.selectByPrimaryKey(user.getRelatedEntityId());
+        IndividualClient individualClient = individualClientDao.selectByPrimaryKey(users.getRelatedEntityId());
         if (individualClient == null) {
             return individualDetailsVo;
         }
 
         // 填充用户信息
-        individualDetailsVo.setUserId(user.getId());
-        individualDetailsVo.setUsername(user.getUsername());
-        individualDetailsVo.setNickName(user.getNickName());
-        individualDetailsVo.setEmail(user.getEmail());
-        individualDetailsVo.setPhoneNumber(user.getPhoneNumber());
-        individualDetailsVo.setCreateTime(user.getCreateTime());
+        individualDetailsVo.setUserId(users.getId());
+        individualDetailsVo.setUsername(users.getUsername());
+        individualDetailsVo.setNickName(users.getNickName());
+        individualDetailsVo.setEmail(users.getEmail());
+        individualDetailsVo.setPhoneNumber(users.getPhoneNumber());
+        individualDetailsVo.setCreateTime(users.getCreateTime());
 
         // 填充个人客户信息
         individualDetailsVo.setIndividualId(individualClient.getId());
@@ -236,24 +236,24 @@ public class UserService {
         CorporateDetailsVo corporateDetailsVo = new CorporateDetailsVo();
 
         // 获取用户基本信息
-        User user = userDao.selectByPrimaryKey(Long.valueOf(userId));
-        if (user == null) {
+        Users users = userDao.selectByPrimaryKey(Long.valueOf(userId));
+        if (users == null) {
             return corporateDetailsVo;
         }
 
         // 获取法人客户信息
-        CorporateClient corporateClient = corporateClientDao.selectByPrimaryKey(user.getRelatedEntityId());
+        CorporateClient corporateClient = corporateClientDao.selectByPrimaryKey(users.getRelatedEntityId());
         if (corporateClient == null) {
             return corporateDetailsVo;
         }
 
         // 填充用户信息
-        corporateDetailsVo.setUserId(user.getId());
-        corporateDetailsVo.setUsername(user.getUsername());
-        corporateDetailsVo.setNickName(user.getNickName());
-        corporateDetailsVo.setEmail(user.getEmail());
-        corporateDetailsVo.setPhoneNumber(user.getPhoneNumber());
-        corporateDetailsVo.setCreateTime(user.getCreateTime());
+        corporateDetailsVo.setUserId(users.getId());
+        corporateDetailsVo.setUsername(users.getUsername());
+        corporateDetailsVo.setNickName(users.getNickName());
+        corporateDetailsVo.setEmail(users.getEmail());
+        corporateDetailsVo.setPhoneNumber(users.getPhoneNumber());
+        corporateDetailsVo.setCreateTime(users.getCreateTime());
 
         // 填充法人客户信息
         corporateDetailsVo.setCorporateId(corporateClient.getId());

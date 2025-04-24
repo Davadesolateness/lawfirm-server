@@ -1,7 +1,7 @@
 package com.lawfirm.lawfirmserver.login.vo;
 
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
-import com.lawfirm.lawfirmserver.user.po.User;
+import com.lawfirm.lawfirmserver.user.po.Users;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -66,8 +66,8 @@ public class LoginVo implements Serializable {
     public LoginVo(String token, Object user) {
         this.token = token;
 
-        if (user instanceof User) {
-            User userObj = (User) user;
+        if (user instanceof Users) {
+            Users userObj = (Users) user;
             this.userId = String.valueOf(userObj.getId());
             this.userName = userObj.getUsername();
             this.userType = userObj.getUserType();

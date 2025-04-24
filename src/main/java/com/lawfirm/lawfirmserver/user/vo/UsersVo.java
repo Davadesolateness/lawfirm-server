@@ -10,7 +10,7 @@ import java.util.Date;
  * 对应表名：user
  */
 @Data
-public class UserVo implements Serializable {
+public class UsersVo implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：用户唯一标识，自增主键

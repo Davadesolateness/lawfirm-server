@@ -4,10 +4,10 @@ import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
 import lombok.Data;
 
 @Data
-public class UserPageVo {
+public class UsersPageVo {
 
     /*用户*/
-    private UserVo userVo;
+    private UsersVo usersVo;
     /*律师*/
     private LawyerVo lawyerVo;
     /*个人客户*/
