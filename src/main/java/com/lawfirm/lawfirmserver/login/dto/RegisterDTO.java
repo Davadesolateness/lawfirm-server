@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 用户注册DTO
+ * @author dongzhibo
  */
 @Data
 @ApiModel("用户注册请求")
@@ -19,14 +20,10 @@ public class RegisterDTO {
     @ApiModelProperty(value = "手机号", required = true, example = "13800138000")
     private String phone;
 
-    @NotBlank(message = "验证码不能为空")
-    @ApiModelProperty(value = "验证码", required = true, example = "123456")
-    private String code;
-
     @NotBlank(message = "密码不能为空")
     @ApiModelProperty(value = "密码", required = true, example = "password123")
     private String password;
 
     @ApiModelProperty(value = "昵称", example = "张三")
-    private String nickname;
+    private String userName;
 } 

@@ -7,10 +7,12 @@ import com.lawfirm.lawfirmserver.login.dao.LoginLogDao;
 import com.lawfirm.lawfirmserver.login.dao.SmsVerificationDao;
 import com.lawfirm.lawfirmserver.login.dto.*;
 import com.lawfirm.lawfirmserver.login.po.LoginLog;
+import com.lawfirm.lawfirmserver.login.po.SmsCode;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import com.lawfirm.lawfirmserver.security.JwtTokenProvider;
 import com.lawfirm.lawfirmserver.user.dao.UsersDao;
 import com.lawfirm.lawfirmserver.user.po.Users;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -107,7 +109,6 @@ public class LoginService {
             saveLoginLog(dto.getPhone(), 1, user.getId(), "账号已禁用");
             return Result.fail("账号已禁用");
         }
-        String salt = RandomStringUtils.randomAlphanumeric(20);
         System.out.println(passwordEncoder.encode(dto.getPassword()));
         // 2. 验证密码
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
@@ -182,14 +183,14 @@ public class LoginService {
     /**
      * 用户注册
      */
-    public Result<Long> register(RegisterDTO dto) {
-       /* // 1. 检查手机号是否已注册
-        User existUser = userMapper.selectByPhone(dto.getPhone());
+    public Result<Long> registerUser(RegisterDTO dto) {
+        // 1. 检查手机号是否已注册
+        Users existUser = userDao.selectByPhone(dto.getPhone());
         if (existUser != null) {
             return Result.fail("手机号已注册");
         }
 
-        // 2. 验证验证码
+        /*// 2. 验证验证码
         SmsCode smsCode = smsCodeMapper.selectLatestByPhoneAndType(dto.getPhone(), 2);
         if (smsCode == null || !smsCode.getCode().equals(dto.getCode())) {
             return Result.fail("验证码错误");
@@ -197,27 +198,24 @@ public class LoginService {
 
         if (smsCode.getExpireTime().before(new Date())) {
             return Result.fail("验证码已过期");
-        }
+        }*/
 
-        // 3. 创建用户
-        User user = new User();
-        user.setPhone(dto.getPhone());
-        user.setNickname(dto.getNickname() == null ? "用户" + dto.getPhone().substring(7) : dto.getNickname());
+        // 2. 创建用户
+        Users user = new Users();
+        user.setPhoneNumber(dto.getPhone());
+        user.setUsername(dto.getUserName() == null ? "用户" + dto.getPhone().substring(7) : dto.getUserName());
         user.setUserType("USER");
-        user.setStatus(1);
+        user.setIsValidFlag("1");
         user.setCreateTime(new Date());
 
         // 密码加密
         if (StringUtils.isNotBlank(dto.getPassword())) {
-            String salt = RandomStringUtils.randomAlphanumeric(20);
-            user.setSalt(salt);
-            user.setPassword(passwordEncoder.encode(dto.getPassword() + salt));
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
 
-        userMapper.insert(user);
+        userDao.insert(user);
 
-        return Result.success(user.getId());*/
-        return null;
+        return Result.success(user.getId());
     }
 
     /**
@@ -250,6 +248,32 @@ public class LoginService {
 
         // 5. 发送短信(这里模拟发送，实际应调用短信服务)
         log.info("发送短信验证码: phone={}, code={}, type={}", phone, code, type);
+
+        return Result.success();
+    }
+
+    /**
+     * 修改密码
+     */
+    public Result<Void> resetPassword(ResetPasswordDTO dto) {
+        // 1. 查询用户
+        Users user = userDao.selectByPhone(dto.getPhone());
+        if (user == null) {
+            return Result.fail("用户不存在");
+        }
+
+        if (CommonUtil.equals(user.getIsValidFlag(), "0")) {
+            return Result.fail("账号已禁用");
+        }
+
+        /*// 2. 验证旧密码
+        if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+            return Result.fail("旧密码错误");
+        }*/
+
+        // 3. 更新密码
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userDao.updateSelectiveByPrimaryKey(user);
 
         return Result.success();
     }

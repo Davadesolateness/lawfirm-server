@@ -5,6 +5,7 @@ import com.lawfirm.lawfirmserver.login.dto.LoginByCodeDTO;
 import com.lawfirm.lawfirmserver.login.dto.LoginByPasswordDTO;
 import com.lawfirm.lawfirmserver.login.dto.RegisterDTO;
 import com.lawfirm.lawfirmserver.login.dto.WechatLoginDTO;
+import com.lawfirm.lawfirmserver.login.dto.ResetPasswordDTO;
 import com.lawfirm.lawfirmserver.login.service.LoginService;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import io.swagger.annotations.Api;
@@ -59,10 +60,10 @@ public class LoginApi {
     /**
      * 注册
      */
-    @PostMapping("/register")
+    @PostMapping("/registerUser")
     @ApiOperation("用户注册")
     public Result<Long> register(@RequestBody @Valid RegisterDTO dto) {
-        return loginService.register(dto);
+        return loginService.registerUser(dto);
     }
 
     /**
@@ -72,8 +73,17 @@ public class LoginApi {
     @ApiOperation("发送验证码")
     public Result<Void> sendCode(
             @ApiParam(value = "手机号", required = true, example = "13800138000") @RequestParam String phone,
-            @ApiParam(value = "验证码类型: 1-登录验证码，2-注册验证码", required = true, example = "1") @RequestParam Integer type) {
+            @ApiParam(value = "验证码类型: 1-登录验证码，2-注册验证码，3-修改密码验证码", required = true, example = "1") @RequestParam Integer type) {
         return loginService.sendCode(phone, type);
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("/resetPassword")
+    @ApiOperation("修改密码")
+    public Result<Void> resetPassword(@RequestBody @Valid ResetPasswordDTO dto) {
+        return loginService.resetPassword(dto);
     }
 
     /**
