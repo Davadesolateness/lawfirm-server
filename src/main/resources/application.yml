@@ -15,6 +15,12 @@ spring:
   transaction:
     default-timeout: 30s
     rollback-on-commit-failure: true
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
 
   # Jackson配置
   jackson:
@@ -61,5 +67,12 @@ logging:
   level:
     com.lawfirm.lawfirmserver: debug
     org.springframework.jdbc: debug
+
+# 图片存储配置
+image:
+  storage:
+    path: ${IMAGE_STORAGE_PATH:./images}  # 图片存储路径
+  access:
+    base-url: ${IMAGE_ACCESS_URL:http://localhost:8080/images}  # 图片访问基础URL
 
 

@@ -81,7 +81,7 @@
                o.orderType,
                o.serviceDuration,
                o.serviceCount,
-               o.amount,
+               o.amount AS purchaseAmount,
                o.orderStatus,
                o.inputTime,
                o.insertTimeForHis,
@@ -91,7 +91,7 @@
                l.lawyerName
         FROM orders o
                  LEFT JOIN
-             user u ON o.userId = u.id
+             users u ON o.userId = u.id
                  LEFT JOIN
              lawyer l ON o.lawyerId = l.id
         WHERE o.userId = #{userId}

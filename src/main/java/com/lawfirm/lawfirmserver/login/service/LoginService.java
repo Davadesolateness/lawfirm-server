@@ -10,6 +10,7 @@ import com.lawfirm.lawfirmserver.login.po.LoginLog;
 import com.lawfirm.lawfirmserver.login.po.SmsCode;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import com.lawfirm.lawfirmserver.security.JwtTokenProvider;
+import com.lawfirm.lawfirmserver.user.consts.UserContant;
 import com.lawfirm.lawfirmserver.user.dao.UsersDao;
 import com.lawfirm.lawfirmserver.user.po.Users;
 import org.apache.catalina.User;
@@ -161,7 +162,7 @@ public class LoginService {
                 user.setNickname(userInfo != null ? userInfo.getNickName() : "微信用户");*/
                 //user.setAvatarUrl(userInfo != null ? userInfo.getAvatarUrl() : "");
                 /*   user.setGender(userInfo != null ? userInfo.getGender() : 0);*/
-                user.setUserType("USER");
+                user.setUserType(UserContant.USERTYPE_INDIVIDUAL);
                 user.setIsValidFlag("1");
                 /*user.setCreateTime(new Date());*/
                 userDao.insert(user);
@@ -204,7 +205,7 @@ public class LoginService {
         Users user = new Users();
         user.setPhoneNumber(dto.getPhone());
         user.setUsername(dto.getUserName() == null ? "用户" + dto.getPhone().substring(7) : dto.getUserName());
-        user.setUserType("USER");
+        user.setUserType(UserContant.USERTYPE_INDIVIDUAL);
         user.setIsValidFlag("1");
         user.setCreateTime(new Date());
 

@@ -102,12 +102,12 @@ public class UserApi {
      * @param userId 用户ID
      * @return 包含个人用户详细信息的Result对象
      */
-    @RequestMapping(value = "/getIndividualDetails/{userId}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/getIndividualDetails", method = {RequestMethod.GET})
     @ApiOperation("获取个人用户详情")
     public Result<IndividualDetailsVo> getIndividualDetails(
             @ApiParam(value = "用户ID", required = true, example = "1")
-            @PathVariable("userId") Long userId) {
-        IndividualDetailsVo details = userService.getIndividualDetails(userId);
+            @RequestParam(value = "userId") String userId) {
+        IndividualDetailsVo details = userService.getIndividualDetails(Long.valueOf(userId));
         if (details != null && details.getUserId() != null) {
             return Result.success("获取个人用户详情成功", details);
         } else {

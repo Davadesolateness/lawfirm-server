@@ -30,17 +30,17 @@ public class OrderApi {
     private OrderService orderService;
 
     /**
-     * 获取用户的所有订单
+     * 获取用户的所有订单，包含律师名称等概要信息
      *
      * @param userId 用户ID
-     * @return 订单列表
+     * @return 包含律师名称的订单列表
      */
     @GetMapping("/getUserOrders")
-    @ApiOperation("获取用户的所有订单")
-    public Result<List<OrdersVo>> getUserOrders(
+    @ApiOperation("获取用户的所有订单，包含律师名称")
+    public Result<List<OrderDetailVO>> getUserOrders(
             @ApiParam(value = "用户ID", required = true, example = "1")
             @RequestParam("userId") String userId) {
-        List<OrdersVo> orders = orderService.getOrdersByUserId(userId);
+        List<OrderDetailVO> orders = orderService.getOrdersByUserId(userId);
         return Result.success("获取用户订单成功", orders);
     }
 

@@ -35,40 +35,23 @@ public class OrderService {
     private OrderTimeDao orderTimeDao;
 
     /**
-     * 根据用户ID获取订单列表
+     * 根据用户ID获取订单列表，包含律师名称
      *
      * @param userId 用户ID
-     * @return 订单列表
+     * @return 包含律师名称的订单列表
      */
-    public List<OrdersVo> getOrdersByUserId(String userId) {
-        logger.info("根据用户ID获取订单列表, userId: {}", userId);
+    public List<OrderDetailVO> getOrdersByUserId(String userId) {
+        logger.info("根据用户ID获取订单概要信息（包含律师名称）, userId: {}", userId);
 
-        // 查询用户的所有订单
-        List<Orders> orders = ordersDao.selectByUserId(Long.valueOf(userId));
-        if (orders == null || orders.isEmpty()) {
+        // 直接调用Dao层方法获取包含律师名称的订单列表
+        List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByUserId(Long.valueOf(userId));
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("用户没有订单记录, userId: {}", userId);
             return new ArrayList<>();
         }
 
-        // 转换为VO对象
-        List<OrdersVo> ordersVos = orders.stream().map(order -> {
-            OrdersVo ordersVo = new OrdersVo();
-            BeanUtils.copyProperties(order, ordersVo);
-
-            // 查询订单关联的时间信息
-            List<OrderTime> orderTimes = orderTimeDao.selectByOrderId(order.getOrderId());
-            if (orderTimes != null && !orderTimes.isEmpty()) {
-                List<OrderTimeVo> orderTimeVos = orderTimes.stream().map(orderTime -> {
-                    OrderTimeVo orderTimeVo = new OrderTimeVo();
-                    BeanUtils.copyProperties(orderTime, orderTimeVo);
-                    return orderTimeVo;
-                }).collect(Collectors.toList());
-                ordersVo.setOrderTimes(orderTimeVos);
-            }
-
-            return ordersVo;
-        }).collect(Collectors.toList());
-
-        return ordersVos;
+        logger.info("成功获取用户的订单概要信息, userId: {}, 订单数量: {}", userId, orderDetails.size());
+        return orderDetails;
     }
 
     /**

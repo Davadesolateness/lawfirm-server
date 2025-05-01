@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.image.dao.ImageStorageDao">
+
+    <!-- 基本结果映射 -->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.image.po.ImageStorage">
+        <id column="imageId" property="imageId"/>
+        <result column="userId" property="userId"/>
+        <result column="imageType" property="imageType"/>
+        <result column="imageData" property="imageData"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 不包含BLOB数据的结果映射 -->
+    <resultMap id="BaseResultMapWithoutBlob" type="com.lawfirm.lawfirmserver.image.po.ImageStorage">
+        <id column="imageId" property="imageId"/>
+        <result column="userId" property="userId"/>
+        <result column="imageType" property="imageType"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 列名 -->
+    <sql id="Base_Column_List">
+        imageId, userId, imageType, insertTimeForHis, operateTimeForHis
+    </sql>
+
+    <!-- 包含BLOB的列名 -->
+    <sql id="Blob_Column_List">
+        imageData
+    </sql>
+
+    <!-- 根据用户ID和影像类型查询影像 -->
+    <select id="selectByUserIdAndType" resultMap="BaseResultMapWithoutBlob">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM imageStorage
+        WHERE userId = #{userId}
+        <if test="imageType != null and imageType != ''">
+            AND imageType = #{imageType}
+        </if>
+        ORDER BY insertTimeForHis DESC
+    </select>
+
+    <!-- 获取用户最新的头像 -->
+    <select id="selectLatestAvatarByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        FROM imageStorage
+        WHERE userId = #{userId}
+        AND imageType = 'AVATAR'
+        ORDER BY insertTimeForHis DESC
+        LIMIT 1
+    </select>
+
+    <!-- 插入影像并返回主键ID -->
+    <insert id="insertAndReturnId" parameterType="com.lawfirm.lawfirmserver.image.po.ImageStorage">
+        <selectKey keyProperty="imageId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO imageStorage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="imageType != null">
+                imageType,
+            </if>
+            <if test="imageData != null">
+                imageData,
+            </if>
+
+                insertTimeForHis,
+                operateTimeForHis
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="imageType != null">
+                #{imageType},
+            </if>
+            <if test="imageData != null">
+                #{imageData},
+            </if>
+                now(),
+                now()
+        </trim>
+    </insert>
+</mapper> 
