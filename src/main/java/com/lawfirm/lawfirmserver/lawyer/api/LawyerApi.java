@@ -2,16 +2,17 @@ package com.lawfirm.lawfirmserver.lawyer.api;
 
 import com.lawfirm.lawfirmserver.lawyer.service.LawyerService;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/lawyer")
+@Api(tags = "律师管理接口", description = "提供律师信息的增删改查服务")
 public class LawyerApi {
 
     @Autowired
@@ -37,6 +38,7 @@ public class LawyerApi {
      * @param request  {@link HttpServletRequest}对象，可用于获取请求相关的信息，如请求头、请求参数等
      * @return 更新后的{@link LawyerVo}对象，包含了最新的律师信息
      */
+    @ApiOperation(value = "更新律师信息", notes = "根据传入的律师信息更新数据库中的律师记录，并返回更新后的完整律师信息")
     @RequestMapping(value = "/updateLawyer", method = {RequestMethod.POST})
     public LawyerVo updateLawyer(@RequestBody LawyerVo lawyerVo, HttpServletRequest request) {
         // 调用lawyerService的updateLawyer方法，将传入的lawyerVo中的律师信息更新到数据库中
@@ -65,6 +67,7 @@ public class LawyerApi {
      * @param request  HttpServletRequest 对象，可用于获取请求相关的信息，如请求头、请求参数等
      * @return 包含律师详细信息的 LawyerVo 对象，从数据库中查询得到并返回给客户端
      */
+    @ApiOperation(value = "获取律师信息", notes = "根据传入的律师ID查询律师的详细信息")
     @RequestMapping(value = "/getLawyerInfo", method = {RequestMethod.POST})
     public LawyerVo getLawyerInfo(@RequestBody LawyerVo lawyerVo, HttpServletRequest request) {
         // 调用 lawyerService 的 getLawyer 方法，根据 lawyerVo 中的律师 ID 从数据库中获取律师信息
@@ -72,19 +75,27 @@ public class LawyerApi {
         // 将获取到律师信息的 lawyerVo 对象返回给客户端
         return lawyerVo;
     }
+    /**
+     * 获取所有律师的信息列表。
+     *
+     * @return 包含所有律师信息的 List<LawyerVo> 对象列表
+     */
+    @ApiOperation(value = "获取所有律师列表", notes = "返回系统中所有律师的基本信息列表")
+    @RequestMapping(value = "/getAllLawyers", method = {RequestMethod.GET})
+    public List<LawyerVo> getAllLawyers() {
+        return lawyerService.getAllLawyers();
+    }
 
     /**
-     * 多维度筛选查询律师
-     * <p>
-     * 该方法支持按领域（刑事/民事）、地域、执业年限、评分等条件筛选律师。
-     * 查询结果支持分页返回。
+     * 根据律师 ID 获取律师信息。
      *
-     * @param queryDTO 包含查询条件的DTO对象
-     * @return 分页的律师信息列表
+     * @param id 律师的唯一标识 ID，作为路径变量传入
+     * @return 包含律师详细信息的 LawyerVo 对象
      */
-//    @RequestMapping(value = "/searchLawyers", method = {RequestMethod.POST})
-//    public Page<LawyerVo> searchLawyers(@RequestBody LawyerQueryDTO queryDTO) {
-//        return lawyerService.searchLawyers(queryDTO);
-//    }
+    @ApiOperation(value = "根据ID获取律师信息", notes = "通过路径变量传入的律师ID获取单个律师的详细信息")
+    @RequestMapping(value = "/getById/{id}", method = {RequestMethod.GET})
+    public LawyerVo getLawyerById(@PathVariable("id") Long id) {
+        return lawyerService.getLawyer(id);
+    }
 
 }

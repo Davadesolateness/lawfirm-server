@@ -2,7 +2,7 @@
 spring:
   # 多环境配置
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:test}
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   application:
     name: lawfirm-server
   output:
@@ -44,6 +44,7 @@ security:
       secret-key: ${JWT_SECRET:your_secret_key_here_at_least_32_chars}
       expire-length: ${JWT_EXPIRE:86400000}  # 24小时
       refresh-expire-length: ${JWT_REFRESH_EXPIRE:2592000000}  # 30天
+
 
 # 服务器配置
 server:

@@ -201,4 +201,106 @@ public class LawyerService {
 //
 //        return resultPage;
 //    }
+
+    /**
+     * 根据律师 ID 获取律师信息及其关联专长信息
+     *
+     * @param lawyerId 律师 ID
+     * @return 封装律师信息和专长信息的 LawyerVo 对象
+     */
+    public LawyerVo getLawyer1(Long lawyerId) {
+        // 初始化 LawyerVo 对象和专长关联信息列表
+        LawyerVo lawyerVo = new LawyerVo();
+        List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVoList = new ArrayList<>();
+
+        // 查询律师基本信息
+        Lawyer lawyer = lawyerDao.selectByPrimaryKey(lawyerId);
+
+        // 查询律师的专长关联信息
+        List<LawyerSpecialtyRelation> lawyerSpecialtyRelationList = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
+
+        // 处理专长关联信息
+        if (lawyerSpecialtyRelationList != null && !lawyerSpecialtyRelationList.isEmpty()) {
+            for (LawyerSpecialtyRelation relation : lawyerSpecialtyRelationList) {
+                // 创建专长关联信息视图对象和专长信息视图对象
+                LawyerSpecialtyRelationVo relationVo = new LawyerSpecialtyRelationVo();
+                LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
+
+                // 查询专长详细信息
+                LawyerSpecialty specialty = lawyerSpecialtyDao.selectByPrimaryKey(relation.getSpecialtyId());
+
+                // 复制信息到视图对象
+                CommonUtil.copyProperties(specialty, specialtyVo);
+                CommonUtil.copyProperties(relation, relationVo);
+
+                // 关联专长信息到专长关联信息视图对象
+                relationVo.setLawyerSpecialtyVo(specialtyVo);
+                // 添加到专长关联信息视图对象列表
+                lawyerSpecialtyRelationVoList.add(relationVo);
+            }
+        }
+
+        // 复制律师基本信息到 LawyerVo 对象
+        CommonUtil.copyProperties(lawyer, lawyerVo);
+        // 设置专长关联信息视图对象列表到 LawyerVo 对象
+        lawyerVo.setLawyerSpecialtyRelationVolist(lawyerSpecialtyRelationVoList);
+
+        return lawyerVo;
+    }
+
+    /**
+     * 获取所有律师的 ID 列表
+     *
+     * @return 所有律师的 ID 列表
+     */
+    public List<Long> getAllLawyerIds() {
+        // 创建查询条件，这里使用空条件查询所有律师
+        Lawyer queryCondition = new Lawyer();
+        // 设置有效标志，只查询有效的律师
+        queryCondition.setIsValidFlag("1");
+
+        // 使用 PageParam 进行分页查询，但设置一个足够大的页码以获取所有记录
+        ins.framework.mybatis.PageParam pageParam = new ins.framework.mybatis.PageParam();
+        //pageParam.setPageSize(1000); // 设置一个较大的页大小
+
+        // 查询所有符合条件的律师
+        ins.framework.mybatis.Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
+
+        // 提取律师 ID 列表
+        List<Long> lawyerIds = new ArrayList<>();
+        for (Lawyer lawyer : lawyerPage) {
+            lawyerIds.add(lawyer.getId());
+        }
+
+        return lawyerIds;
+    }
+
+    /**
+     * 获取所有律师的信息列表
+     *
+     * @return 包含所有律师信息的 List<LawyerVo> 对象列表
+     */
+    public List<LawyerVo> getAllLawyers() {
+        // 创建查询条件，这里使用空条件查询所有律师
+        Lawyer queryCondition = new Lawyer();
+        // 设置有效标志，只查询有效的律师
+        queryCondition.setIsValidFlag("1");
+
+        // 使用 PageParam 进行分页查询，但设置一个足够大的页码以获取所有记录
+        ins.framework.mybatis.PageParam pageParam = new ins.framework.mybatis.PageParam();
+        
+        // 查询所有符合条件的律师
+        ins.framework.mybatis.Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
+
+        // 转换结果为VO对象列表
+        List<LawyerVo> lawyerVoList = new ArrayList<>();
+        for (Lawyer lawyer : lawyerPage) {
+            LawyerVo lawyerVo = new LawyerVo();
+            CommonUtil.copyProperties(lawyer, lawyerVo);
+            lawyerVoList.add(lawyerVo);
+        }
+
+        return lawyerVoList;
+    }
+
 }

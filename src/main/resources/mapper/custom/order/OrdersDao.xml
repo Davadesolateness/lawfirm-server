@@ -81,25 +81,19 @@
                o.orderType,
                o.serviceDuration,
                o.serviceCount,
-               o.purchaseAmount,
+               o.amount,
                o.orderStatus,
                o.inputTime,
                o.insertTimeForHis,
                o.operateTimeForHis,
+               o.lawyerId,
                u.username AS userName,
-               l.id       AS lawyerId,
-               l.name     AS lawyerName,
-               l.title    AS lawyerTitle,
-               l.avatar   AS lawyerAvatar,
-               ot.serviceArea,
-               ot.serviceMethod
+               l.lawyerName
         FROM orders o
                  LEFT JOIN
-             users u ON o.userId = u.id
+             user u ON o.userId = u.id
                  LEFT JOIN
-             lawyers l ON o.lawyerId = l.id
-                 LEFT JOIN
-             order_time ot ON o.orderId = ot.orderId
+             lawyer l ON o.lawyerId = l.id
         WHERE o.userId = #{userId}
         ORDER BY o.inputTime DESC
     </select>

@@ -24,8 +24,6 @@ public class OrderDetailVO {
     // 律师信息
     private Long lawyerId;
     private String lawyerName;
-    private String lawyerTitle;
-    private String lawyerAvatar;
 
     // 订单信息
     private String orderType; // 订单类型
@@ -36,10 +34,6 @@ public class OrderDetailVO {
     private Date inputTime; // 订单录入时间
     private Date insertTimeForHis; // 订单记录插入时间
     private Date operateTimeForHis; // 订单记录更新时间
-
-    // 其他扩展字段
-    private String serviceArea; // 法律服务领域
-    private String serviceMethod; // 服务方式（电话、在线、面谈等）
 
     /**
      * 从基础订单对象转换为详情对象
