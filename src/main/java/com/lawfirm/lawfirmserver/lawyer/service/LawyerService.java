@@ -1,5 +1,6 @@
 package com.lawfirm.lawfirmserver.lawyer.service;
 
+import com.lawfirm.lawfirmserver.common.PageResult;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
@@ -7,16 +8,20 @@ import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
-import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyRelationVo;
-import com.lawfirm.lawfirmserver.lawyer.vo.LawyerSpecialtyVo;
-import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
+import com.lawfirm.lawfirmserver.lawyer.vo.*;
+import ins.framework.mybatis.Page;
+import ins.framework.mybatis.PageParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -287,10 +292,10 @@ public class LawyerService {
         queryCondition.setIsValidFlag("1");
 
         // 使用 PageParam 进行分页查询，但设置一个足够大的页码以获取所有记录
-        ins.framework.mybatis.PageParam pageParam = new ins.framework.mybatis.PageParam();
+       PageParam pageParam = new PageParam();
         
         // 查询所有符合条件的律师
-        ins.framework.mybatis.Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
+        Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
 
         // 转换结果为VO对象列表
         List<LawyerVo> lawyerVoList = new ArrayList<>();
@@ -301,6 +306,115 @@ public class LawyerService {
         }
 
         return lawyerVoList;
+    }
+
+    /**
+     * @description: 根据条件查询律师
+     * @author: dongzhibo
+     * @date: 2025/5/1 15:55
+     * @param:
+     * @return:
+     **/
+    public PageResult<LawyerVo> searchLawyers(LawyerSearchVo params) {
+        // 计算分页参数
+        int offset = (params.getPage() - 1) * params.getPageSize();
+
+        // 构建查询条件
+        LawyerQueryWrapper queryWrapper = new LawyerQueryWrapper();
+
+        // 关键词搜索(律师名称或简介)
+        if (StringUtils.hasText(params.getKeyword())) {
+            queryWrapper.keywordLike(params.getKeyword());
+        }
+
+        // 专业领域筛选
+        if (StringUtils.hasText(params.getSpecialty())) {
+            queryWrapper.specialtyEquals(params.getSpecialty());
+        }
+        
+        // 排除特定专业领域
+        if (params.getExcludeSpecialties() != null && !params.getExcludeSpecialties().isEmpty()) {
+            queryWrapper.excludeSpecialties(params.getExcludeSpecialties());
+        }
+
+        // 地区筛选
+        if (StringUtils.hasText(params.getProvinceCode())) {
+            queryWrapper.provinceCodeEquals(params.getProvinceCode());
+        }
+
+        if (StringUtils.hasText(params.getCityCode())) {
+            queryWrapper.cityCodeEquals(params.getCityCode());
+        }
+
+        if (StringUtils.hasText(params.getDistrictCode())) {
+            queryWrapper.districtCodeEquals(params.getDistrictCode());
+        }
+
+        // 是否推荐筛选
+        if (params.getRecommend() != null) {
+            queryWrapper.recommendEquals(params.getRecommend());
+        }
+
+        // 设置默认排序方式，按评分降序
+        queryWrapper.orderBy("rating DESC, id DESC");
+
+        // 查询总记录数
+        long total = lawyerDao.countByCondition(queryWrapper);
+
+        // 如果总记录数为0，直接返回空结果
+        if (total == 0) {
+            return PageResult.of(Collections.emptyList(), 0, params.getPage(), params.getPageSize());
+        }
+
+        // 查询当前分页数据
+        List<Lawyer> lawyers = lawyerDao.selectByCondition(queryWrapper, offset, params.getPageSize());
+
+        // 转换为VO并填充关联数据
+        List<LawyerVo> lawyerVos = lawyers.stream()
+                .map(this::convertToVo)
+                .collect(Collectors.toList());
+
+        // 返回分页结果
+        return PageResult.of(lawyerVos, total, params.getPage(), params.getPageSize());
+    }
+
+    /**
+     * 将Lawyer实体转换为LawyerVo
+     */
+    private LawyerVo convertToVo(Lawyer lawyer) {
+        if (lawyer == null) {
+            return null;
+        }
+
+        LawyerVo vo = new LawyerVo();
+        BeanUtils.copyProperties(lawyer, vo);
+
+        // 查询并填充律师专长信息
+        List<LawyerSpecialtyRelation> specialtyRelations = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
+        
+        if (specialtyRelations != null && !specialtyRelations.isEmpty()) {
+            List<LawyerSpecialtyRelationVo> specialtyVos = new ArrayList<>();
+            
+            for (LawyerSpecialtyRelation relation : specialtyRelations) {
+                // 创建专长关联信息视图对象
+                LawyerSpecialtyRelationVo relationVo = new LawyerSpecialtyRelationVo();
+                CommonUtil.copyProperties(relation, relationVo);
+                
+                // 查询专长详细信息
+                LawyerSpecialty specialty = lawyerSpecialtyDao.selectByPrimaryKey(relation.getSpecialtyId());
+                if (specialty != null) {
+                    LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
+                    CommonUtil.copyProperties(specialty, specialtyVo);
+                    relationVo.setLawyerSpecialtyVo(specialtyVo);
+                }
+                
+                specialtyVos.add(relationVo);
+            }
+            
+            vo.setLawyerSpecialtyRelationVolist(specialtyVos);
+        }
+
+        return vo;
     }
 
 }
