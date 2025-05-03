@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
+
 /**
  * 图片管理API
  */
@@ -37,7 +39,7 @@ public class ImageApi {
      * @param file   头像文件
      * @return 上传结果
      */
-    @ApiOperation(value = "上传用户头像", notes = "上传用户头像并返回访问URL和图片数据")
+    @ApiOperation(value = "上传用户头像", notes = "上传用户头像并返回访问URL和Base64格式的图片数据")
     @PostMapping("/uploadAvatar")
     public Result<ImageUploadResult> uploadAvatar(
             @ApiParam(value = "用户ID", required = true) @RequestParam("userId") String userId,
@@ -60,29 +62,91 @@ public class ImageApi {
             }
 
             // 调用服务保存头像
-            String imageUrl = imageService.saveUserAvatar(Long.valueOf(userId), file);
+             imageService.saveUserAvatar(Long.valueOf(userId), file);
             
             // 获取保存后的头像数据
             ImageStorage avatar = imageService.getUserAvatar(Long.valueOf(userId));
 
             // 构建返回结果
             ImageUploadResult result = new ImageUploadResult();
-            result.setUrl(imageUrl);
-            result.setType("avatar");
             result.setSize(file.getSize());
             
-            // 添加图片数据到结果
+            // 添加文件扩展名和图片数据到结果
             if (avatar != null) {
-                result.setImageData(avatar.getImageData());
+                // 设置文件扩展名
+                result.setFileExtension(avatar.getFileExtension());
+                // 设置MIME类型
+                String mimeType = getMimeTypeFromExtension(avatar.getFileExtension());
+                result.setType(mimeType);
+                
+                // 转换二进制数据为Base64字符串
+                if (avatar.getImageData() != null) {
+                    String base64Image = Base64.getEncoder().encodeToString(avatar.getImageData());
+                    result.setImageData(base64Image);
+                    logger.info("头像数据已转换为Base64格式, 大小: {} 字符, 扩展名: {}", 
+                            base64Image.length(), avatar.getFileExtension());
+                }
+            } else {
+                // 如果没有获取到头像，设置默认值
+                result.setType(getFileExtension(file.getOriginalFilename()));
             }
 
-            logger.info("用户头像上传成功, userId: {}, url: {}", userId, imageUrl);
-             return Result.success("头像上传成功", result);
+            logger.info("用户头像上传成功, userId: {}, ", userId);
+            return Result.success("头像上传成功", result);
 
         } catch (Exception e) {
             logger.error("用户头像上传失败, userId: {}", userId, e);
             return Result.fail("头像上传失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 根据文件扩展名获取MIME类型
+     *
+     * @param extension 文件扩展名
+     * @return MIME类型
+     */
+    private String getMimeTypeFromExtension(String extension) {
+        if (extension == null) {
+            // 默认MIME类型
+            return "image/jpeg";
+        }
+        switch (extension.toLowerCase()) {
+            case "jpg":
+            case "jpeg":
+                return "image/jpeg";
+            case "png":
+                return "image/png";
+            case "gif":
+                return "image/gif";
+            case "webp":
+                return "image/webp";
+            default:
+                // 默认MIME类型
+                return "image/jpeg";
+        }
+    }
+
+    /**
+     * 获取文件扩展名
+     * 
+     * @param filename 文件名
+     * @return 文件扩展名（不含点号）
+     */
+    private String getFileExtension(String filename) {
+        if (filename == null || filename.isEmpty()) {
+            return "jpeg"; // 默认格式
+        }
+        int dotIndex = filename.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < filename.length() - 1) {
+            String extension = filename.substring(dotIndex + 1).toLowerCase();
+            // 只返回常见图片格式，其他格式默认为jpeg
+            if (extension.equals("png") || extension.equals("jpg") || 
+                extension.equals("jpeg") || extension.equals("gif")) {
+                return extension;
+            }
+        }
+        return "jpeg"; // 默认格式
     }
 
     /**

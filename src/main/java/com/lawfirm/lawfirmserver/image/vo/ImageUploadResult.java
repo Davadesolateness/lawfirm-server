@@ -1,43 +1,37 @@
 package com.lawfirm.lawfirmserver.image.vo;
 
+import lombok.Data;
+
 /**
  * 图片上传结果VO
+ * @author dong
  */
+@Data
 public class ImageUploadResult {
+    /**
+     * 图片访问URL
+     */
     private String url;
+    
+    /**
+     * 图片MIME类型
+     */
     private String type;
+    
+    /**
+     * 文件扩展名
+     */
+    private String fileExtension;
+    
+    /**
+     * 图片大小（字节）
+     */
     private Long size;
-    private byte[] imageData;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
     
-    public byte[] getImageData() {
-        return imageData;
-    }
-    
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }
+    /**
+     * 图片数据（Base64编码）
+     */
+    private String imageData;
+
+
 } 

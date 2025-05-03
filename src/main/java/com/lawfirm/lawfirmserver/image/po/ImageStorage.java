@@ -33,6 +33,10 @@ public class ImageStorage implements Serializable {
      */
     private byte[] imageData;
 
+    /**
+     * 文件扩展名（不含点号），如jpg, png, pdf等
+     */
+    private String fileExtension;
     
     /**
      * 影像记录插入时间

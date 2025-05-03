@@ -8,6 +8,7 @@
         <result column="userId" property="userId"/>
         <result column="imageType" property="imageType"/>
         <result column="imageData" property="imageData"/>
+        <result column="fileExtension" property="fileExtension"/>
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
@@ -17,13 +18,14 @@
         <id column="imageId" property="imageId"/>
         <result column="userId" property="userId"/>
         <result column="imageType" property="imageType"/>
+        <result column="fileExtension" property="fileExtension"/>
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
 
     <!-- 列名 -->
     <sql id="Base_Column_List">
-        imageId, userId, imageType, insertTimeForHis, operateTimeForHis
+        imageId, userId, imageType, fileExtension, insertTimeForHis, operateTimeForHis
     </sql>
 
     <!-- 包含BLOB的列名 -->
@@ -71,7 +73,9 @@
             <if test="imageData != null">
                 imageData,
             </if>
-
+            <if test="fileExtension != null">
+                fileExtension,
+            </if>
                 insertTimeForHis,
                 operateTimeForHis
         </trim>
@@ -84,6 +88,9 @@
             </if>
             <if test="imageData != null">
                 #{imageData},
+            </if>
+            <if test="fileExtension != null">
+                #{fileExtension},
             </if>
                 now(),
                 now()
