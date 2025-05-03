@@ -1,6 +1,9 @@
 package com.lawfirm.lawfirmserver.user.service;
 
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
+import com.lawfirm.lawfirmserver.image.po.ImageStorage;
+import com.lawfirm.lawfirmserver.image.service.ImageService;
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,6 +39,8 @@ public class UserService {
     private AdministratorDao administratorDao;
     @Autowired
     private CustomerServiceInfoDao customerServiceInfoDao;
+    @Autowired
+    private ImageService imageService;
 
     /**
      * 验证用户登录信息的方法。
@@ -212,7 +218,8 @@ public class UserService {
             // 设置默认值
             individualDetailsVo.setRemainingServiceCount(0);
             individualDetailsVo.setRemainingServiceMinutes(0);
-            individualDetailsVo.setServiceLevel(1); // 默认基础级别
+
+            individualDetailsVo.setServiceLevel(1);
             // 设置默认的服务开始和到期时间
             Date now = new Date();
             individualDetailsVo.setServiceStartTime(now);
@@ -221,6 +228,21 @@ public class UserService {
             calendar.setTime(now);
             calendar.add(Calendar.YEAR, 1);
             individualDetailsVo.setServiceExpireTime(calendar.getTime());
+        }
+        
+        // 获取用户头像数据
+        try {
+            ImageStorage avatar = imageService.getUserAvatar(userId);
+            if (avatar != null && avatar.getImageData() != null) {
+                // 转换为Base64字符串
+                String base64Image = Base64.getEncoder().encodeToString(avatar.getImageData());
+                individualDetailsVo.setImageData(base64Image);
+                // 设置图片类型
+                individualDetailsVo.setType(ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension()));
+                logger.info("成功获取个人用户头像数据, userId: {}, 类型: {}", userId, avatar.getFileExtension());
+            }
+        } catch (Exception e) {
+            logger.error("获取用户头像数据失败, userId: {}", userId, e);
         }
 
         return individualDetailsVo;
@@ -278,8 +300,10 @@ public class UserService {
             // 设置默认值
             corporateDetailsVo.setRemainingServiceCount(0);
             corporateDetailsVo.setRemainingServiceMinutes(0);
-            corporateDetailsVo.setServiceLevel(1); // 默认基础级别
-            corporateDetailsVo.setMaxEmployeeCount(5); // 默认员工数量上限
+            // 默认基础级别
+            corporateDetailsVo.setServiceLevel(1);
+            // 默认员工数量上限
+            corporateDetailsVo.setMaxEmployeeCount(5);
             // 设置默认的服务开始和到期时间
             Date now = new Date();
             corporateDetailsVo.setServiceStartTime(now);
@@ -288,6 +312,21 @@ public class UserService {
             calendar.setTime(now);
             calendar.add(Calendar.YEAR, 1);
             corporateDetailsVo.setServiceExpireTime(calendar.getTime());
+        }
+        
+        // 获取用户头像数据
+        try {
+            ImageStorage avatar = imageService.getUserAvatar(Long.valueOf(userId));
+            if (avatar != null && avatar.getImageData() != null) {
+                // 转换为Base64字符串
+                String base64Image = Base64.getEncoder().encodeToString(avatar.getImageData());
+                corporateDetailsVo.setImageData(base64Image);
+                // 设置图片类型
+                corporateDetailsVo.setType(ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension()));
+                logger.info("成功获取法人用户头像数据, userId: {}, 类型: {}", userId, avatar.getFileExtension());
+            }
+        } catch (Exception e) {
+            logger.error("获取用户头像数据失败, userId: {}", userId, e);
         }
 
         return corporateDetailsVo;

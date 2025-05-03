@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * 个人用户详情信息VO对象，包含User表和IndividualClient表的关联数据
+ * @author dong
  */
 @Data
 @NoArgsConstructor
@@ -122,4 +123,16 @@ public class IndividualDetailsVo implements Serializable {
      */
     @ApiModelProperty("服务包到期时间")
     private Date serviceExpireTime;
+
+    /**
+     * 头像Base64编码数据
+     */
+    @ApiModelProperty("头像Base64编码数据")
+    private String imageData;
+
+    /**
+     * 头像文件类型
+     */
+    @ApiModelProperty("头像文件类型")
+    private String type;
 } 

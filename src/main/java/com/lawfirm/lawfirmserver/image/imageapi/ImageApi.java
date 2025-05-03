@@ -3,6 +3,7 @@ package com.lawfirm.lawfirmserver.image.imageapi;
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
 import com.lawfirm.lawfirmserver.image.service.ImageService;
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.image.vo.ImageUploadResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,35 +63,8 @@ public class ImageApi {
             }
 
             // 调用服务保存头像
-             imageService.saveUserAvatar(Long.valueOf(userId), file);
-            
-            // 获取保存后的头像数据
-            ImageStorage avatar = imageService.getUserAvatar(Long.valueOf(userId));
-
-            // 构建返回结果
-            ImageUploadResult result = new ImageUploadResult();
-            result.setSize(file.getSize());
-            
-            // 添加文件扩展名和图片数据到结果
-            if (avatar != null) {
-                // 设置文件扩展名
-                result.setFileExtension(avatar.getFileExtension());
-                // 设置MIME类型
-                String mimeType = getMimeTypeFromExtension(avatar.getFileExtension());
-                result.setType(mimeType);
-                
-                // 转换二进制数据为Base64字符串
-                if (avatar.getImageData() != null) {
-                    String base64Image = Base64.getEncoder().encodeToString(avatar.getImageData());
-                    result.setImageData(base64Image);
-                    logger.info("头像数据已转换为Base64格式, 大小: {} 字符, 扩展名: {}", 
-                            base64Image.length(), avatar.getFileExtension());
-                }
-            } else {
-                // 如果没有获取到头像，设置默认值
-                result.setType(getFileExtension(file.getOriginalFilename()));
-            }
-
+            imageService.saveUserAvatar(Long.valueOf(userId), file);
+            ImageUploadResult result = imageService.organizationAvatarResultById(Long.valueOf(userId));
             logger.info("用户头像上传成功, userId: {}, ", userId);
             return Result.success("头像上传成功", result);
 
@@ -101,76 +75,25 @@ public class ImageApi {
     }
 
     /**
-     * 根据文件扩展名获取MIME类型
-     *
-     * @param extension 文件扩展名
-     * @return MIME类型
-     */
-    private String getMimeTypeFromExtension(String extension) {
-        if (extension == null) {
-            // 默认MIME类型
-            return "image/jpeg";
-        }
-        switch (extension.toLowerCase()) {
-            case "jpg":
-            case "jpeg":
-                return "image/jpeg";
-            case "png":
-                return "image/png";
-            case "gif":
-                return "image/gif";
-            case "webp":
-                return "image/webp";
-            default:
-                // 默认MIME类型
-                return "image/jpeg";
-        }
-    }
-
-    /**
-     * 获取文件扩展名
-     * 
-     * @param filename 文件名
-     * @return 文件扩展名（不含点号）
-     */
-    private String getFileExtension(String filename) {
-        if (filename == null || filename.isEmpty()) {
-            return "jpeg"; // 默认格式
-        }
-        int dotIndex = filename.lastIndexOf('.');
-        if (dotIndex > 0 && dotIndex < filename.length() - 1) {
-            String extension = filename.substring(dotIndex + 1).toLowerCase();
-            // 只返回常见图片格式，其他格式默认为jpeg
-            if (extension.equals("png") || extension.equals("jpg") || 
-                extension.equals("jpeg") || extension.equals("gif")) {
-                return extension;
-            }
-        }
-        return "jpeg"; // 默认格式
-    }
-
-    /**
      * 获取用户头像URL
      *
-     * @param userId 用户ID
+     * @param id 用户ID
      * @return 头像URL
      */
     @ApiOperation(value = "获取用户头像URL", notes = "获取用户最新的头像URL")
-    @GetMapping("/getAvatarUrl")
-    public Result<String> getAvatarUrl(
-            @ApiParam(value = "用户ID", required = true) @RequestParam("userId") Long userId) {
-
+    @GetMapping("/getAvatarById")
+    public Result<ImageUploadResult> getAvatarById(
+            @ApiParam(value = "用户ID", required = true) @RequestParam("userId") Long id) {
         try {
-            String avatarUrl = imageService.getUserAvatarUrl(userId);
-
-            if (avatarUrl != null) {
-                return Result.success("获取成功", avatarUrl);
+            String avatarUrl = imageService.getUserAvatarUrl(id);
+            ImageUploadResult result = imageService.organizationAvatarResultById(id);
+            if (result != null) {
+                return Result.success("头像上传成功", result);
             } else {
                 return Result.success("用户没有上传头像", null);
             }
-
         } catch (Exception e) {
-            logger.error("获取用户头像失败, userId: {}", userId, e);
+            logger.error("获取用户头像失败, id: {}", id, e);
             return Result.fail("获取头像失败: " + e.getMessage());
         }
     }
@@ -195,9 +118,10 @@ public class ImageApi {
             if (image != null && image.getImageData() != null) {
                 // 设置响应头
                 HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG); // 默认JPEG格式，实际应根据图片格式设置
-                headers.setCacheControl("max-age=86400"); // 缓存24小时
-
+                // 默认JPEG格式，实际应根据图片格式设置
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                // 缓存24小时
+                headers.setCacheControl("max-age=86400");
                 logger.info("成功获取用户头像图片, userId: {}, imageId: {}, 大小: {} bytes",
                         userId, image.getImageId(), image.getImageData().length);
 
@@ -234,8 +158,10 @@ public class ImageApi {
             if (image != null && image.getImageData() != null) {
                 // 设置响应头
                 HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG); // 默认JPEG格式，实际应根据图片类型设置
-                headers.setCacheControl("max-age=86400"); // 缓存24小时
+                // 默认JPEG格式，实际应根据图片类型设置
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                // 缓存24小时
+                headers.setCacheControl("max-age=86400");
 
                 logger.info("成功获取图片, imageId: {}, 大小: {} bytes",
                         imageId, image.getImageData().length);

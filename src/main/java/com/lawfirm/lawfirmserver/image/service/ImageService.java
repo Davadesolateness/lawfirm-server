@@ -2,6 +2,8 @@ package com.lawfirm.lawfirmserver.image.service;
 
 import com.lawfirm.lawfirmserver.image.dao.ImageStorageDao;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
+import com.lawfirm.lawfirmserver.image.vo.ImageUploadResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.UUID;
 
 /**
@@ -106,6 +109,39 @@ public class ImageService {
     public String getUserAvatarUrl(Long userId) {
         ImageStorage imageStorage = imageStorageDao.selectLatestAvatarByUserId(userId);
         return imageStorage != null ? imageAccessBaseUrl + "/avatar/" + userId + "/" + imageStorage.getImageId() : null;
+    }
+
+    /**
+     * @description:
+     * @author: dongzhibo
+     * @date: 2025/5/3 17:57
+     * @param:
+     * @return:
+     **/
+    public ImageUploadResult organizationAvatarResultById(Long id) {
+        // 获取保存后的头像数据
+        ImageStorage avatar = imageStorageDao.selectLatestAvatarByUserId(id);
+
+        // 构建返回结果
+        ImageUploadResult result = new ImageUploadResult();
+
+        // 添加文件扩展名和图片数据到结果
+        if (avatar != null) {
+            // 设置文件扩展名
+            result.setFileExtension(avatar.getFileExtension());
+            // 设置MIME类型
+            String mimeType = ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension());
+            result.setType(mimeType);
+
+            // 转换二进制数据为Base64字符串
+            if (avatar.getImageData() != null) {
+                String base64Image = Base64.getEncoder().encodeToString(avatar.getImageData());
+                result.setImageData(base64Image);
+                logger.info("头像数据已转换为Base64格式, 大小: {} 字符, 扩展名: {}",
+                        base64Image.length(), avatar.getFileExtension());
+            }
+        }
+        return result;
     }
 
     /**
