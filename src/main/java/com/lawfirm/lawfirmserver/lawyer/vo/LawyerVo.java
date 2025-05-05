@@ -4,12 +4,15 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 通过ins-framework-mybatis工具自动生成，表lawyer的VO对象<br/>
  * 对应表名：lawyer
+ * @author dong
  */
 @Data
 public class LawyerVo implements Serializable {
@@ -72,6 +75,35 @@ public class LawyerVo implements Serializable {
     private Date operateTimeForHis;
 
     private List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVolist;
-
-
+    
+    /**
+     * 律师专长列表（逗号分隔的字符串），由LawyerSpecialtyRelationVo中的specialtyName汇总而来
+     */
+    private String specialtyNames;
+    
+    /**
+     * 根据关联的专长关系计算并获取逗号分隔的专长名称字符串
+     */
+    public String getSpecialtyNames() {
+        if (specialtyNames != null) {
+            return specialtyNames;
+        }
+        
+        if (lawyerSpecialtyRelationVolist == null || lawyerSpecialtyRelationVolist.isEmpty()) {
+            return "";
+        }
+        
+        // 提取专长名称列表
+        List<String> names = new ArrayList<>();
+        for (LawyerSpecialtyRelationVo relation : lawyerSpecialtyRelationVolist) {
+            if (relation.getLawyerSpecialtyVo() != null 
+                    && relation.getLawyerSpecialtyVo().getSpecialtyName() != null 
+                    && !relation.getLawyerSpecialtyVo().getSpecialtyName().isEmpty()) {
+                names.add(relation.getLawyerSpecialtyVo().getSpecialtyName());
+            }
+        }
+        
+        // 使用逗号连接专长名称
+        return String.join(",", names);
+    }
 }

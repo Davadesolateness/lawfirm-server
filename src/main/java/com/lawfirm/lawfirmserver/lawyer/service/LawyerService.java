@@ -120,6 +120,7 @@ public class LawyerService {
         // 初始化 LawyerVo 对象和专长关联信息列表
         LawyerVo lawyerVo = new LawyerVo();
         List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVoList = new ArrayList<>();
+        List<String> specialtyNamesList = new ArrayList<>();
 
         // 查询律师基本信息
         Lawyer lawyer = lawyerDao.selectByPrimaryKey(lawyerId);
@@ -145,6 +146,11 @@ public class LawyerService {
                 relationVo.setLawyerSpecialtyVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
+                
+                // 提取专长名称添加到specialtyNamesList列表
+                if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
+                    specialtyNamesList.add(specialty.getSpecialtyName());
+                }
             }
         }
 
@@ -152,6 +158,8 @@ public class LawyerService {
         CommonUtil.copyProperties(lawyer, lawyerVo);
         // 设置专长关联信息视图对象列表到 LawyerVo 对象
         lawyerVo.setLawyerSpecialtyRelationVolist(lawyerSpecialtyRelationVoList);
+        // 设置专长名称逗号分隔字符串
+        lawyerVo.setSpecialtyNames(String.join(",", specialtyNamesList));
 
         return lawyerVo;
     }
@@ -217,6 +225,7 @@ public class LawyerService {
         // 初始化 LawyerVo 对象和专长关联信息列表
         LawyerVo lawyerVo = new LawyerVo();
         List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVoList = new ArrayList<>();
+        List<String> specialtyNamesList = new ArrayList<>();
 
         // 查询律师基本信息
         Lawyer lawyer = lawyerDao.selectByPrimaryKey(lawyerId);
@@ -242,6 +251,11 @@ public class LawyerService {
                 relationVo.setLawyerSpecialtyVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
+                
+                // 提取专长名称添加到specialtyNamesList列表
+                if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
+                    specialtyNamesList.add(specialty.getSpecialtyName());
+                }
             }
         }
 
@@ -249,6 +263,8 @@ public class LawyerService {
         CommonUtil.copyProperties(lawyer, lawyerVo);
         // 设置专长关联信息视图对象列表到 LawyerVo 对象
         lawyerVo.setLawyerSpecialtyRelationVolist(lawyerSpecialtyRelationVoList);
+        // 设置专长名称逗号分隔字符串
+        lawyerVo.setSpecialtyNames(String.join(",", specialtyNamesList));
 
         return lawyerVo;
     }
@@ -292,16 +308,16 @@ public class LawyerService {
         queryCondition.setIsValidFlag("1");
 
         // 使用 PageParam 进行分页查询，但设置一个足够大的页码以获取所有记录
-       PageParam pageParam = new PageParam();
+        PageParam pageParam = new PageParam();
         
         // 查询所有符合条件的律师
         Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
 
-        // 转换结果为VO对象列表
+        // 转换结果为VO对象列表并填充关联数据
         List<LawyerVo> lawyerVoList = new ArrayList<>();
         for (Lawyer lawyer : lawyerPage) {
-            LawyerVo lawyerVo = new LawyerVo();
-            CommonUtil.copyProperties(lawyer, lawyerVo);
+            // 使用convertToVo方法确保专长信息被正确处理
+            LawyerVo lawyerVo = convertToVo(lawyer);
             lawyerVoList.add(lawyerVo);
         }
 
@@ -394,6 +410,7 @@ public class LawyerService {
         
         if (specialtyRelations != null && !specialtyRelations.isEmpty()) {
             List<LawyerSpecialtyRelationVo> specialtyVos = new ArrayList<>();
+            List<String> specialtyNamesList = new ArrayList<>();
             
             for (LawyerSpecialtyRelation relation : specialtyRelations) {
                 // 创建专长关联信息视图对象
@@ -406,12 +423,20 @@ public class LawyerService {
                     LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
                     CommonUtil.copyProperties(specialty, specialtyVo);
                     relationVo.setLawyerSpecialtyVo(specialtyVo);
+                    
+                    // 直接提取专长名称添加到specialtyNamesList列表
+                    if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
+                        specialtyNamesList.add(specialty.getSpecialtyName());
+                    }
                 }
                 
                 specialtyVos.add(relationVo);
             }
             
             vo.setLawyerSpecialtyRelationVolist(specialtyVos);
+            
+            // 直接设置专长名称逗号分隔字符串
+            vo.setSpecialtyNames(String.join(",", specialtyNamesList));
         }
 
         return vo;
