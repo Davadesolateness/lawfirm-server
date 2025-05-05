@@ -117,12 +117,12 @@ public class LawyerApi {
      * @return 包含律师详细信息的 LawyerVo 对象
      */
     @ApiOperation(value = "根据ID获取律师信息", notes = "通过路径变量传入的律师ID获取单个律师的详细信息")
-    @GetMapping("/getById/{id}")
+    @GetMapping("/getLawyerById")
     public Result<LawyerVo> getLawyerById(
-            @ApiParam(value = "律师ID", required = true, example = "1") 
-            @PathVariable("id") Long id) {
+            @ApiParam(value = "律师ID", required = true, example = "1")
+            @RequestParam(value = "id") String id) {
         try {
-            LawyerVo lawyer = lawyerService.getLawyer(id);
+            LawyerVo lawyer = lawyerService.getLawyer(Long.valueOf(id));
             if (lawyer == null) {
                 return Result.fail("未找到律师信息");
             }
@@ -132,7 +132,7 @@ public class LawyerApi {
         }
     }
 
-     /**
+    /**
      * 搜索律师列表，支持分页和多条件筛选
      *
      * @param params 搜索参数，包含关键词、专业领域、页码和每页大小等
@@ -142,14 +142,14 @@ public class LawyerApi {
     @PostMapping("/searchLawyers")
     public Result<PageResult<LawyerVo>> searchLawyers(@RequestBody @Valid LawyerSearchVo params) {
         try {
-            log.info("搜索律师列表: 页码={}, 每页大小={}, 关键词={}, 专业领域={}", 
+            log.info("搜索律师列表: 页码={}, 每页大小={}, 关键词={}, 专业领域={}",
                     params.getPage(), params.getPageSize(), params.getKeyword(), params.getSpecialty());
-            
+
             PageResult<LawyerVo> result = lawyerService.searchLawyers(params);
-            
-            log.info("搜索律师列表成功: 当前页={}, 总条数={}, 结果数量={}", 
+
+            log.info("搜索律师列表成功: 当前页={}, 总条数={}, 结果数量={}",
                     result.getCurrent(), result.getTotal(), result.getData().size());
-            
+
             return Result.success(result);
         } catch (Exception e) {
             log.error("搜索律师列表失败: ", e);
