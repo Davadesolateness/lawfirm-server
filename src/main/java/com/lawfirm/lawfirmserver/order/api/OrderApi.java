@@ -30,47 +30,65 @@ public class OrderApi {
     private OrderService orderService;
 
     /**
-     * 获取用户的所有订单，包含律师名称等概要信息
+     * 获取用户的所有订单，包含律师名称等概要信息，支持分页
      *
      * @param userId 用户ID
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
      * @return 包含律师名称的订单列表
      */
     @GetMapping("/getUserOrders")
     @ApiOperation("获取用户的所有订单，包含律师名称")
     public Result<List<OrderDetailVO>> getUserOrders(
             @ApiParam(value = "用户ID", required = true, example = "1")
-            @RequestParam("userId") String userId) {
-        List<OrderDetailVO> orders = orderService.getOrdersByUserId(userId);
+            @RequestParam("userId") String userId,
+            @ApiParam(value = "页码，从1开始", required = false, example = "1")
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+            @ApiParam(value = "每页记录数", required = false, example = "10")
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        List<OrderDetailVO> orders = orderService.getOrdersByUserId(userId, pageNum, pageSize);
         return Result.success("获取用户订单成功", orders);
     }
 
     /**
-     * 获取律师的所有订单，包含用户名称等概要信息
+     * 获取律师的所有订单，包含用户名称等概要信息，支持分页
      *
      * @param lawyerId 律师ID
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
      * @return 包含用户名称的订单列表
      */
     @GetMapping("/getLawyerOrders")
     @ApiOperation("获取律师的所有订单，包含用户名称")
     public Result<List<OrderDetailVO>> getLawyerOrders(
             @ApiParam(value = "律师ID", required = true, example = "1")
-            @RequestParam("lawyerId") String lawyerId) {
-        List<OrderDetailVO> orders = orderService.getOrdersByLawyerId(lawyerId);
+            @RequestParam("lawyerId") String lawyerId,
+            @ApiParam(value = "页码，从1开始", required = false, example = "1")
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+            @ApiParam(value = "每页记录数", required = false, example = "10")
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        List<OrderDetailVO> orders = orderService.getOrdersByLawyerId(lawyerId, pageNum, pageSize);
         return Result.success("获取律师订单成功", orders);
     }
 
     /**
-     * 搜索订单接口，根据关键词查询匹配用户名或律师名的订单
+     * 搜索订单接口，根据关键词查询匹配用户名或律师名的订单，支持分页
      *
      * @param keyword 搜索关键词（用户名或律师名）
-     * @return 匹配的订单列表
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
+     * @return 分页后的订单列表
      */
     @GetMapping("/searchOrders")
-    @ApiOperation("根据关键词（用户名或律师名）搜索订单")
+    @ApiOperation("根据关键词（用户名或律师名）搜索订单，支持分页")
     public Result<List<OrderDetailVO>> searchOrders(
             @ApiParam(value = "搜索关键词", required = true, example = "张三")
-            @RequestParam("keyword") String keyword) {
-        List<OrderDetailVO> orders = orderService.searchOrdersByKeyword(keyword);
+            @RequestParam("keyword") String keyword,
+            @ApiParam(value = "页码，从1开始", required = false, example = "1")
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+            @ApiParam(value = "每页记录数", required = false, example = "10")
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        List<OrderDetailVO> orders = orderService.searchOrdersByKeyword(keyword, pageNum, pageSize);
         return Result.success("搜索订单成功", orders);
     }
 

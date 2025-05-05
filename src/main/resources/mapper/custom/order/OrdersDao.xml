@@ -138,6 +138,34 @@
                o.operateTimeForHis,
                o.lawyerId,
                u.username AS userName,
+               l.name AS lawyerName,
+               l.title AS lawyerTitle,
+               l.avatar AS lawyerAvatar
+        FROM orders o
+                 LEFT JOIN
+             users u ON o.userId = u.id
+                 LEFT JOIN
+             lawyers l ON o.lawyerId = l.id
+        WHERE u.username LIKE CONCAT('%', #{keyword}, '%')
+           OR l.name LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY o.inputTime DESC
+    </select>
+    
+    <!-- 根据关键词搜索订单，支持分页 -->
+    <select id="searchOrdersByKeywordWithPagination" resultMap="OrderDetailResultMap">
+        SELECT o.orderId,
+               o.userId,
+               o.userType,
+               o.orderType,
+               o.serviceDuration,
+               o.serviceCount,
+               o.amount AS purchaseAmount,
+               o.orderStatus,
+               o.inputTime,
+               o.insertTimeForHis,
+               o.operateTimeForHis,
+               o.lawyerId,
+               u.username AS userName,
                l.lawyerName
         FROM orders o
                  LEFT JOIN
@@ -147,6 +175,59 @@
         WHERE u.username LIKE CONCAT('%', #{keyword}, '%')
            OR l.lawyerName LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY o.inputTime DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取用户的订单详情列表，支持分页 -->
+    <select id="getOrderDetailsByUserIdWithPagination" resultMap="OrderDetailResultMap">
+        SELECT o.orderId,
+               o.userId,
+               o.userType,
+               o.orderType,
+               o.serviceDuration,
+               o.serviceCount,
+               o.amount AS purchaseAmount,
+               o.orderStatus,
+               o.inputTime,
+               o.insertTimeForHis,
+               o.operateTimeForHis,
+               o.lawyerId,
+               u.username AS userName,
+               l.lawyerName
+        FROM orders o
+                 LEFT JOIN
+             users u ON o.userId = u.id
+                 LEFT JOIN
+             lawyer l ON o.lawyerId = l.id
+        WHERE o.userId = #{userId}
+        ORDER BY o.inputTime DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 获取律师的订单详情列表，支持分页 -->
+    <select id="getOrderDetailsByLawyerIdWithPagination" resultMap="OrderDetailResultMap">
+        SELECT o.orderId,
+               o.userId,
+               o.userType,
+               o.orderType,
+               o.serviceDuration,
+               o.serviceCount,
+               o.amount AS purchaseAmount,
+               o.orderStatus,
+               o.inputTime,
+               o.insertTimeForHis,
+               o.operateTimeForHis,
+               o.lawyerId,
+               u.username AS userName,
+               l.lawyerName
+        FROM orders o
+                 LEFT JOIN
+             users u ON o.userId = u.id
+                 LEFT JOIN
+             lawyer l ON o.lawyerId = l.id
+        WHERE o.lawyerId = #{lawyerId}
+        ORDER BY o.inputTime DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
 </mapper>

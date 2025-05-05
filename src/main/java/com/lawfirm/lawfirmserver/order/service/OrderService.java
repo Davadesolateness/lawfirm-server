@@ -102,6 +102,38 @@ public class OrderService {
     }
 
     /**
+     * 根据关键词（用户名或律师名）搜索订单，支持分页
+     *
+     * @param keyword 搜索关键词
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
+     * @return 分页后的订单列表
+     */
+    public List<OrderDetailVO> searchOrdersByKeyword(String keyword, Integer pageNum, Integer pageSize) {
+        logger.info("根据关键词搜索订单(分页), keyword: {}, pageNum: {}, pageSize: {}", keyword, pageNum, pageSize);
+        
+        if (!StringUtils.hasText(keyword)) {
+            logger.info("搜索关键词为空，返回空列表");
+            return new ArrayList<>();
+        }
+        
+        // 计算分页参数
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+        
+        // 调用DAO层方法进行分页搜索
+        List<OrderDetailVO> orderDetails = ordersDao.searchOrdersByKeywordWithPagination(keyword, offset, limit);
+        
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("没有找到匹配关键词的订单, keyword: {}", keyword);
+            return new ArrayList<>();
+        }
+        
+        logger.info("成功搜索到匹配的订单, keyword: {}, 订单数量: {}", keyword, orderDetails.size());
+        return orderDetails;
+    }
+
+    /**
      * 根据订单ID获取订单详情
      *
      * @param orderId 订单ID
@@ -172,6 +204,58 @@ public class OrderService {
         }
 
         logger.info("成功获取用户的详细订单列表, userId: {}, 订单数量: {}", userId, orderDetails.size());
+        return orderDetails;
+    }
+
+    /**
+     * 根据用户ID获取订单列表，包含律师名称，支持分页
+     *
+     * @param userId 用户ID
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
+     * @return 包含律师名称的订单列表
+     */
+    public List<OrderDetailVO> getOrdersByUserId(String userId, Integer pageNum, Integer pageSize) {
+        logger.info("根据用户ID获取订单概要信息（分页）, userId: {}, pageNum: {}, pageSize: {}", userId, pageNum, pageSize);
+
+        // 计算分页参数
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        // 直接调用Dao层方法获取包含律师名称的订单列表
+        List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByUserIdWithPagination(Long.valueOf(userId), offset, limit);
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("用户没有订单记录, userId: {}", userId);
+            return new ArrayList<>();
+        }
+
+        logger.info("成功获取用户的订单概要信息, userId: {}, 订单数量: {}", userId, orderDetails.size());
+        return orderDetails;
+    }
+
+    /**
+     * 根据律师ID获取订单列表，包含用户名称，支持分页
+     *
+     * @param lawyerId 律师ID
+     * @param pageNum 页码，从1开始
+     * @param pageSize 每页记录数
+     * @return 包含用户名称的订单列表
+     */
+    public List<OrderDetailVO> getOrdersByLawyerId(String lawyerId, Integer pageNum, Integer pageSize) {
+        logger.info("根据律师ID获取订单概要信息（分页）, lawyerId: {}, pageNum: {}, pageSize: {}", lawyerId, pageNum, pageSize);
+
+        // 计算分页参数
+        int offset = (pageNum - 1) * pageSize;
+        int limit = pageSize;
+
+        // 调用Dao层方法获取包含用户名称的订单列表
+        List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByLawyerIdWithPagination(Long.valueOf(lawyerId), offset, limit);
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("律师没有订单记录, lawyerId: {}", lawyerId);
+            return new ArrayList<>();
+        }
+
+        logger.info("成功获取律师的订单概要信息, lawyerId: {}, 订单数量: {}", lawyerId, orderDetails.size());
         return orderDetails;
     }
 }

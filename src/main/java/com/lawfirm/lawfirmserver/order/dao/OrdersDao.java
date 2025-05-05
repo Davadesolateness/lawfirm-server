@@ -61,4 +61,43 @@ public interface OrdersDao extends MybatisBaseDao<Orders, Long> {
      * @return 包含详细信息的订单详情列表
      */
     List<OrderDetailVO> searchOrdersByKeyword(@Param("keyword") String keyword);
+    
+    /**
+     * 根据关键词搜索订单，支持分页
+     * 
+     * @param keyword 搜索关键词（用户名或律师名）
+     * @param offset 起始位置
+     * @param limit 查询条数
+     * @return 分页后的订单详情列表
+     */
+    List<OrderDetailVO> searchOrdersByKeywordWithPagination(
+        @Param("keyword") String keyword, 
+        @Param("offset") int offset, 
+        @Param("limit") int limit);
+
+    /**
+     * 获取用户的订单详情列表，支持分页
+     *
+     * @param userId 用户ID
+     * @param offset 起始位置
+     * @param limit 查询条数
+     * @return 包含详细信息的订单详情列表
+     */
+    List<OrderDetailVO> getOrderDetailsByUserIdWithPagination(
+            @Param("userId") Long userId, 
+            @Param("offset") int offset, 
+            @Param("limit") int limit);
+
+    /**
+     * 获取律师的订单详情列表，支持分页
+     *
+     * @param lawyerId 律师ID
+     * @param offset 起始位置
+     * @param limit 查询条数
+     * @return 包含详细信息的订单详情列表
+     */
+    List<OrderDetailVO> getOrderDetailsByLawyerIdWithPagination(
+            @Param("lawyerId") Long lawyerId, 
+            @Param("offset") int offset, 
+            @Param("limit") int limit);
 }
