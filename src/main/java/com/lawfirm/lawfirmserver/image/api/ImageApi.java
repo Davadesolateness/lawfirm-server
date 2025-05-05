@@ -1,9 +1,8 @@
-package com.lawfirm.lawfirmserver.image.imageapi;
+package com.lawfirm.lawfirmserver.image.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
 import com.lawfirm.lawfirmserver.image.service.ImageService;
-import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.image.vo.ImageUploadResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Base64;
 
 /**
  * 图片管理API
