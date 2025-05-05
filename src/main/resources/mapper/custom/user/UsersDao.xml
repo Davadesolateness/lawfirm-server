@@ -29,6 +29,19 @@
         from users
         where id = #{userId}
     </select>
+    
+    <!-- 根据关联实体ID和用户类型查询用户 -->
+    <select id="selectByRelatedEntityId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where relatedEntityId = #{relatedEntityId}
+        <if test="userType != null and userType != ''">
+            and userType = #{userType}
+        </if>
+        and isValidFlag = '1'
+        limit 1
+    </select>
 
     <!-- 插入一条记录(为空的字段不操作) -->
     <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.user.po.Users">

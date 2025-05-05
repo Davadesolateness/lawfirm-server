@@ -2,6 +2,9 @@ package com.lawfirm.lawfirmserver.lawyer.service;
 
 import com.lawfirm.lawfirmserver.common.PageResult;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
+import com.lawfirm.lawfirmserver.image.dao.ImageStorageDao;
+import com.lawfirm.lawfirmserver.image.po.ImageStorage;
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
@@ -9,8 +12,14 @@ import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
 import com.lawfirm.lawfirmserver.lawyer.vo.*;
+import com.lawfirm.lawfirmserver.login.service.LoginService;
+import com.lawfirm.lawfirmserver.user.dao.UsersDao;
+import com.lawfirm.lawfirmserver.user.po.Users;
 import ins.framework.mybatis.Page;
 import ins.framework.mybatis.PageParam;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +35,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class LawyerService {
+    private static final Logger log = LoggerFactory.getLogger(LawyerService.class);
+
 
     @Autowired
     LawyerDao lawyerDao;
@@ -33,6 +44,12 @@ public class LawyerService {
     LawyerSpecialtyRelationDao lawyerSpecialtyRelationDao;
     @Autowired
     LawyerSpecialtyDao lawyerSpecialtyDao;
+
+    @Autowired
+    UsersDao usersDao;
+
+    @Autowired
+    ImageStorageDao imageStorageDao;
 
     /**
      * 更新律师信息及其关联的专长信息
@@ -111,7 +128,7 @@ public class LawyerService {
     }
 
     /**
-     * 根据律师 ID 获取律师信息及其关联专长信息
+     * 根据律师 ID 获取律师信息及其关联专长信息，并加载头像
      *
      * @param lawyerId 律师 ID
      * @return 封装律师信息和专长信息的 LawyerVo 对象
@@ -146,7 +163,7 @@ public class LawyerService {
                 relationVo.setLawyerSpecialtyVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
-                
+
                 // 提取专长名称添加到specialtyNamesList列表
                 if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
                     specialtyNamesList.add(specialty.getSpecialtyName());
@@ -161,7 +178,62 @@ public class LawyerService {
         // 设置专长名称逗号分隔字符串
         lawyerVo.setSpecialtyNames(String.join(",", specialtyNamesList));
 
+        // 查询关联的用户信息和头像
+        fetchUserInfoAndAvatar(lawyerId, lawyerVo);
+
         return lawyerVo;
+    }
+
+    /**
+     * 根据律师ID查询关联的用户信息和头像
+     *
+     * @param lawyerId 律师ID
+     * @param lawyerVo 律师VO对象，用于设置用户信息和头像
+     */
+    private void fetchUserInfoAndAvatar(Long lawyerId, LawyerVo lawyerVo) {
+        try {
+            // 1. 根据律师ID从用户表中查询关联用户
+            Users user = findUserByLawyerId(lawyerId);
+
+            if (user != null) {
+                // 设置关联的用户ID
+                lawyerVo.setUserId(user.getId());
+
+                // 2. 查询用户的头像
+                ImageStorage avatar = imageStorageDao.selectLatestAvatarByUserId(user.getId());
+
+                if (avatar != null && avatar.getImageData() != null) {
+                    // 转换为Base64字符串
+                    String base64Image = Base64.encodeBase64String(avatar.getImageData());
+                    lawyerVo.setImageData(base64Image);
+
+                    // 设置图片类型
+                    String imageType = ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension());
+                    lawyerVo.setImageType(imageType);
+                }
+            }
+        } catch (Exception e) {
+            // 记录异常但不影响主功能
+            System.err.println("获取律师用户信息和头像失败: " + e.getMessage());
+            log.info("获取律师用户信息和头像失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 通过律师ID查找关联的用户
+     * 
+     * @param lawyerId 律师ID
+     * @return 关联的用户对象，如果没有则返回null
+     */
+    private Users findUserByLawyerId(Long lawyerId) {
+        try {
+            // 使用新增的DAO方法通过关联实体ID和用户类型查询
+            return usersDao.selectByRelatedEntityId(lawyerId, "lawyer");
+        } catch (Exception e) {
+            System.err.println("通过律师ID查找用户失败: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
 //    /**
@@ -251,7 +323,7 @@ public class LawyerService {
                 relationVo.setLawyerSpecialtyVo(specialtyVo);
                 // 添加到专长关联信息视图对象列表
                 lawyerSpecialtyRelationVoList.add(relationVo);
-                
+
                 // 提取专长名称添加到specialtyNamesList列表
                 if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
                     specialtyNamesList.add(specialty.getSpecialtyName());
@@ -265,6 +337,9 @@ public class LawyerService {
         lawyerVo.setLawyerSpecialtyRelationVolist(lawyerSpecialtyRelationVoList);
         // 设置专长名称逗号分隔字符串
         lawyerVo.setSpecialtyNames(String.join(",", specialtyNamesList));
+
+        // 查询关联的用户信息和头像
+        fetchUserInfoAndAvatar(lawyerId, lawyerVo);
 
         return lawyerVo;
     }
@@ -309,7 +384,7 @@ public class LawyerService {
 
         // 使用 PageParam 进行分页查询，但设置一个足够大的页码以获取所有记录
         PageParam pageParam = new PageParam();
-        
+
         // 查询所有符合条件的律师
         Page<Lawyer> lawyerPage = lawyerDao.selectPage(pageParam, queryCondition);
 
@@ -347,7 +422,7 @@ public class LawyerService {
         if (StringUtils.hasText(params.getSpecialty())) {
             queryWrapper.specialtyEquals(params.getSpecialty());
         }
-        
+
         // 排除特定专业领域
         if (params.getExcludeSpecialties() != null && !params.getExcludeSpecialties().isEmpty()) {
             queryWrapper.excludeSpecialties(params.getExcludeSpecialties());
@@ -407,37 +482,40 @@ public class LawyerService {
 
         // 查询并填充律师专长信息
         List<LawyerSpecialtyRelation> specialtyRelations = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyer.getId());
-        
+
         if (specialtyRelations != null && !specialtyRelations.isEmpty()) {
             List<LawyerSpecialtyRelationVo> specialtyVos = new ArrayList<>();
             List<String> specialtyNamesList = new ArrayList<>();
-            
+
             for (LawyerSpecialtyRelation relation : specialtyRelations) {
                 // 创建专长关联信息视图对象
                 LawyerSpecialtyRelationVo relationVo = new LawyerSpecialtyRelationVo();
                 CommonUtil.copyProperties(relation, relationVo);
-                
+
                 // 查询专长详细信息
                 LawyerSpecialty specialty = lawyerSpecialtyDao.selectByPrimaryKey(relation.getSpecialtyId());
                 if (specialty != null) {
                     LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
                     CommonUtil.copyProperties(specialty, specialtyVo);
                     relationVo.setLawyerSpecialtyVo(specialtyVo);
-                    
+
                     // 直接提取专长名称添加到specialtyNamesList列表
                     if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
                         specialtyNamesList.add(specialty.getSpecialtyName());
                     }
                 }
-                
+
                 specialtyVos.add(relationVo);
             }
-            
+
             vo.setLawyerSpecialtyRelationVolist(specialtyVos);
-            
+
             // 直接设置专长名称逗号分隔字符串
             vo.setSpecialtyNames(String.join(",", specialtyNamesList));
         }
+
+        // 查询关联的用户信息和头像
+        fetchUserInfoAndAvatar(lawyer.getId(), vo);
 
         return vo;
     }

@@ -74,12 +74,30 @@ public class LawyerVo implements Serializable {
      */
     private Date operateTimeForHis;
 
+    /**
+     * 关联的专长关系列表
+     */
     private List<LawyerSpecialtyRelationVo> lawyerSpecialtyRelationVolist;
     
     /**
      * 律师专长列表（逗号分隔的字符串），由LawyerSpecialtyRelationVo中的specialtyName汇总而来
      */
     private String specialtyNames;
+    
+    /**
+     * 头像图片数据（Base64编码）
+     */
+    private String imageData;
+    
+    /**
+     * 头像图片类型，如 image/jpeg, image/png
+     */
+    private String imageType;
+    
+    /**
+     * 关联的用户ID
+     */
+    private Long userId;
     
     /**
      * 根据关联的专长关系计算并获取逗号分隔的专长名称字符串

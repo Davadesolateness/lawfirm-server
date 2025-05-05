@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 影像存储实体类
  * 对应表：imageStorage
+ * @author dong
  */
 @Data
 public class ImageStorage implements Serializable {
