@@ -60,6 +60,9 @@ public class LoginVo implements Serializable {
     @ApiModelProperty("律师专长")
     private String specialty;
 
+    @ApiModelProperty("关联实体ID")
+    private Long relatedEntityId;
+
     /**
      * 简化构造方法，用于登录返回
      */
@@ -76,6 +79,7 @@ public class LoginVo implements Serializable {
             // 设置token过期时间（例如：2小时后过期）
             this.tokenExpireTime = System.currentTimeMillis() + 2 * 60 * 60 * 1000;
 
+            this.relatedEntityId = userObj.getRelatedEntityId();
             // 设置刷新token和过期时间（例如：7天后过期）
             this.refreshToken = token + "_refresh";
             this.refreshTokenExpireTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000;

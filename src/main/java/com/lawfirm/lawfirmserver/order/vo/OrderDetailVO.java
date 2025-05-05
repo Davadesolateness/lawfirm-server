@@ -19,21 +19,30 @@ public class OrderDetailVO {
     // 用户信息
     private Long userId;
     private String userName;
-    private String userType; // individual - 个人用户，corporate - 法人用户
+    // individual - 个人用户，corporate - 法人用户   lawyer - 律师
+    private String userType;
 
     // 律师信息
     private Long lawyerId;
     private String lawyerName;
 
     // 订单信息
-    private String orderType; // 订单类型
-    private BigDecimal purchaseAmount; // 订单金额
-    private Long serviceDuration; // 服务时长（分钟）
-    private Long serviceCount; // 服务次数
-    private String orderStatus; // 订单状态
-    private Date inputTime; // 订单录入时间
-    private Date insertTimeForHis; // 订单记录插入时间
-    private Date operateTimeForHis; // 订单记录更新时间
+    // 订单类型
+    private String orderType;
+    // 订单金额
+    private BigDecimal purchaseAmount;
+    // 服务时长（分钟）
+    private Long serviceDuration;
+    // 服务次数
+    private Long serviceCount;
+    // 订单状态
+    private String orderStatus;
+    // 订单录入时间
+    private Date inputTime;
+    // 订单记录插入时间
+    private Date insertTimeForHis;
+    // 订单记录更新时间
+    private Date operateTimeForHis;
 
     /**
      * 从基础订单对象转换为详情对象

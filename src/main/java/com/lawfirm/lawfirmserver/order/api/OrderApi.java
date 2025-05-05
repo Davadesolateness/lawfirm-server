@@ -45,6 +45,36 @@ public class OrderApi {
     }
 
     /**
+     * 获取律师的所有订单，包含用户名称等概要信息
+     *
+     * @param lawyerId 律师ID
+     * @return 包含用户名称的订单列表
+     */
+    @GetMapping("/getLawyerOrders")
+    @ApiOperation("获取律师的所有订单，包含用户名称")
+    public Result<List<OrderDetailVO>> getLawyerOrders(
+            @ApiParam(value = "律师ID", required = true, example = "1")
+            @RequestParam("lawyerId") String lawyerId) {
+        List<OrderDetailVO> orders = orderService.getOrdersByLawyerId(lawyerId);
+        return Result.success("获取律师订单成功", orders);
+    }
+
+    /**
+     * 搜索订单接口，根据关键词查询匹配用户名或律师名的订单
+     *
+     * @param keyword 搜索关键词（用户名或律师名）
+     * @return 匹配的订单列表
+     */
+    @GetMapping("/searchOrders")
+    @ApiOperation("根据关键词（用户名或律师名）搜索订单")
+    public Result<List<OrderDetailVO>> searchOrders(
+            @ApiParam(value = "搜索关键词", required = true, example = "张三")
+            @RequestParam("keyword") String keyword) {
+        List<OrderDetailVO> orders = orderService.searchOrdersByKeyword(keyword);
+        return Result.success("搜索订单成功", orders);
+    }
+
+    /**
      * 获取订单详情
      *
      * @param orderId 订单ID

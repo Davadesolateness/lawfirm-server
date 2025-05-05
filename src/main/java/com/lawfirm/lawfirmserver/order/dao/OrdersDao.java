@@ -45,4 +45,20 @@ public interface OrdersDao extends MybatisBaseDao<Orders, Long> {
      * @return 包含详细信息的订单详情列表
      */
     List<OrderDetailVO> getOrderDetailsByUserId(@Param("userId") Long userId);
+
+    /**
+     * 获取律师的订单详情列表
+     *
+     * @param lawyerId 律师ID
+     * @return 包含详细信息的订单详情列表
+     */
+    List<OrderDetailVO> getOrderDetailsByLawyerId(@Param("lawyerId") Long lawyerId);
+    
+    /**
+     * 根据关键词搜索订单
+     * 
+     * @param keyword 搜索关键词（用户名或律师名）
+     * @return 包含详细信息的订单详情列表
+     */
+    List<OrderDetailVO> searchOrdersByKeyword(@Param("keyword") String keyword);
 }

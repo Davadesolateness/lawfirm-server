@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,52 @@ public class OrderService {
         }
 
         logger.info("成功获取用户的订单概要信息, userId: {}, 订单数量: {}", userId, orderDetails.size());
+        return orderDetails;
+    }
+
+    /**
+     * 根据律师ID获取订单列表，包含用户名称
+     *
+     * @param lawyerId 律师ID
+     * @return 包含用户名称的订单列表
+     */
+    public List<OrderDetailVO> getOrdersByLawyerId(String lawyerId) {
+        logger.info("根据律师ID获取订单概要信息（包含用户名称）, lawyerId: {}", lawyerId);
+
+        // 调用Dao层方法获取包含用户名称的订单列表
+        List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByLawyerId(Long.valueOf(lawyerId));
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("律师没有订单记录, lawyerId: {}", lawyerId);
+            return new ArrayList<>();
+        }
+
+        logger.info("成功获取律师的订单概要信息, lawyerId: {}, 订单数量: {}", lawyerId, orderDetails.size());
+        return orderDetails;
+    }
+
+    /**
+     * 根据关键词（用户名或律师名）搜索订单
+     *
+     * @param keyword 搜索关键词
+     * @return 匹配的订单列表
+     */
+    public List<OrderDetailVO> searchOrdersByKeyword(String keyword) {
+        logger.info("根据关键词搜索订单, keyword: {}", keyword);
+        
+        if (!StringUtils.hasText(keyword)) {
+            logger.info("搜索关键词为空，返回空列表");
+            return new ArrayList<>();
+        }
+        
+        // 调用DAO层方法进行搜索
+        List<OrderDetailVO> orderDetails = ordersDao.searchOrdersByKeyword(keyword);
+        
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            logger.info("没有找到匹配关键词的订单, keyword: {}", keyword);
+            return new ArrayList<>();
+        }
+        
+        logger.info("成功搜索到匹配的订单, keyword: {}, 订单数量: {}", keyword, orderDetails.size());
         return orderDetails;
     }
 
