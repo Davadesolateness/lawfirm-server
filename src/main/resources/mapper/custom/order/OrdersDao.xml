@@ -81,7 +81,7 @@
                o.orderType,
                o.serviceDuration,
                o.serviceCount,
-               o.amount AS purchaseAmount,
+               o.amount   AS purchaseAmount,
                o.orderStatus,
                o.inputTime,
                o.insertTimeForHis,
@@ -97,7 +97,7 @@
         WHERE o.userId = #{userId}
         ORDER BY o.inputTime DESC
     </select>
-    
+
     <!-- 获取律师的订单详情列表 -->
     <select id="getOrderDetailsByLawyerId" resultMap="OrderDetailResultMap">
         SELECT o.orderId,
@@ -122,7 +122,7 @@
         WHERE o.lawyerId = #{lawyerId}
         ORDER BY o.inputTime DESC
     </select>
-    
+
     <!-- 根据关键词搜索订单 -->
     <select id="searchOrdersByKeyword" resultMap="OrderDetailResultMap">
         SELECT o.orderId,
@@ -138,8 +138,8 @@
                o.operateTimeForHis,
                o.lawyerId,
                u.username AS userName,
-               l.name AS lawyerName,
-               l.title AS lawyerTitle,
+               l.name   AS lawyerName,
+               l.title  AS lawyerTitle,
                l.avatar AS lawyerAvatar
         FROM orders o
                  LEFT JOIN
@@ -150,7 +150,7 @@
            OR l.name LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY o.inputTime DESC
     </select>
-    
+
     <!-- 根据关键词搜索订单，支持分页 -->
     <select id="searchOrdersByKeywordWithPagination" resultMap="OrderDetailResultMap">
         SELECT o.orderId,
@@ -175,7 +175,7 @@
         WHERE u.username LIKE CONCAT('%', #{keyword}, '%')
            OR l.lawyerName LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY o.inputTime DESC
-        LIMIT #{offset}, #{limit}
+            LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 获取用户的订单详情列表，支持分页 -->
@@ -201,7 +201,7 @@
              lawyer l ON o.lawyerId = l.id
         WHERE o.userId = #{userId}
         ORDER BY o.inputTime DESC
-        LIMIT #{offset}, #{limit}
+            LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 获取律师的订单详情列表，支持分页 -->
@@ -227,7 +227,7 @@
              lawyer l ON o.lawyerId = l.id
         WHERE o.lawyerId = #{lawyerId}
         ORDER BY o.inputTime DESC
-        LIMIT #{offset}, #{limit}
+            LIMIT #{offset}, #{limit}
     </select>
 
 </mapper>

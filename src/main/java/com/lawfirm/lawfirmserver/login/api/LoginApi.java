@@ -1,11 +1,7 @@
 package com.lawfirm.lawfirmserver.login.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
-import com.lawfirm.lawfirmserver.login.dto.LoginByCodeDTO;
-import com.lawfirm.lawfirmserver.login.dto.LoginByPasswordDTO;
-import com.lawfirm.lawfirmserver.login.dto.RegisterDTO;
-import com.lawfirm.lawfirmserver.login.dto.WechatLoginDTO;
-import com.lawfirm.lawfirmserver.login.dto.ResetPasswordDTO;
+import com.lawfirm.lawfirmserver.login.dto.*;
 import com.lawfirm.lawfirmserver.login.service.LoginService;
 import com.lawfirm.lawfirmserver.login.vo.LoginVo;
 import io.swagger.annotations.Api;

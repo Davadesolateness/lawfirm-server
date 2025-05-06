@@ -101,33 +101,33 @@
             <!-- 关键词模糊搜索 -->
             <if test="query.keyword != null and query.keyword != ''">
                 AND (
-                    lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
-                    OR lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
+                lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
+                OR lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
                 )
             </if>
             <!-- 专业领域筛选 (通过关联表查询) -->
             <if test="query.specialty != null and query.specialty != ''">
                 AND EXISTS (
-                    SELECT 1 FROM lawyerSpecialtyRelation lsr
-                    JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = lawyer.id 
-                    AND (
-                        ls.specialtyName = #{query.specialty}
-                        OR ls.specialtyName LIKE CONCAT('%', #{query.specialty}, '%')
-                    )
+                SELECT 1 FROM lawyerSpecialtyRelation lsr
+                JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
+                WHERE lsr.lawyerId = lawyer.id
+                AND (
+                ls.specialtyName = #{query.specialty}
+                OR ls.specialtyName LIKE CONCAT('%', #{query.specialty}, '%')
+                )
                 )
             </if>
-            
+
             <!-- 排除特定专业领域 -->
             <if test="query.excludeSpecialties != null and query.excludeSpecialties.size() > 0">
                 AND NOT EXISTS (
-                    SELECT 1 FROM lawyerSpecialtyRelation lsr
-                    JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = lawyer.id 
-                    AND ls.specialtyName IN
-                    <foreach collection="query.excludeSpecialties" item="excludeSpecialty" open="(" separator="," close=")">
-                        #{excludeSpecialty}
-                    </foreach>
+                SELECT 1 FROM lawyerSpecialtyRelation lsr
+                JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
+                WHERE lsr.lawyerId = lawyer.id
+                AND ls.specialtyName IN
+                <foreach collection="query.excludeSpecialties" item="excludeSpecialty" open="(" separator="," close=")">
+                    #{excludeSpecialty}
+                </foreach>
                 )
             </if>
             <!-- 地区筛选 -->
@@ -156,8 +156,8 @@
 
     <!-- 根据条件查询律师列表 -->
     <select id="selectByCondition" resultMap="BaseResultMap">
-        SELECT 
-            <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM lawyer
         <include refid="Where_Clause"/>
         <if test="query.orderBy != null and query.orderBy != ''">

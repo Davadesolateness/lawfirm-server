@@ -3,6 +3,7 @@ package com.lawfirm.lawfirmserver.lawyer.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class LawyerSearchVo {
 
     @ApiModelProperty(value = "专业领域", example = "刑事案件")
     private String specialty;
-    
+
     @ApiModelProperty(value = "排除的专业领域列表", example = "[\"刑事案件\", \"经济纠纷\"]")
     private List<String> excludeSpecialties;
 

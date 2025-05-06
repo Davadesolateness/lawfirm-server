@@ -2,17 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawfirm.lawfirmserver.image.dao.ImageStorageDao">
 
-    <!-- 基本结果映射 -->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.image.po.ImageStorage">
-        <id column="imageId" property="imageId"/>
-        <result column="userId" property="userId"/>
-        <result column="imageType" property="imageType"/>
-        <result column="imageData" property="imageData"/>
-        <result column="fileExtension" property="fileExtension"/>
-        <result column="insertTimeForHis" property="insertTimeForHis"/>
-        <result column="operateTimeForHis" property="operateTimeForHis"/>
-    </resultMap>
-
     <!-- 不包含BLOB数据的结果映射 -->
     <resultMap id="BaseResultMapWithoutBlob" type="com.lawfirm.lawfirmserver.image.po.ImageStorage">
         <id column="imageId" property="imageId"/>
@@ -22,11 +11,6 @@
         <result column="insertTimeForHis" property="insertTimeForHis"/>
         <result column="operateTimeForHis" property="operateTimeForHis"/>
     </resultMap>
-
-    <!-- 列名 -->
-    <sql id="Base_Column_List">
-        imageId, userId, imageType, fileExtension, insertTimeForHis, operateTimeForHis
-    </sql>
 
     <!-- 包含BLOB的列名 -->
     <sql id="Blob_Column_List">
@@ -64,36 +48,41 @@
         </selectKey>
         INSERT INTO imageStorage
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageId != null">
+                imageId,
+            </if>
             <if test="userId != null">
                 userId,
             </if>
             <if test="imageType != null">
                 imageType,
             </if>
-            <if test="imageData != null">
-                imageData,
-            </if>
             <if test="fileExtension != null">
                 fileExtension,
             </if>
-                insertTimeForHis,
-                operateTimeForHis
+            <if test="imageData != null">
+                imageData,
+            </if>
+            operateTimeForHis,
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageId != null">
+                #{imageId},
+            </if>
             <if test="userId != null">
                 #{userId},
             </if>
             <if test="imageType != null">
                 #{imageType},
             </if>
-            <if test="imageData != null">
-                #{imageData},
-            </if>
             <if test="fileExtension != null">
                 #{fileExtension},
             </if>
-                now(),
-                now()
+            <if test="imageData != null">
+                #{imageData},
+            </if>
+            now(),
         </trim>
     </insert>
 </mapper> 

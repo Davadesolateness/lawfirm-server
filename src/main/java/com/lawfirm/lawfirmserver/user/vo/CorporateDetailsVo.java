@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * 法人用户详情信息VO对象，包含User表和CorporateClient表的关联数据
+ *
  * @author dong
  */
 @Data

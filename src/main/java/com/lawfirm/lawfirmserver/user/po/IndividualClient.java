@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表individual_client的PO对象<br/>
  * 对应表名：individual_client
+ *
  * @author dong
  */
 @Data
@@ -41,12 +42,12 @@ public class IndividualClient implements Serializable {
      * 对应字段：operate_time_for_his,备注：个人客户信息操作时间，自动更新
      */
     private Date operateTimeForHis;
-    
+
     /**
      * 头像数据，非数据库字段，关联查询使用
      */
     private String imageData;
-    
+
     /**
      * 头像类型，非数据库字段，关联查询使用
      */

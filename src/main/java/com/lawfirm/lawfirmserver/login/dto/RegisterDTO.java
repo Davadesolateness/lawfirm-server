@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 用户注册DTO
+ *
  * @author dongzhibo
  */
 @Data
