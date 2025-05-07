@@ -1,5 +1,6 @@
 package com.lawfirm.lawfirmserver.lawyer.dao;
 
+import com.lawfirm.lawfirmserver.lawyer.dto.LawyerInfoDTO;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerQueryWrapper;
 import ins.framework.mybatis.MybatisBaseDao;
@@ -33,7 +34,7 @@ public interface LawyerDao extends MybatisBaseDao<Lawyer, Long> {
      * @param limit 查询数量限制
      * @return 律师列表
      */
-    List<Lawyer> selectByCondition(
+    List<LawyerInfoDTO> selectByCondition(
             @Param("query") LawyerQueryWrapper queryWrapper,
             @Param("offset") int offset,
             @Param("limit") int limit);

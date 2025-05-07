@@ -1,4 +1,4 @@
-package com.lawfirm.lawfirmserver.lawyer.po;
+package com.lawfirm.lawfirmserver.lawyer.dto;
 
 import lombok.Data;
 
@@ -7,11 +7,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 通过ins-framework-mybatis工具自动生成，请勿手工修改。表lawyer的PO对象<br/>
- * 对应表名：lawyer
+ * @author dongzhibo
+ * @version 1.0
+ * @description: TODO
+ * @date 2025/5/7 20:00
  */
 @Data
-public class Lawyer implements Serializable {
+public class LawyerInfoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 对应字段：id,备注：律师唯一标识，自增主键
@@ -70,5 +72,18 @@ public class Lawyer implements Serializable {
      */
     private Date operateTimeForHis;
 
+    /**
+     * 关联的用户ID，不持久化到数据库
+     */
+    private Long userId;
 
+    /**
+     * 头像数据，不持久化到数据库
+     */
+    private byte[] avatarData;
+
+    /**
+     * 头像文件扩展名，不持久化到数据库
+     */
+    private String avatarExtension;
 }

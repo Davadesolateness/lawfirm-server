@@ -8,6 +8,7 @@ import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyDao;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerSpecialtyRelationDao;
+import com.lawfirm.lawfirmserver.lawyer.dto.LawyerInfoDTO;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
@@ -458,7 +459,7 @@ public class LawyerService {
         }
 
         // 查询当前分页数据
-        List<Lawyer> lawyers = lawyerDao.selectByCondition(queryWrapper, offset, params.getPageSize());
+        List<LawyerInfoDTO> lawyers = lawyerDao.selectByCondition(queryWrapper, offset, params.getPageSize());
 
         // 转换为VO并填充关联数据
         List<LawyerVo> lawyerVos = lawyers.stream()
@@ -514,8 +515,86 @@ public class LawyerService {
             vo.setSpecialtyNames(String.join(",", specialtyNamesList));
         }
 
-        // 查询关联的用户信息和头像
-        fetchUserInfoAndAvatar(lawyer.getId(), vo);
+        return vo;
+    }
+
+    /**
+     * 将LawyerInfoDTO转换为LawyerVo
+     */
+    private LawyerVo convertToVo(LawyerInfoDTO lawyerDTO) {
+        if (lawyerDTO == null) {
+            return null;
+        }
+
+        LawyerVo vo = new LawyerVo();
+        BeanUtils.copyProperties(lawyerDTO, vo);
+
+        // 查询并填充律师专长信息
+        List<LawyerSpecialtyRelation> specialtyRelations = lawyerSpecialtyRelationDao.selectBatchByLawyerId(lawyerDTO.getId());
+
+        if (specialtyRelations != null && !specialtyRelations.isEmpty()) {
+            List<LawyerSpecialtyRelationVo> specialtyVos = new ArrayList<>();
+            List<String> specialtyNamesList = new ArrayList<>();
+
+            for (LawyerSpecialtyRelation relation : specialtyRelations) {
+                // 创建专长关联信息视图对象
+                LawyerSpecialtyRelationVo relationVo = new LawyerSpecialtyRelationVo();
+                CommonUtil.copyProperties(relation, relationVo);
+
+                // 查询专长详细信息
+                LawyerSpecialty specialty = lawyerSpecialtyDao.selectByPrimaryKey(relation.getSpecialtyId());
+                if (specialty != null) {
+                    LawyerSpecialtyVo specialtyVo = new LawyerSpecialtyVo();
+                    CommonUtil.copyProperties(specialty, specialtyVo);
+                    relationVo.setLawyerSpecialtyVo(specialtyVo);
+
+                    // 直接提取专长名称添加到specialtyNamesList列表
+                    if (specialty.getSpecialtyName() != null && !specialty.getSpecialtyName().isEmpty()) {
+                        specialtyNamesList.add(specialty.getSpecialtyName());
+                    }
+                }
+
+                specialtyVos.add(relationVo);
+            }
+
+            vo.setLawyerSpecialtyRelationVolist(specialtyVos);
+
+            // 直接设置专长名称逗号分隔字符串
+            vo.setSpecialtyNames(String.join(",", specialtyNamesList));
+        }
+
+        // 处理头像数据 - 如果已经从数据库获取到头像数据，则直接设置
+        if (lawyerDTO.getUserId() != null) {
+            vo.setUserId(lawyerDTO.getUserId());
+
+            // 如果已经通过JOIN查询获取了头像数据
+            if (lawyerDTO.getAvatarData() != null) {
+                // 转换为Base64字符串
+                String base64Image = Base64.encodeBase64String(lawyerDTO.getAvatarData());
+                vo.setImageData(base64Image);
+
+                // 设置图片类型
+                if (lawyerDTO.getAvatarExtension() != null) {
+                    String imageType = ImageUtil.getMimeTypeFromExtension(lawyerDTO.getAvatarExtension());
+                    vo.setImageType(imageType);
+                }
+            } else {
+                // 如果没有通过JOIN获取到头像数据，则查询头像 (备用方法)
+                ImageStorage avatar = imageStorageDao.selectLatestAvatarByUserId(lawyerDTO.getUserId());
+                if (avatar != null && avatar.getImageData() != null) {
+                    // 转换为Base64字符串
+                    String base64Image = Base64.encodeBase64String(avatar.getImageData());
+                    vo.setImageData(base64Image);
+
+                    // 设置图片类型
+                    String imageType = ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension());
+                    vo.setImageType(imageType);
+                }
+            }
+        } else {
+            // 查询关联的用户信息和头像(备用方法)
+            fetchUserInfoAndAvatar(lawyerDTO.getId(), vo);
+        }
 
         return vo;
     }

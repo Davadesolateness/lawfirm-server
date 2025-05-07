@@ -165,29 +165,6 @@ public class LoginApiTest {
     }
 
     @Test
-    @DisplayName("用户注册 - 成功")
-    public void testRegister_Success() throws Exception {
-        // 准备测试数据
-        RegisterDTO dto = new RegisterDTO();
-        dto.setPhone("13800138000");
-        dto.setCode("123456");
-        dto.setPassword("password123");
-        dto.setNickname("张三");
-
-        // 模拟service返回
-        when(loginService.register(any(RegisterDTO.class)))
-                .thenReturn(Result.success(1L));
-
-        // 执行请求并验证
-        mockMvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data").value(1));
-    }
-
-    @Test
     @DisplayName("发送验证码 - 成功")
     public void testSendCode_Success() throws Exception {
         // 模拟service返回

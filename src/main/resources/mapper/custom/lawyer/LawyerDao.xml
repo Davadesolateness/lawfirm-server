@@ -97,12 +97,12 @@
     <sql id="Where_Clause">
         <where>
             <!-- 默认只查询有效的律师 -->
-            isValidFlag = '1'
+            l.isValidFlag = '1'
             <!-- 关键词模糊搜索 -->
             <if test="query.keyword != null and query.keyword != ''">
                 AND (
-                    lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
-                    OR lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
+                    l.lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
+                    OR l.lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
                 )
             </if>
             <!-- 专业领域筛选 (通过关联表查询) -->
@@ -110,7 +110,7 @@
                 AND EXISTS (
                     SELECT 1 FROM lawyerSpecialtyRelation lsr
                     JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = lawyer.id 
+                    WHERE lsr.lawyerId = l.id 
                     AND (
                         ls.specialtyName = #{query.specialty}
                         OR ls.specialtyName LIKE CONCAT('%', #{query.specialty}, '%')
@@ -123,7 +123,7 @@
                 AND NOT EXISTS (
                     SELECT 1 FROM lawyerSpecialtyRelation lsr
                     JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = lawyer.id 
+                    WHERE lsr.lawyerId = l.id 
                     AND ls.specialtyName IN
                     <foreach collection="query.excludeSpecialties" item="excludeSpecialty" open="(" separator="," close=")">
                         #{excludeSpecialty}
@@ -132,17 +132,17 @@
             </if>
             <!-- 地区筛选 -->
             <if test="query.provinceCode != null and query.provinceCode != ''">
-                AND provinceCode = #{query.provinceCode}
+                AND l.provinceCode = #{query.provinceCode}
             </if>
             <if test="query.cityCode != null and query.cityCode != ''">
-                AND cityCode = #{query.cityCode}
+                AND l.cityCode = #{query.cityCode}
             </if>
             <if test="query.districtCode != null and query.districtCode != ''">
-                AND districtCode = #{query.districtCode}
+                AND l.districtCode = #{query.districtCode}
             </if>
             <!-- 是否推荐筛选 -->
             <if test="query.recommend != null">
-                AND recommend = #{query.recommend}
+                AND l.recommend = #{query.recommend}
             </if>
         </where>
     </sql>
@@ -150,19 +150,46 @@
     <!-- 根据条件统计律师记录数 -->
     <select id="countByCondition" resultType="long">
         SELECT COUNT(*)
-        FROM lawyer
+        FROM lawyer l
         <include refid="Where_Clause"/>
     </select>
 
     <!-- 根据条件查询律师列表 -->
-    <select id="selectByCondition" resultMap="BaseResultMap">
+    <select id="selectByCondition" resultMap="LawyerInfoDTOResultMap">
         SELECT 
-            <include refid="Base_Column_List"/>
-        FROM lawyer
+            l.*,
+            u.id as userId,
+            img.imageData as avatarData,
+            img.fileExtension as avatarExtension
+        FROM lawyer l
+        LEFT JOIN users u ON l.id = u.relatedEntityId AND u.userType = 'lawyer' AND u.isValidFlag = '1'
+        LEFT JOIN (
+            SELECT 
+                userId, 
+                imageData, 
+                fileExtension
+            FROM imageStorage 
+            WHERE imageType = 'AVATAR'
+            AND (userId, insertTimeForHis) IN (
+                SELECT 
+                    userId, 
+                    MAX(insertTimeForHis) 
+                FROM imageStorage 
+                WHERE imageType = 'AVATAR' 
+                GROUP BY userId
+            )
+        ) img ON u.id = img.userId
         <include refid="Where_Clause"/>
         <if test="query.orderBy != null and query.orderBy != ''">
             ORDER BY ${query.orderBy}
         </if>
         LIMIT #{offset}, #{limit}
     </select>
+    
+    <!-- 律师信息和头像关联的结果映射 -->
+    <resultMap id="LawyerInfoDTOResultMap" type="com.lawfirm.lawfirmserver.lawyer.dto.LawyerInfoDTO" extends="BaseResultMap">
+        <result column="userId" property="userId" />
+        <result column="avatarData" property="avatarData" />
+        <result column="avatarExtension" property="avatarExtension" />
+    </resultMap>
 </mapper>
