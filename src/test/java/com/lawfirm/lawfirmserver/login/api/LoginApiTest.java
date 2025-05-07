@@ -200,4 +200,4 @@ public class LoginApiTest {
                 .andExpect(jsonPath("$.data.token").value("new-mock-token"))
                 .andExpect(jsonPath("$.data.refreshToken").value("new-mock-refresh-token"));
     }
-} 
+}

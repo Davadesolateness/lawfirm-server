@@ -32,8 +32,8 @@ public class OrderApi {
     /**
      * 获取用户的所有订单，包含律师名称等概要信息，支持分页
      *
-     * @param userId 用户ID
-     * @param pageNum 页码，从1开始
+     * @param userId   用户ID
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 包含律师名称的订单列表
      */
@@ -54,7 +54,7 @@ public class OrderApi {
      * 获取律师的所有订单，包含用户名称等概要信息，支持分页
      *
      * @param lawyerId 律师ID
-     * @param pageNum 页码，从1开始
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 包含用户名称的订单列表
      */
@@ -74,8 +74,8 @@ public class OrderApi {
     /**
      * 搜索订单接口，根据关键词查询匹配用户名或律师名的订单，支持分页
      *
-     * @param keyword 搜索关键词（用户名或律师名）
-     * @param pageNum 页码，从1开始
+     * @param keyword  搜索关键词（用户名或律师名）
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 分页后的订单列表
      */

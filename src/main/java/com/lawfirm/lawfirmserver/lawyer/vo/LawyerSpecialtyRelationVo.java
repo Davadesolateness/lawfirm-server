@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 通过ins-framework-mybatis工具自动生成，表lawyer_specialty_relation的VO对象<br/>
  * 对应表名：lawyer_specialty_relation
+ *
  * @author dong
  */
 @Data

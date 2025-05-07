@@ -83,20 +83,20 @@ public class OrderService {
      */
     public List<OrderDetailVO> searchOrdersByKeyword(String keyword) {
         logger.info("根据关键词搜索订单, keyword: {}", keyword);
-        
+
         if (!StringUtils.hasText(keyword)) {
             logger.info("搜索关键词为空，返回空列表");
             return new ArrayList<>();
         }
-        
+
         // 调用DAO层方法进行搜索
         List<OrderDetailVO> orderDetails = ordersDao.searchOrdersByKeyword(keyword);
-        
+
         if (orderDetails == null || orderDetails.isEmpty()) {
             logger.info("没有找到匹配关键词的订单, keyword: {}", keyword);
             return new ArrayList<>();
         }
-        
+
         logger.info("成功搜索到匹配的订单, keyword: {}, 订单数量: {}", keyword, orderDetails.size());
         return orderDetails;
     }
@@ -104,31 +104,31 @@ public class OrderService {
     /**
      * 根据关键词（用户名或律师名）搜索订单，支持分页
      *
-     * @param keyword 搜索关键词
-     * @param pageNum 页码，从1开始
+     * @param keyword  搜索关键词
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 分页后的订单列表
      */
     public List<OrderDetailVO> searchOrdersByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         logger.info("根据关键词搜索订单(分页), keyword: {}, pageNum: {}, pageSize: {}", keyword, pageNum, pageSize);
-        
+
         if (!StringUtils.hasText(keyword)) {
             logger.info("搜索关键词为空，返回空列表");
             return new ArrayList<>();
         }
-        
+
         // 计算分页参数
         int offset = (pageNum - 1) * pageSize;
         int limit = pageSize;
-        
+
         // 调用DAO层方法进行分页搜索
         List<OrderDetailVO> orderDetails = ordersDao.searchOrdersByKeywordWithPagination(keyword, offset, limit);
-        
+
         if (orderDetails == null || orderDetails.isEmpty()) {
             logger.info("没有找到匹配关键词的订单, keyword: {}", keyword);
             return new ArrayList<>();
         }
-        
+
         logger.info("成功搜索到匹配的订单, keyword: {}, 订单数量: {}", keyword, orderDetails.size());
         return orderDetails;
     }
@@ -210,8 +210,8 @@ public class OrderService {
     /**
      * 根据用户ID获取订单列表，包含律师名称，支持分页
      *
-     * @param userId 用户ID
-     * @param pageNum 页码，从1开始
+     * @param userId   用户ID
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 包含律师名称的订单列表
      */
@@ -237,7 +237,7 @@ public class OrderService {
      * 根据律师ID获取订单列表，包含用户名称，支持分页
      *
      * @param lawyerId 律师ID
-     * @param pageNum 页码，从1开始
+     * @param pageNum  页码，从1开始
      * @param pageSize 每页记录数
      * @return 包含用户名称的订单列表
      */

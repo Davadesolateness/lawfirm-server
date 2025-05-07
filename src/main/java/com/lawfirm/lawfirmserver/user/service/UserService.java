@@ -229,7 +229,7 @@ public class UserService {
             calendar.add(Calendar.YEAR, 1);
             individualDetailsVo.setServiceExpireTime(calendar.getTime());
         }
-        
+
         // 获取用户头像数据
         try {
             ImageStorage avatar = imageService.getUserAvatar(userId);
@@ -313,7 +313,7 @@ public class UserService {
             calendar.add(Calendar.YEAR, 1);
             corporateDetailsVo.setServiceExpireTime(calendar.getTime());
         }
-        
+
         // 获取用户头像数据
         try {
             ImageStorage avatar = imageService.getUserAvatar(Long.valueOf(userId));

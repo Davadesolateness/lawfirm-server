@@ -13,7 +13,6 @@ import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialty;
 import com.lawfirm.lawfirmserver.lawyer.po.LawyerSpecialtyRelation;
 import com.lawfirm.lawfirmserver.lawyer.vo.*;
-import com.lawfirm.lawfirmserver.login.service.LoginService;
 import com.lawfirm.lawfirmserver.user.dao.UsersDao;
 import com.lawfirm.lawfirmserver.user.po.Users;
 import ins.framework.mybatis.Page;
@@ -222,7 +221,7 @@ public class LawyerService {
 
     /**
      * 通过律师ID查找关联的用户
-     * 
+     *
      * @param lawyerId 律师ID
      * @return 关联的用户对象，如果没有则返回null
      */

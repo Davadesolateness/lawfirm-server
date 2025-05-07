@@ -17,7 +17,7 @@ import java.util.List;
 public interface LawyerDao extends MybatisBaseDao<Lawyer, Long> {
 
     void insertSelectiveAndBackId(Lawyer lawyer);
-    
+
     /**
      * 根据条件统计律师记录数
      *
@@ -25,13 +25,13 @@ public interface LawyerDao extends MybatisBaseDao<Lawyer, Long> {
      * @return 匹配条件的记录总数
      */
     long countByCondition(@Param("query") LawyerQueryWrapper queryWrapper);
-    
+
     /**
      * 根据条件查询律师列表
      *
      * @param queryWrapper 查询条件包装器
-     * @param offset 偏移量（从0开始）
-     * @param limit 查询数量限制
+     * @param offset       偏移量（从0开始）
+     * @param limit        查询数量限制
      * @return 律师列表
      */
     List<LawyerInfoDTO> selectByCondition(

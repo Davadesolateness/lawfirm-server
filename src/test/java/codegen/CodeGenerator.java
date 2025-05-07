@@ -19,7 +19,7 @@ public class CodeGenerator {
          * 三、生成的BASE中的文件不要进行修改（但可以自行添加序列的赋值语句）。
          **/
 
-        createBaseFiles("user", "users");
+//        createBaseFiles("user", "users");
 //        createBaseFiles("user", "corporateclient");
 //        createBaseFiles("user", "individualclient");
 //        createBaseFiles("user", "administrator");
@@ -36,6 +36,8 @@ public class CodeGenerator {
 
 //        createBaseFiles("chat", "chatSession");
 //        createBaseFiles("chat", "chatMessage");
+
+        createBaseFiles("image", "imageStorage");
 
     }
 
