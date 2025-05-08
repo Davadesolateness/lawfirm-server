@@ -14,6 +14,8 @@
         <result column="lawyerName" property="lawyerName"/>
         <result column="lawyerTitle" property="lawyerTitle"/>
         <result column="lawyerAvatar" property="lawyerAvatar"/>
+        <result column="imageData" property="imageData"/>
+        <result column="fileExtension" property="fileExtension"/>
         <result column="orderType" property="orderType"/>
         <result column="serviceDuration" property="serviceDuration"/>
         <result column="serviceCount" property="serviceCount"/>
@@ -88,12 +90,19 @@
                o.operateTimeForHis,
                o.lawyerId,
                u.username AS userName,
-               l.lawyerName AS lawyerName
+               l.lawyerName AS lawyerName,
+               l.avatar AS lawyerAvatar,
+               img.imageData,
+               img.fileExtension
         FROM orders o
                  LEFT JOIN
              users u ON o.userId = u.id
                  LEFT JOIN
              lawyer l ON o.lawyerId = l.id
+                 LEFT JOIN
+             users lu ON l.lawyerId = lu.id
+                 LEFT JOIN
+             imageStorage img ON lu.id = img.userId
         WHERE o.userId = #{userId}
         ORDER BY o.inputTime DESC
     </select>
@@ -138,9 +147,7 @@
                o.operateTimeForHis,
                o.lawyerId,
                u.username AS userName,
-               l.name   AS lawyerName,
-               l.title  AS lawyerTitle,
-               l.avatar AS lawyerAvatar
+               l.lawyerName   AS lawyerName,
         FROM orders o
                  LEFT JOIN
              users u ON o.userId = u.id
@@ -193,12 +200,18 @@
                o.operateTimeForHis,
                o.lawyerId,
                u.username AS userName,
-               l.lawyerName
+               l.lawyerName,
+               img.imageData,
+               img.fileExtension
         FROM orders o
                  LEFT JOIN
              users u ON o.userId = u.id
                  LEFT JOIN
              lawyer l ON o.lawyerId = l.id
+                 LEFT JOIN
+             users lu ON o.lawyerId = lu.relatedEntityId and lu.userType = 'lawyer'
+                 LEFT JOIN
+             imageStorage img ON lu.id = img.userId
         WHERE o.userId = #{userId}
         ORDER BY o.inputTime DESC
             LIMIT #{offset}, #{limit}

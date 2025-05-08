@@ -25,6 +25,10 @@ public class OrderDetailVO {
     // 律师信息
     private Long lawyerId;
     private String lawyerName;
+    private String lawyerTitle;
+    private String lawyerAvatar;
+    private byte[] imageData;
+    private String fileExtension;
 
     // 订单信息
     // 订单类型
@@ -43,6 +47,11 @@ public class OrderDetailVO {
     private Date insertTimeForHis;
     // 订单记录更新时间
     private Date operateTimeForHis;
+
+    // 服务区域
+    private String serviceArea;
+    // 服务方式
+    private String serviceMethod;
 
     /**
      * 从基础订单对象转换为详情对象

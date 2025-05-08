@@ -1,5 +1,6 @@
 package com.lawfirm.lawfirmserver.order.service;
 
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.order.dao.OrderTimeDao;
 import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
 import com.lawfirm.lawfirmserver.order.po.OrderTime;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,13 +44,21 @@ public class OrderService {
      * @return 包含律师名称的订单列表
      */
     public List<OrderDetailVO> getOrdersByUserId(String userId) {
-        logger.info("根据用户ID获取订单概要信息（包含律师名称）, userId: {}", userId);
+        logger.info("根据用户ID获取订单概要信息（包含律师名称和头像）, userId: {}", userId);
 
         // 直接调用Dao层方法获取包含律师名称的订单列表
         List<OrderDetailVO> orderDetails = ordersDao.getOrderDetailsByUserId(Long.valueOf(userId));
         if (orderDetails == null || orderDetails.isEmpty()) {
             logger.info("用户没有订单记录, userId: {}", userId);
             return new ArrayList<>();
+        }
+
+        // 处理律师头像数据
+        for (OrderDetailVO orderDetail : orderDetails) {
+            if (orderDetail.getImageData() != null) {
+                logger.debug("订单 {} 的律师头像数据已加载，文件扩展名: {}",
+                        orderDetail.getOrderId(), orderDetail.getFileExtension());
+            }
         }
 
         logger.info("成功获取用户的订单概要信息, userId: {}, 订单数量: {}", userId, orderDetails.size());
@@ -228,6 +238,19 @@ public class OrderService {
             logger.info("用户没有订单记录, userId: {}", userId);
             return new ArrayList<>();
         }
+
+        // 处理律师头像数据
+        for (OrderDetailVO orderDetail : orderDetails) {
+            if (orderDetail.getImageData() != null) {
+                // 设置MIME类型
+                orderDetail.setFileExtension(ImageUtil.getMimeTypeFromExtension(orderDetail.getFileExtension()));
+                // 转换二进制数据为Base64字符串
+                orderDetail.setLawyerAvatar(Base64.getEncoder().encodeToString(orderDetail.getImageData()));
+            }
+            logger.debug("订单 {} 的律师头像数据已加载，文件扩展名: {}",
+                    orderDetail.getOrderId(), orderDetail.getFileExtension());
+        }
+
 
         logger.info("成功获取用户的订单概要信息, userId: {}, 订单数量: {}", userId, orderDetails.size());
         return orderDetails;
