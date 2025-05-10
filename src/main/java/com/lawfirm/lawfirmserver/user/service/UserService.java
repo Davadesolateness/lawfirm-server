@@ -1,5 +1,7 @@
 package com.lawfirm.lawfirmserver.user.service;
 
+import com.lawfirm.lawfirmserver.admin.dao.AdministratorDao;
+import com.lawfirm.lawfirmserver.admin.po.Administrator;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
 import com.lawfirm.lawfirmserver.image.service.ImageService;

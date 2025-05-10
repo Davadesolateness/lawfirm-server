@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ================可直接使用Base配置文件中定义的节点！================ -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.admin.dao.AdministratorDao">
+    <!-- 请在下方添加自定义配置-->
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.admin.po.Administrator">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS value
+        </selectKey>
+        insert into administrator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="adminRole != null">
+                adminRole,
+            </if>
+            <if test="adminLevel != null">
+                adminLevel,
+            </if>
+            <if test="parentAdminId != null">
+                parentAdminId,
+            </if>
+            <if test="isValidFlag != null">
+                isValidFlag,
+            </if>
+            insertTimeForHis,
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="adminRole != null">
+                #{adminRole},
+            </if>
+            <if test="adminLevel != null">
+                #{adminLevel},
+            </if>
+            <if test="parentAdminId != null">
+                #{parentAdminId},
+            </if>
+            <if test="isValidFlag != null">
+                #{isValidFlag},
+            </if>
+            now(),
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 根据管理员ID查询管理员详细信息（包含用户和图片信息） -->
+    <select id="selectAdministratorById" resultType="com.lawfirm.lawfirmserver.admin.vo.AdministratorVo">
+        SELECT 
+            a.id, 
+            a.adminRole, 
+            a.adminLevel, 
+            a.parentAdminId,
+            a.isValidFlag,
+            a.insertTimeForHis,
+            a.operateTimeForHis,
+            u.username,
+            u.nickName,
+            u.email,
+            u.phoneNumber,
+            u.userType,
+            u.createTime,
+            img.imageId,
+            img.imageType,
+            img.fileExtension
+        FROM 
+            administrator a
+        LEFT JOIN 
+            user u ON u.relatedEntityId = a.id AND u.userType = 'admin'
+        LEFT JOIN 
+            imageStorage img ON img.userId = u.id
+        WHERE 
+            a.id = #{id}
+    </select>
+
+    <!-- 根据管理员用户名（角色）查询管理员详细信息 -->
+    <select id="selectAdministratorByName" resultType="com.lawfirm.lawfirmserver.admin.po.Administrator">
+        SELECT 
+            id, 
+            adminRole, 
+            adminLevel, 
+            parentAdminId,
+            isValidFlag,
+            insertTimeForHis,
+            operateTimeForHis
+        FROM 
+            administrator
+        WHERE 
+            adminRole = #{adminName}
+    </select>
+
+</mapper>

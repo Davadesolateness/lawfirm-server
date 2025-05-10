@@ -1,5 +1,6 @@
 package com.lawfirm.lawfirmserver.user.vo;
 
+import com.lawfirm.lawfirmserver.admin.vo.AdministratorVo;
 import com.lawfirm.lawfirmserver.lawyer.vo.LawyerVo;
 import lombok.Data;
 
