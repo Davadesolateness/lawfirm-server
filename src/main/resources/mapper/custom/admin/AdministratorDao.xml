@@ -53,32 +53,31 @@
     </insert>
 
     <!-- 根据管理员ID查询管理员详细信息（包含用户和图片信息） -->
-    <select id="selectAdministratorById" resultType="com.lawfirm.lawfirmserver.admin.vo.AdministratorVo">
+    <select id="selectAdministratorById" resultType="com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo">
         SELECT 
             a.id, 
             a.adminRole, 
             a.adminLevel, 
             a.parentAdminId,
             a.isValidFlag,
-            a.insertTimeForHis,
-            a.operateTimeForHis,
             u.username,
             u.nickName,
             u.email,
             u.phoneNumber,
             u.userType,
             u.createTime,
-            img.imageId,
+            u.id as userId,
+            img.imageData,
             img.imageType,
             img.fileExtension
         FROM 
-            administrator a
+            user u
         LEFT JOIN 
-            user u ON u.relatedEntityId = a.id AND u.userType = 'admin'
+            administrator a ON a.id = u.relatedEntityId AND u.userType = 'admin'
         LEFT JOIN 
             imageStorage img ON img.userId = u.id
         WHERE 
-            a.id = #{id}
+            u.id = #{id}
     </select>
 
     <!-- 根据管理员用户名（角色）查询管理员详细信息 -->

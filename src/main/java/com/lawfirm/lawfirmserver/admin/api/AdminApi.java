@@ -2,6 +2,7 @@ package com.lawfirm.lawfirmserver.admin.api;
 
 import com.lawfirm.lawfirmserver.admin.po.Administrator;
 import com.lawfirm.lawfirmserver.admin.service.AdminService;
+import com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo;
 import com.lawfirm.lawfirmserver.admin.vo.AdministratorVo;
 import com.lawfirm.lawfirmserver.common.Result;
 import io.swagger.annotations.Api;
@@ -29,16 +30,16 @@ public class AdminApi {
      */
     @GetMapping("/getAdministratorById")
     @ApiOperation("根据ID获取管理员信息")
-    public Result<AdministratorVo> getAdministratorById(
+    public Result<AdministratorDetailVo> getAdministratorById(
             @ApiParam(value = "管理员ID", required = true, example = "1")
             @RequestParam(value = "id") String id) {
-        AdministratorVo administratorVO = adminService.getAdministratorById(id);
+        AdministratorDetailVo administratorDetailVo = adminService.getAdministratorById(id);
 
-        if (administratorVO == null) {
+        if (administratorDetailVo == null) {
             return Result.fail("未找到管理员信息");
         }
 
-        return Result.success("获取管理员信息成功", administratorVO);
+        return Result.success("获取管理员信息成功", administratorDetailVo);
     }
     
     /**

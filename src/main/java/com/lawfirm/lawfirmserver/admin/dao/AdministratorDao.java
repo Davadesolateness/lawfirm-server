@@ -1,6 +1,7 @@
 package com.lawfirm.lawfirmserver.admin.dao;
 
 import com.lawfirm.lawfirmserver.admin.po.Administrator;
+import com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo;
 import com.lawfirm.lawfirmserver.admin.vo.AdministratorVo;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,7 +18,7 @@ public interface AdministratorDao extends MybatisBaseDao<Administrator, Long> {
      * @param id 管理员ID
      * @return 管理员视图对象
      */
-    AdministratorVo selectAdministratorById(@Param("id") String id);
+    AdministratorDetailVo selectAdministratorById(@Param("id") String id);
 
     /**
      * 根据管理员用户名查询管理员详细信息

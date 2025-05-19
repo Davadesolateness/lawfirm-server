@@ -53,19 +53,30 @@ public class ImageService {
         // 获取文件扩展名
         String originalFilename = file.getOriginalFilename();
         String extension = getFileExtension(originalFilename);
-        // 存储到数据库
-        ImageStorage imageStorage = new ImageStorage();
-        imageStorage.setUserId(userId);
-        imageStorage.setImageType("AVATAR");
-        imageStorage.setImageData(file.getBytes());
-        // 设置文件扩展名
-        imageStorage.setFileExtension(extension);
 
-        // 插入数据库
-        imageStorageDao.insertAndReturnId(imageStorage);
-        logger.info("用户头像保存成功, userId: {}, imageId: {}, 扩展名: {}",
-                userId, imageStorage.getImageId(), extension);
+        // 检查是否存在现有头像
+        ImageStorage existingAvatar = imageStorageDao.selectLatestAvatarByUserId(userId);
+        
+        if (existingAvatar != null) {
+            // 更新现有头像
+            existingAvatar.setImageData(file.getBytes());
+            existingAvatar.setFileExtension(extension);
+            imageStorageDao.updateByPrimaryKey(existingAvatar);
+            logger.info("更新用户头像成功, userId: {}, imageId: {}, 扩展名: {}",
+                    userId, existingAvatar.getImageId(), extension);
+        } else {
+            // 创建新头像记录
+            ImageStorage imageStorage = new ImageStorage();
+            imageStorage.setUserId(userId);
+            imageStorage.setImageType("AVATAR");
+            imageStorage.setImageData(file.getBytes());
+            imageStorage.setFileExtension(extension);
 
+            // 插入数据库
+            imageStorageDao.insertAndReturnId(imageStorage);
+            logger.info("创建用户头像成功, userId: {}, imageId: {}, 扩展名: {}",
+                    userId, imageStorage.getImageId(), extension);
+        }
     }
 
     /**

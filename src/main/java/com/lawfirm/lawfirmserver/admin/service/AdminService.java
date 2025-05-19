@@ -3,6 +3,8 @@ package com.lawfirm.lawfirmserver.admin.service;
 import com.lawfirm.lawfirmserver.admin.dao.AdministratorDao;
 import com.lawfirm.lawfirmserver.admin.po.Administrator;
 import com.lawfirm.lawfirmserver.admin.vo.AdministratorVo;
+import com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo;
+import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +21,19 @@ public class AdminService {
     /**
      * 根据管理员ID获取管理员详细信息
      * @param id 管理员ID
-     * @return 管理员视图对象（包含用户和图片信息）
+     * @return 管理员详细信息视图对象（包含用户和头像信息）
      */
-    public AdministratorVo getAdministratorById(String id) {
+    public AdministratorDetailVo getAdministratorById(String id) {
         // 直接查询包含用户和图片信息的管理员VO对象
-        AdministratorVo administratorVo = administratorDao.selectAdministratorById(id);
+        AdministratorDetailVo administratorVo = administratorDao.selectAdministratorById(id);
         
         // 如果未找到管理员信息，返回null
         if (administratorVo == null) {
             return null;
         }
-        
+        // 设置MIME类型
+        String mimeType = ImageUtil.getMimeTypeFromExtension(administratorVo.getFileExtension());
+        administratorVo.setMimeType(mimeType);
         return administratorVo;
     }
     
