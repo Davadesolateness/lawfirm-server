@@ -41,6 +41,12 @@ public class LawyerSearchVo {
     @ApiModelProperty(value = "是否推荐", example = "true")
     private Boolean recommend;
 
+    @ApiModelProperty(value = "最小从业年限", example = "5")
+    private Integer experienceMin;
+
+    @ApiModelProperty(value = "最大从业年限", example = "10")
+    private Integer experienceMax;
+
     @Min(value = 1, message = "页码不能小于1")
     @ApiModelProperty(value = "页码", required = true, example = "1")
     private Integer page = 1;

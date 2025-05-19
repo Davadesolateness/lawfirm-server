@@ -144,6 +144,13 @@
             <if test="query.recommend != null">
                 AND l.recommend = #{query.recommend}
             </if>
+            <!-- 从业年限范围筛选 -->
+            <if test="query.experienceMin != null">
+                AND l.workYears <![CDATA[ >= ]]> #{query.experienceMin}
+            </if>
+            <if test="query.experienceMax != null">
+                AND l.workYears <![CDATA[ <= ]]> #{query.experienceMax}
+            </if>
         </where>
     </sql>
 

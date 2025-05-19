@@ -446,6 +446,11 @@ public class LawyerService {
             queryWrapper.recommendEquals(params.getRecommend());
         }
 
+        // 从业年限范围筛选
+        if (params.getExperienceMin() != null || params.getExperienceMax() != null) {
+            queryWrapper.experienceRange(params.getExperienceMin(), params.getExperienceMax());
+        }
+
         // 设置默认排序方式，按评分降序
         queryWrapper.orderBy("rating DESC, id DESC");
 

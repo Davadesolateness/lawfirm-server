@@ -31,6 +31,12 @@ public class LawyerQueryWrapper {
     // 是否推荐
     private Boolean recommend;
 
+    // 最小从业年限
+    private Integer experienceMin;
+
+    // 最大从业年限
+    private Integer experienceMax;
+
     // 排序条件
     private String orderBy = "id DESC";
 
@@ -87,6 +93,15 @@ public class LawyerQueryWrapper {
      */
     public LawyerQueryWrapper recommendEquals(Boolean recommend) {
         this.recommend = recommend;
+        return this;
+    }
+
+    /**
+     * 设置从业年限范围条件
+     */
+    public LawyerQueryWrapper experienceRange(Integer min, Integer max) {
+        this.experienceMin = min;
+        this.experienceMax = max;
         return this;
     }
 
