@@ -2,7 +2,6 @@ package com.lawfirm.lawfirmserver.admin.dao;
 
 import com.lawfirm.lawfirmserver.admin.po.Administrator;
 import com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo;
-import com.lawfirm.lawfirmserver.admin.vo.AdministratorVo;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,7 +26,7 @@ public interface AdministratorDao extends MybatisBaseDao<Administrator, Long> {
      * @return 管理员信息
      */
     Administrator selectAdministratorByName(@Param("adminName") String adminName);
-    
+
     /**
      * 选择性插入记录并返回ID
      *

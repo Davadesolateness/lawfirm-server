@@ -41,7 +41,7 @@ public class AdminApi {
 
         return Result.success("获取管理员信息成功", administratorDetailVo);
     }
-    
+
     /**
      * 根据管理员用户名获取管理员详细信息
      * 该方法通过管理员用户名查询管理员的详细资料信息
@@ -62,7 +62,7 @@ public class AdminApi {
 
         return Result.success("获取管理员信息成功", administratorVO);
     }
-    
+
     /**
      * 创建新管理员
      * 该方法通过接收管理员信息创建新的管理员记录

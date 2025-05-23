@@ -54,46 +54,40 @@
 
     <!-- 根据管理员ID查询管理员详细信息（包含用户和图片信息） -->
     <select id="selectAdministratorById" resultType="com.lawfirm.lawfirmserver.admin.vo.AdministratorDetailVo">
-        SELECT 
-            a.id, 
-            a.adminRole, 
-            a.adminLevel, 
-            a.parentAdminId,
-            a.isValidFlag,
-            u.username,
-            u.nickName,
-            u.email,
-            u.phoneNumber,
-            u.userType,
-            u.createTime,
-            u.id as userId,
-            img.imageData,
-            img.imageType,
-            img.fileExtension
-        FROM 
-            user u
-        LEFT JOIN 
-            administrator a ON a.id = u.relatedEntityId AND u.userType = 'admin'
-        LEFT JOIN 
-            imageStorage img ON img.userId = u.id
-        WHERE 
-            u.id = #{id}
+        SELECT a.id,
+               a.adminRole,
+               a.adminLevel,
+               a.parentAdminId,
+               a.isValidFlag,
+               u.username,
+               u.nickName,
+               u.email,
+               u.phoneNumber,
+               u.userType,
+               u.createTime,
+               u.id as userId,
+               img.imageData,
+               img.imageType,
+               img.fileExtension
+        FROM user u
+                 LEFT JOIN
+             administrator a ON a.id = u.relatedEntityId AND u.userType = 'admin'
+                 LEFT JOIN
+             imageStorage img ON img.userId = u.id
+        WHERE u.id = #{id}
     </select>
 
     <!-- 根据管理员用户名（角色）查询管理员详细信息 -->
     <select id="selectAdministratorByName" resultType="com.lawfirm.lawfirmserver.admin.po.Administrator">
-        SELECT 
-            id, 
-            adminRole, 
-            adminLevel, 
-            parentAdminId,
-            isValidFlag,
-            insertTimeForHis,
-            operateTimeForHis
-        FROM 
-            administrator
-        WHERE 
-            adminRole = #{adminName}
+        SELECT id,
+               adminRole,
+               adminLevel,
+               parentAdminId,
+               isValidFlag,
+               insertTimeForHis,
+               operateTimeForHis
+        FROM administrator
+        WHERE adminRole = #{adminName}
     </select>
 
 </mapper>

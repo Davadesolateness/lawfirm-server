@@ -1,7 +1,6 @@
 package com.lawfirm.lawfirmserver.admin.vo;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -39,27 +38,27 @@ public class AdministratorDetailVo implements Serializable {
      * 用户名
      */
     private String username;
-    
+
     /**
      * 昵称
      */
     private String nickName;
-    
+
     /**
      * 邮箱
      */
     private String email;
-    
+
     /**
      * 手机号
      */
     private String phoneNumber;
-    
+
     /**
      * 用户类型
      */
     private String userType;
-    
+
     /**
      * 创建时间
      */
@@ -68,7 +67,7 @@ public class AdministratorDetailVo implements Serializable {
     /**
      * 头像图片数据
      */
-    private  byte[] imageData;
+    private byte[] imageData;
 
     /**
      * 头像图片类型，如 jpeg, /png

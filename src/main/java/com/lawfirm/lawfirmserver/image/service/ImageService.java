@@ -56,7 +56,7 @@ public class ImageService {
 
         // 检查是否存在现有头像
         ImageStorage existingAvatar = imageStorageDao.selectLatestAvatarByUserId(userId);
-        
+
         if (existingAvatar != null) {
             // 更新现有头像
             existingAvatar.setImageData(file.getBytes());

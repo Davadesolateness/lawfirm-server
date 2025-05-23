@@ -91,7 +91,7 @@
                o.lawyerId,
                u.username AS userName,
                l.lawyerName AS lawyerName,
-               l.avatar AS lawyerAvatar,
+               l.avatar   AS lawyerAvatar,
                img.imageData,
                img.fileExtension
         FROM orders o
@@ -140,14 +140,14 @@
                o.orderType,
                o.serviceDuration,
                o.serviceCount,
-               o.amount AS purchaseAmount,
+               o.amount     AS purchaseAmount,
                o.orderStatus,
                o.inputTime,
                o.insertTimeForHis,
                o.operateTimeForHis,
                o.lawyerId,
-               u.username AS userName,
-               l.lawyerName   AS lawyerName,
+               u.username   AS userName,
+               l.lawyerName AS lawyerName,
         FROM orders o
                  LEFT JOIN
              users u ON o.userId = u.id

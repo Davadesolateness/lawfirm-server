@@ -101,33 +101,33 @@
             <!-- 关键词模糊搜索 -->
             <if test="query.keyword != null and query.keyword != ''">
                 AND (
-                    l.lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
-                    OR l.lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
+                l.lawyerName LIKE CONCAT('%', #{query.keyword}, '%')
+                OR l.lawyerIntroduction LIKE CONCAT('%', #{query.keyword}, '%')
                 )
             </if>
             <!-- 专业领域筛选 (通过关联表查询) -->
             <if test="query.specialty != null and query.specialty != ''">
                 AND EXISTS (
-                    SELECT 1 FROM lawyerSpecialtyRelation lsr
-                    JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = l.id 
-                    AND (
-                        ls.specialtyName = #{query.specialty}
-                        OR ls.specialtyName LIKE CONCAT('%', #{query.specialty}, '%')
-                    )
+                SELECT 1 FROM lawyerSpecialtyRelation lsr
+                JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
+                WHERE lsr.lawyerId = l.id
+                AND (
+                ls.specialtyName = #{query.specialty}
+                OR ls.specialtyName LIKE CONCAT('%', #{query.specialty}, '%')
+                )
                 )
             </if>
-            
+
             <!-- 排除特定专业领域 -->
             <if test="query.excludeSpecialties != null and query.excludeSpecialties.size() > 0">
                 AND NOT EXISTS (
-                    SELECT 1 FROM lawyerSpecialtyRelation lsr
-                    JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
-                    WHERE lsr.lawyerId = l.id 
-                    AND ls.specialtyName IN
-                    <foreach collection="query.excludeSpecialties" item="excludeSpecialty" open="(" separator="," close=")">
-                        #{excludeSpecialty}
-                    </foreach>
+                SELECT 1 FROM lawyerSpecialtyRelation lsr
+                JOIN lawyerSpecialty ls ON lsr.specialtyId = ls.id
+                WHERE lsr.lawyerId = l.id
+                AND ls.specialtyName IN
+                <foreach collection="query.excludeSpecialties" item="excludeSpecialty" open="(" separator="," close=")">
+                    #{excludeSpecialty}
+                </foreach>
                 )
             </if>
             <!-- 地区筛选 -->
@@ -163,28 +163,28 @@
 
     <!-- 根据条件查询律师列表 -->
     <select id="selectByCondition" resultMap="LawyerInfoDTOResultMap">
-        SELECT 
-            l.*,
-            u.id as userId,
-            img.imageData as avatarData,
-            img.fileExtension as avatarExtension
+        SELECT
+        l.*,
+        u.id as userId,
+        img.imageData as avatarData,
+        img.fileExtension as avatarExtension
         FROM lawyer l
         LEFT JOIN users u ON l.id = u.relatedEntityId AND u.userType = 'lawyer' AND u.isValidFlag = '1'
         LEFT JOIN (
-            SELECT 
-                userId, 
-                imageData, 
-                fileExtension
-            FROM imageStorage 
-            WHERE imageType = 'AVATAR'
-            AND (userId, insertTimeForHis) IN (
-                SELECT 
-                    userId, 
-                    MAX(insertTimeForHis) 
-                FROM imageStorage 
-                WHERE imageType = 'AVATAR' 
-                GROUP BY userId
-            )
+        SELECT
+        userId,
+        imageData,
+        fileExtension
+        FROM imageStorage
+        WHERE imageType = 'AVATAR'
+        AND (userId, insertTimeForHis) IN (
+        SELECT
+        userId,
+        MAX(insertTimeForHis)
+        FROM imageStorage
+        WHERE imageType = 'AVATAR'
+        GROUP BY userId
+        )
         ) img ON u.id = img.userId
         <include refid="Where_Clause"/>
         <if test="query.orderBy != null and query.orderBy != ''">
@@ -192,11 +192,12 @@
         </if>
         LIMIT #{offset}, #{limit}
     </select>
-    
+
     <!-- 律师信息和头像关联的结果映射 -->
-    <resultMap id="LawyerInfoDTOResultMap" type="com.lawfirm.lawfirmserver.lawyer.dto.LawyerInfoDTO" extends="BaseResultMap">
-        <result column="userId" property="userId" />
-        <result column="avatarData" property="avatarData" />
-        <result column="avatarExtension" property="avatarExtension" />
+    <resultMap id="LawyerInfoDTOResultMap" type="com.lawfirm.lawfirmserver.lawyer.dto.LawyerInfoDTO"
+               extends="BaseResultMap">
+        <result column="userId" property="userId"/>
+        <result column="avatarData" property="avatarData"/>
+        <result column="avatarExtension" property="avatarExtension"/>
     </resultMap>
 </mapper>
