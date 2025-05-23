@@ -37,7 +37,10 @@ public class CodeGenerator {
 //        createBaseFiles("chat", "chatSession");
 //        createBaseFiles("chat", "chatMessage");
 
-        createBaseFiles("image", "imageStorage");
+//        createBaseFiles("image", "imageStorage");
+        
+        createBaseFiles("login", "loginLog");
+
 
     }
 

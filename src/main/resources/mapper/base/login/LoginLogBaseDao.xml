@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.login.dao.LoginLogDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="phone" property="phone"/>
+        <result column="loginType" property="loginType"/>
+        <result column="status" property="status"/>
+        <result column="ip" property="ip"/>
+        <result column="device" property="device"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id
+        , userId, phone, loginType, status,
+		 ip, device, remark, createTime, insertTimeForHis,
+		 operateTimeForHis
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="userId != null">
+            and userId = #{userId}
+        </if>
+        <if test="phone != null">
+            and phone = #{phone}
+        </if>
+        <if test="loginType != null">
+            and loginType = #{loginType}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="ip != null">
+            and ip = #{ip}
+        </if>
+        <if test="device != null">
+            and device = #{device}
+        </if>
+        <if test="remark != null">
+            and remark = #{remark}
+        </if>
+        <if test="createTime != null">
+            and createTime = #{createTime}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insertTimeForHis = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operateTimeForHis = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from loginlog
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from loginlog
+        where id = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from loginlog
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from loginlog
+        where id = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from loginlog
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        insert into loginlog (id, userId, phone, loginType, status,
+                              ip, device, remark, createTime, operateTimeForHis)
+        values (#{id}, #{userId}, #{phone}, #{loginType}, #{status},
+                #{ip}, #{device}, #{remark}, #{createTime}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        insert into loginlog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="loginType != null">
+                loginType,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="device != null">
+                device,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="loginType != null">
+                #{loginType},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="device != null">
+                #{device},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        update loginlog
+        <set>
+            <if test="userId != null">
+                userId=#{userId},
+            </if>
+            <if test="phone != null">
+                phone=#{phone},
+            </if>
+            <if test="loginType != null">
+                loginType=#{loginType},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="ip != null">
+                ip=#{ip},
+            </if>
+            <if test="device != null">
+                device=#{device},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            <if test="createTime != null">
+                createTime=#{createTime},
+            </if>
+            operateTimeForHis=now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.login.po.LoginLog">
+        update loginlog
+        set userId=#{userId},
+            phone=#{phone},
+            loginType=#{loginType},
+            status=#{status},
+            ip=#{ip},
+            device=#{device},
+            remark=#{remark},
+            createTime=#{createTime},
+            operateTimeForHis=now()
+        where id = #{id}
+    </update>
+
+</mapper>

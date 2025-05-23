@@ -5,7 +5,7 @@ security:
   jwt:
     token:
       # 生产环境必须使用环境变量注入密钥，确保安全性
-      secret-key: ${JWT_SECRET}
+      secret-key: ${JWT_SECRET:test_environment_secret_key_for_jwt_token}
       expire-length: ${JWT_EXPIRE:86400000}
       refresh-expire-length: ${JWT_REFRESH_EXPIRE:2592000000}
 
@@ -22,9 +22,9 @@ server:
 spring:
   datasource:
     # 生产环境数据库连接，主库
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true&requireSSL=true&verifyServerCertificate=true
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://121.40.67.3:3306/lawfirmdb?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
     hikari:
       # 连接池配置
       minimum-idle: 20

@@ -337,6 +337,6 @@ public class LoginService {
         log.setDevice(WebUtils.getDeviceInfo());
         log.setRemark(remark);
         log.setCreateTime(new Date());
-        loginLogDao.insertLoginLog(log);
+        loginLogDao.insertSelective(log);
     }
 }
