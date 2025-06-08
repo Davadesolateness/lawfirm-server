@@ -1,6 +1,7 @@
 package com.lawfirm.lawfirmserver.order.service;
 
 import com.lawfirm.lawfirmserver.image.util.ImageUtil;
+import com.lawfirm.lawfirmserver.order.consts.OrderContant;
 import com.lawfirm.lawfirmserver.order.dao.OrderTimeDao;
 import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
 import com.lawfirm.lawfirmserver.order.po.OrderTime;
@@ -8,15 +9,19 @@ import com.lawfirm.lawfirmserver.order.po.Orders;
 import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.vo.OrderTimeVo;
 import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
+import com.lawfirm.lawfirmserver.order.vo.CreateOrderVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -280,5 +285,59 @@ public class OrderService {
 
         logger.info("成功获取律师的订单概要信息, lawyerId: {}, 订单数量: {}", lawyerId, orderDetails.size());
         return orderDetails;
+    }
+
+    /**
+     * 创建用户订单
+     *
+     * @param createOrderVo 订单创建参数
+     * @return 创建的订单信息
+     */
+    @Transactional
+    public OrdersVo createOrder(CreateOrderVo createOrderVo) {
+        try {
+            logger.info("开始创建订单, userId: {}, lawyerId: {}, serviceDuration: {}, serviceCount: {}",
+                    createOrderVo.getUserId(), createOrderVo.getLawyerId(), createOrderVo.getServiceDuration(), createOrderVo.getServiceCount());
+
+            // 创建订单对象
+            Orders order = new Orders();
+            order.setUserId(createOrderVo.getUserId());
+            order.setLawyerId(createOrderVo.getLawyerId());
+            order.setServiceDuration(createOrderVo.getServiceDuration());
+            order.setServiceCount(createOrderVo.getServiceCount());
+            order.setOrderStatus("pending");
+            order.setOrderType(OrderContant.OrderType.PHONE_SERVICE);
+            order.setUserType(createOrderVo.getUserType());
+            order.setInputTime(new Date());
+            
+            // 插入订单并获取生成的订单ID
+            ordersDao.insertSelectiveAndBackId(order);
+            // 使用插入后返回的orderId
+            Long orderId = order.getOrderId();
+
+            // 创建订单时间记录
+            OrderTime orderTime = new OrderTime();
+            // 使用正确的orderId
+            orderTime.setOrderId(orderId);
+            orderTime.setStartTime(createOrderVo.getStartTime());
+            orderTime.setEndTime(createOrderVo.getEndTime());
+            orderTimeDao.insertSelective(orderTime);
+
+            // 转换为VO对象
+            OrdersVo ordersVo = new OrdersVo();
+            BeanUtils.copyProperties(order, ordersVo);
+
+            // 添加时间信息
+            OrderTimeVo orderTimeVo = new OrderTimeVo();
+            BeanUtils.copyProperties(orderTime, orderTimeVo);
+            ordersVo.setOrderTimes(Collections.singletonList(orderTimeVo));
+            ordersVo.setOrderId(orderId);
+            logger.info("订单创建成功, orderId: {}", orderId);
+            return ordersVo;
+
+        } catch (Exception e) {
+            logger.error("订单创建失败, userId: {}, lawyerId: {}", createOrderVo.getUserId(), createOrderVo.getLawyerId(), e);
+            throw new RuntimeException("订单创建失败: " + e.getMessage());
+        }
     }
 }

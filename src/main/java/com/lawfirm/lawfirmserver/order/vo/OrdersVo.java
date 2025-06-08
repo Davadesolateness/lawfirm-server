@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * 通过ins-framework-mybatis工具自动生成，表orders的VO对象<br/>
  * 对应表名：orders
+ * @author dong
  */
 @Data
 public class OrdersVo implements Serializable {
@@ -62,6 +63,11 @@ public class OrdersVo implements Serializable {
      * 对应字段：operateTimeForHis,备注：订单记录更新时间
      */
     private Date operateTimeForHis;
+    /**
+     * 对应字段：serviceType,备注：服务类型
+     */
+    private String serviceType;
+
     /**
      * 订单时间信息
      */

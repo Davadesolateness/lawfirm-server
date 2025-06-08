@@ -29,6 +29,14 @@ public class OrderTime implements Serializable {
      */
     private Date timeValue;
     /**
+     * 对应字段：startTime,备注：服务开始时间
+     */
+    private Date startTime;
+    /**
+     * 对应字段：endTime,备注：服务结束时间
+     */
+    private Date endTime;
+    /**
      * 对应字段：insertTimeForHis,备注：时间记录插入时间
      */
     private Date insertTimeForHis;
@@ -36,5 +44,6 @@ public class OrderTime implements Serializable {
      * 对应字段：operateTimeForHis,备注：时间记录更新时间
      */
     private Date operateTimeForHis;
+
 
 }

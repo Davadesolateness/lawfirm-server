@@ -279,6 +279,14 @@ public class LawyerService {
                 // 设置关联的用户ID
                 lawyerVo.setUserId(user.getId());
 
+                // 设置律师电话号码
+                if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty()) {
+                    lawyerVo.setPhone(user.getPhoneNumber());
+                    log.info("律师ID: {} 的电话号码设置为: {}", lawyerId, user.getPhoneNumber());
+                } else {
+                    log.warn("律师ID: {} 的关联用户电话号码为空", lawyerId);
+                }
+
                 // 2. 查询用户的头像
                 ImageStorage avatar = imageStorageDao.selectLatestAvatarByUserId(user.getId());
 
@@ -291,11 +299,13 @@ public class LawyerService {
                     String imageType = ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension());
                     lawyerVo.setImageType(imageType);
                 }
+            } else {
+                log.warn("未找到律师ID: {} 的关联用户信息", lawyerId);
             }
         } catch (Exception e) {
             // 记录异常但不影响主功能
             System.err.println("获取律师用户信息和头像失败: " + e.getMessage());
-            log.info("获取律师用户信息和头像失败: " + e.getMessage());
+            log.error("获取律师用户信息和头像失败: " + e.getMessage(), e);
         }
     }
 
@@ -599,6 +609,12 @@ public class LawyerService {
             vo.setSpecialtyNames(String.join(",", specialtyNamesList));
         }
 
+        // 查询关联的用户信息、电话号码和头像
+        fetchUserInfoAndAvatar(lawyer.getId(), vo);
+
+        // 翻译地址信息
+        translateAddress(vo);
+
         return vo;
     }
 
@@ -679,6 +695,9 @@ public class LawyerService {
             // 查询关联的用户信息和头像(备用方法)
             fetchUserInfoAndAvatar(lawyerDTO.getId(), vo);
         }
+
+        // 翻译地址信息
+        translateAddress(vo);
 
         return vo;
     }

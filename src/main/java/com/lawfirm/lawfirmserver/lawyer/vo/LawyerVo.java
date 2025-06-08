@@ -104,6 +104,11 @@ public class LawyerVo implements Serializable {
     private Long userId;
 
     /**
+     * 律师电话号码（从关联的用户表获取）
+     */
+    private String phone;
+
+    /**
      * 根据关联的专长关系计算并获取逗号分隔的专长名称字符串
      */
     public String getSpecialtyNames() {
