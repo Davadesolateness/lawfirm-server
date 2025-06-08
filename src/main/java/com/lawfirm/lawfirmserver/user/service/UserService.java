@@ -8,6 +8,8 @@ import com.lawfirm.lawfirmserver.image.service.ImageService;
 import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
+import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
+import com.lawfirm.lawfirmserver.order.po.Orders;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
 import com.lawfirm.lawfirmserver.user.dao.CorporateClientDao;
 import com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao;
@@ -50,6 +52,8 @@ public class UserService {
     private CustomerServiceInfoDao customerServiceInfoDao;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private OrdersDao ordersDao;
 
     /**
      * 验证用户登录信息的方法。
@@ -429,6 +433,20 @@ public class UserService {
                 return false;
             }
 
+            // 获取订单信息
+            Orders order = ordersDao.selectByOrderId(Long.valueOf(orderId));
+            if (order == null) {
+                logger.warn("订单不存在, orderId: {}", orderId);
+                return false;
+            }
+
+            // 获取订单中的服务次数
+            Long serviceCount = order.getServiceCount();
+            if (serviceCount == null || serviceCount <= 0) {
+                logger.warn("订单中服务次数无效, orderId: {}, serviceCount: {}", orderId, serviceCount);
+                return false;
+            }
+
             // 获取用户服务信息
             CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(userId);
             if (serviceInfo == null) {
@@ -444,16 +462,14 @@ public class UserService {
             }
 
             // 扣减服务次数
-            if (serviceInfo.getRemainingServiceCount() > 0) {
-                serviceInfo.setRemainingServiceCount(serviceInfo.getRemainingServiceCount() - 1);
-                serviceInfo.setUpdateTime(now);
-                customerServiceInfoDao.updateSelectiveByPrimaryKey(serviceInfo);
-                logger.info("扣减服务次数成功, userId: {}, 剩余次数: {}", userId, serviceInfo.getRemainingServiceCount());
-                return true;
-            } else {
-                logger.warn("用户剩余服务次数不足, userId: {}, remainingCount: {}", userId, serviceInfo.getRemainingServiceCount());
-                return false;
-            }
+            int newRemainingCount = serviceInfo.getRemainingServiceCount() - serviceCount.intValue();
+            serviceInfo.setRemainingServiceCount(newRemainingCount);
+            serviceInfo.setUpdateTime(now);
+            customerServiceInfoDao.updateSelectiveByPrimaryKey(serviceInfo);
+            
+            logger.info("扣减服务次数成功, userId: {}, orderId: {}, 扣减次数: {}, 剩余次数: {}", 
+                       userId, orderId, serviceCount, newRemainingCount);
+            return true;
             
         } catch (Exception e) {
             logger.error("扣减用户优惠次数失败, userId: {}, orderId: {}", userId, orderId, e);

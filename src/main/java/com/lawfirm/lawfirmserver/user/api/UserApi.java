@@ -3,6 +3,7 @@ package com.lawfirm.lawfirmserver.user.api;
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.user.service.UserService;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.DeductDiscountVo;
 import com.lawfirm.lawfirmserver.user.vo.DiscountInfoVo;
 import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.UsersPageVo;
@@ -164,19 +165,14 @@ public class UserApi {
      * 扣减用户优惠次数
      * 该方法用于扣减用户的优惠次数，通常在完成服务后调用
      *
-     * @param userId 用户ID
-     * @param orderId 订单ID
+     * @param deductDiscountVo 扣减优惠次数请求参数
      * @return 扣减结果
      */
     @PostMapping(value = "/deductDiscount")
     @ApiOperation("扣减用户优惠次数")
-    public Result<Object> deductDiscount(
-            @ApiParam(value = "用户ID", required = true, example = "1")
-            @RequestParam(value = "userId") String userId,
-            @ApiParam(value = "订单ID", required = true, example = "CALL_123456")
-            @RequestParam(value = "orderId") String orderId) {
+    public Result<Object> deductDiscount(@RequestBody DeductDiscountVo deductDiscountVo) {
         try {
-            boolean result = userService.deductDiscount(Long.valueOf(userId), orderId);
+            boolean result = userService.deductDiscount(deductDiscountVo.getUserId(), deductDiscountVo.getOrderId());
             if (result) {
                 return Result.success("优惠次数扣减成功", null);
             } else {
