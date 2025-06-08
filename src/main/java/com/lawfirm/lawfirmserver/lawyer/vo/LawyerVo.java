@@ -58,6 +58,10 @@ public class LawyerVo implements Serializable {
      */
     private Integer workYears;
     /**
+     * 对应字段：address,备注：律师地址
+     */
+    private String address;
+    /**
      * 对应字段：rating,备注：律师评分
      */
     private BigDecimal rating;
