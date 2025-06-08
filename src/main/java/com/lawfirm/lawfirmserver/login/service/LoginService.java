@@ -133,21 +133,44 @@ public class LoginService {
     public Result<LoginVo> loginByWechat(WechatLoginDTO dto) {
         try {
             // 1. 通过code获取微信openId和sessionKey
-            WechatLoginResult wxResult = wechatService.code2Session(dto.getCode());
+                WechatLoginResult wxResult = wechatService.code2Session(dto.getCode());
             if (wxResult == null || StringUtils.isBlank(wxResult.getOpenid())) {
-                //saveLoginLog("微信用户", 3, null, "获取微信信息失败");
+                saveLoginLog("微信用户", 3, null, "获取微信信息失败");
                 return Result.fail("获取微信信息失败");
             }
 
             String openId = wxResult.getOpenid();
             String sessionKey = wxResult.getSessionKey();
+            
+            // 2. 获取手机号（直接从DTO中获取）
+            String phoneNumber = dto.getPhoneNumber();
+            if (StringUtils.isNotBlank(phoneNumber)) {
+                // 简单的手机号格式验证
+                if (!phoneNumber.matches("^1[3-9]\\d{9}$")) {
+                    saveLoginLog("微信用户", 3, null, "手机号格式不正确");
+                    return Result.fail("手机号格式不正确");
+                }
+                log.info("微信登录获取手机号: {}", phoneNumber.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+            }
 
-            // 2. 检查用户是否已存在
-            Users user = null;//userDao.selectByOpenId(openId);
+            // 3. 检查用户是否已存在（优先通过openId查找，其次通过手机号）
+            Users user = userDao.selectByOpenId(openId);
+            
+            // 如果通过openId没找到，但有手机号，则通过手机号查找
+            if (user == null && StringUtils.isNotBlank(phoneNumber)) {
+                Users existingUser = userDao.selectByPhone(phoneNumber);
+                if (existingUser != null) {
+                    // 用户存在但没有绑定微信，更新openId
+                    existingUser.setOpenId(openId);
+                    userDao.updateSelectiveByPrimaryKey(existingUser);
+                    user = existingUser;
+                    log.info("用户{}绑定微信openId成功", phoneNumber);
+                }
+            }
 
-            // 3. 如果用户不存在，则创建新用户
+            // 4. 如果用户不存在，则创建新用户
             if (user == null) {
-                // 解密用户信息，实际实现中需要处理加密数据
+                // 解密用户基本信息
                 WechatUserInfo userInfo = null;
                 if (StringUtils.isNotBlank(dto.getEncryptedData()) && StringUtils.isNotBlank(dto.getIv())) {
                     userInfo = wechatService.decryptUserInfo(sessionKey, dto.getEncryptedData(), dto.getIv());
@@ -155,26 +178,80 @@ public class LoginService {
 
                 // 创建新用户
                 user = new Users();
-           /*     user.setOpenId(openId);
-                user.setUnionId(wxResult.getUnionid());
-                user.setNickname(userInfo != null ? userInfo.getNickName() : "微信用户");*/
-                //user.setAvatarUrl(userInfo != null ? userInfo.getAvatarUrl() : "");
-                /*   user.setGender(userInfo != null ? userInfo.getGender() : 0);*/
+                user.setOpenId(openId);
+                
+                // 设置用户基本信息
+                if (userInfo != null) {
+                    user.setNickName(userInfo.getNickName());
+                    user.setUsername(StringUtils.isNotBlank(userInfo.getNickName()) ? userInfo.getNickName() : "微信用户");
+                } else {
+                    // 使用DTO中直接传递的用户信息
+                    user.setNickName(StringUtils.isNotBlank(dto.getNickName()) ? dto.getNickName() : "微信用户");
+                    user.setUsername(StringUtils.isNotBlank(dto.getNickName()) ? dto.getNickName() : "微信用户");
+                }
+                
+                // 设置手机号
+                if (StringUtils.isNotBlank(phoneNumber)) {
+                    user.setPhoneNumber(phoneNumber);
+                } else {
+                    log.warn("微信登录未提供手机号，用户: {}", user.getNickName());
+                }
+                
                 user.setUserType(UserContant.USERTYPE_INDIVIDUAL);
+                user.setSourceType("wechat_register");
                 user.setIsValidFlag("1");
-                /*user.setCreateTime(new Date());*/
-                userDao.insert(user);
+                user.setCreateTime(new Date());
+                user.setInsertTimeForHis(new Date());
+                user.setOperateTimeForHis(new Date());
+                
+                // 插入用户
+                try {
+                    userDao.insert(user);
+                    log.info("微信用户创建成功，用户ID: {}, 昵称: {}, 手机号: {}", 
+                            user.getId(), user.getNickName(), 
+                            StringUtils.isNotBlank(phoneNumber) ? phoneNumber.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : "未提供");
+                } catch (Exception e) {
+                    log.error("创建微信用户失败", e);
+                    saveLoginLog(phoneNumber != null ? phoneNumber : "微信用户", 3, null, "创建用户失败: " + e.getMessage());
+                    return Result.fail("创建用户失败，请稍后重试");
+                }
+            } else {
+                // 用户已存在，检查是否被禁用
+                if (CommonUtil.equals(user.getIsValidFlag(), "0")) {
+                    saveLoginLog(user.getPhoneNumber() != null ? user.getPhoneNumber() : "微信用户", 3, user.getId(), "账号已禁用");
+                    return Result.fail("账号已禁用");
+                }
+                
+                // 更新最后操作时间
+                user.setOperateTimeForHis(new Date());
+                userDao.updateSelectiveByPrimaryKey(user);
+                log.info("微信用户登录成功，用户ID: {}, 昵称: {}", user.getId(), user.getNickName());
             }
 
-            // 4. 生成token
+            // 5. 生成token
             String token = jwtTokenProvider.generateToken(user.getId().toString());
             String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId().toString());
 
-            // 5. 记录登录日志
-            saveLoginLog(user.getPhoneNumber() != null ? user.getPhoneNumber() : "微信用户", 3, user.getId(), "登录成功");
-            return Result.success(new LoginVo(token, user));
+            // 6. 构建登录返回信息
+            LoginVo loginVo = new LoginVo();
+            loginVo.setUserId(user.getId().toString());
+            loginVo.setUserName(user.getUsername());
+            loginVo.setUserType(user.getUserType());
+            loginVo.setPhone(user.getPhoneNumber());
+            loginVo.setRelatedEntityId(user.getRelatedEntityId());
+            loginVo.setToken(token);
+            loginVo.setRefreshToken(refreshToken);
+            loginVo.setTokenExpireTime(jwtTokenProvider.getTokenExpireTime());
+            loginVo.setRefreshTokenExpireTime(jwtTokenProvider.getRefreshTokenExpireTime());
+
+            // 7. 记录登录日志
+            saveLoginLog(user.getPhoneNumber() != null ? user.getPhoneNumber() : "微信用户", 3, user.getId(), "微信登录成功");
+            
+            return Result.success(loginVo);
+            
         } catch (Exception e) {
             log.error("微信登录异常", e);
+            saveLoginLog("微信用户", 3, null, "微信登录异常: " + e.getMessage());
             return Result.fail("微信登录异常: " + e.getMessage());
         }
     }

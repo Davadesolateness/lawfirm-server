@@ -145,7 +145,10 @@
         </dependencies>
     </dependencyManagement>
 
+    <packaging>jar</packaging>
     <build>
+        <!--打成jar包的名称-->
+        <finalName>lawfirm-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -192,4 +195,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>

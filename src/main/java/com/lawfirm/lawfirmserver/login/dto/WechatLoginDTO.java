@@ -28,4 +28,16 @@ public class WechatLoginDTO {
 
     @ApiModelProperty(value = "IP地址", example = "127.0.0.1")
     private String ip;
+
+    @ApiModelProperty(value = "用户手机号", example = "13800138000")
+    private String phoneNumber;
+
+    @ApiModelProperty(value = "微信用户昵称", example = "微信用户")
+    private String nickName;
+
+    @ApiModelProperty(value = "微信用户头像", example = "https://example.com/avatar.jpg")
+    private String avatarUrl;
+
+    @ApiModelProperty(value = "微信用户性别", example = "1")
+    private Integer gender;
 } 

@@ -23,6 +23,14 @@ public interface UsersDao extends MybatisBaseDao<Users, Long> {
     Users selectById(Long userId);
 
     /**
+     * 根据微信openId查询用户
+     *
+     * @param openId 微信openId
+     * @return 用户对象
+     */
+    Users selectByOpenId(String openId);
+
+    /**
      * 根据关联实体ID和用户类型查询用户
      *
      * @param relatedEntityId 关联实体ID
