@@ -100,4 +100,11 @@ public interface OrdersDao extends MybatisBaseDao<Orders, Long> {
             @Param("lawyerId") Long lawyerId,
             @Param("offset") int offset,
             @Param("limit") int limit);
+
+    /**
+     * 插入一条记录(为空的字段不操作)，并返回生成的主键
+     * @param order 订单对象
+     * @return 插入的订单ID
+     */
+    Long insertSelectiveAndBackId(Orders order);
 }

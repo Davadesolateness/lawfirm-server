@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.common.dao.CodeInfoDao">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+        <id column="codeCode" jdbcType="VARCHAR" property="codeCode"/>
+        <result column="codeName" jdbcType="VARCHAR" property="codeName"/>
+        <result column="upperCode" jdbcType="VARCHAR" property="upperCode"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="codeType" jdbcType="VARCHAR" property="codeType"/>
+        <result column="insertTimeForHis" jdbcType="TIMESTAMP" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" jdbcType="TIMESTAMP" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 基础列名 -->
+    <sql id="Base_Column_List">
+        codeCode, codeName, upperCode, level, codeType, insertTimeForHis, operateTimeForHis
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where codeCode = #{codeCode,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据代码查询编码信息 -->
+    <select id="selectByCodeCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where codeCode = #{codeCode,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据代码类型查询所有编码信息 -->
+    <select id="selectByCodeType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where codeType = #{codeType,jdbcType=VARCHAR}
+        order by codeCode
+    </select>
+
+    <!-- 根据上级代码查询下级编码信息 -->
+    <select id="selectByUpperCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where upperCode = #{upperCode,jdbcType=VARCHAR}
+        order by codeCode
+    </select>
+
+    <!-- 根据级别和上级代码查询编码信息 -->
+    <select id="selectByLevelAndUpperCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where level = #{level,jdbcType=VARCHAR}
+        <if test="upperCode != null and upperCode != ''">
+            and upperCode = #{upperCode,jdbcType=VARCHAR}
+        </if>
+        order by codeCode
+    </select>
+
+    <!-- 批量根据代码查询编码信息 -->
+    <select id="selectByCodeCodes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where codeCode in
+        <foreach collection="codeCodes" item="code" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+        order by codeCode
+    </select>
+
+    <!-- 根据代码类型和级别查询编码信息 -->
+    <select id="selectByCodeTypeAndLevel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from codeInfo
+        where codeType = #{codeType,jdbcType=VARCHAR}
+        and level = #{level,jdbcType=VARCHAR}
+        order by codeCode
+    </select>
+
+    <!-- 删除 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from codeInfo
+        where codeCode = #{codeCode,jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+        insert into codeInfo (codeCode, codeName, upperCode,
+                            level, codeType, insertTimeForHis,
+                            operateTimeForHis)
+        values (#{codeCode,jdbcType=VARCHAR}, #{codeName,jdbcType=VARCHAR}, #{upperCode,jdbcType=VARCHAR},
+                #{level,jdbcType=VARCHAR}, #{codeType,jdbcType=VARCHAR}, #{insertTimeForHis,jdbcType=TIMESTAMP},
+                #{operateTimeForHis,jdbcType=TIMESTAMP})
+    </insert>
+
+    <!-- 选择性插入 -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+        insert into codeInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="codeCode != null">
+                codeCode,
+            </if>
+            <if test="codeName != null">
+                codeName,
+            </if>
+            <if test="upperCode != null">
+                upperCode,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="codeType != null">
+                codeType,
+            </if>
+            <if test="insertTimeForHis != null">
+                insertTimeForHis,
+            </if>
+            <if test="operateTimeForHis != null">
+                operateTimeForHis,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="codeCode != null">
+                #{codeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="codeName != null">
+                #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="upperCode != null">
+                #{upperCode,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="codeType != null">
+                #{codeType,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTimeForHis != null">
+                #{insertTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateTimeForHis != null">
+                #{operateTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据主键选择性更新 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+        update codeInfo
+        <set>
+            <if test="codeName != null">
+                codeName = #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="upperCode != null">
+                upperCode = #{upperCode,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="codeType != null">
+                codeType = #{codeType,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTimeForHis != null">
+                insertTimeForHis = #{insertTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateTimeForHis != null">
+                operateTimeForHis = #{operateTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where codeCode = #{codeCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键更新 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+        update codeInfo
+        set codeName = #{codeName,jdbcType=VARCHAR},
+            upperCode = #{upperCode,jdbcType=VARCHAR},
+            level = #{level,jdbcType=VARCHAR},
+            codeType = #{codeType,jdbcType=VARCHAR},
+            insertTimeForHis = #{insertTimeForHis,jdbcType=TIMESTAMP},
+            operateTimeForHis = #{operateTimeForHis,jdbcType=TIMESTAMP}
+        where codeCode = #{codeCode,jdbcType=VARCHAR}
+    </update>
+</mapper> 

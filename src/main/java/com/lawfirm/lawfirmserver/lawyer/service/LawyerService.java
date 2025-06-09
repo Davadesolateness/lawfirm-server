@@ -2,6 +2,8 @@ package com.lawfirm.lawfirmserver.lawyer.service;
 
 import com.lawfirm.lawfirmserver.common.PageResult;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
+import com.lawfirm.lawfirmserver.common.dao.CodeInfoDao;
+import com.lawfirm.lawfirmserver.common.entity.CodeInfo;
 import com.lawfirm.lawfirmserver.image.dao.ImageStorageDao;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
 import com.lawfirm.lawfirmserver.image.util.ImageUtil;
@@ -50,6 +52,9 @@ public class LawyerService {
 
     @Autowired
     ImageStorageDao imageStorageDao;
+
+    @Autowired
+    CodeInfoDao codeInfoDao;
 
     /**
      * 更新律师信息及其关联的专长信息
@@ -181,7 +186,82 @@ public class LawyerService {
         // 查询关联的用户信息和头像
         fetchUserInfoAndAvatar(lawyerId, lawyerVo);
 
+        // 翻译地址信息
+        translateAddress(lawyerVo);
+
         return lawyerVo;
+    }
+
+    /**
+     * 翻译律师地址信息
+     * 根据律师的provinceCode、cityCode、districtCode通过codeInfo表翻译为中文地址
+     *
+     * @param lawyerVo 律师VO对象
+     */
+    private void translateAddress(LawyerVo lawyerVo) {
+        try {
+            StringBuilder addressBuilder = new StringBuilder();
+            
+            // 查询省份信息（省份代码后补4个零）
+            if (lawyerVo.getProvinceCode() != null && !lawyerVo.getProvinceCode().isEmpty()) {
+                String provinceCodeForQuery = lawyerVo.getProvinceCode();
+                // 如果不是6位数，则补零到6位
+                if (provinceCodeForQuery.length() < 6) {
+                    provinceCodeForQuery = provinceCodeForQuery + "0000".substring(0, 6 - provinceCodeForQuery.length());
+                }
+                
+                CodeInfo provinceInfo = codeInfoDao.selectByCodeCode(provinceCodeForQuery);
+                if (provinceInfo != null) {
+                    addressBuilder.append(provinceInfo.getCodeName());
+                    log.info("省份信息查询成功: {} -> {} -> {}", lawyerVo.getProvinceCode(), provinceCodeForQuery, provinceInfo.getCodeName());
+                } else {
+                    log.warn("未找到省份信息: {} (查询代码: {})", lawyerVo.getProvinceCode(), provinceCodeForQuery);
+                }
+            }
+            
+            // 查询城市信息（城市代码后补2个零）
+            if (lawyerVo.getCityCode() != null && !lawyerVo.getCityCode().isEmpty()) {
+                String cityCodeForQuery = lawyerVo.getCityCode();
+                // 如果不是6位数，则补零到6位
+                if (cityCodeForQuery.length() < 6) {
+                    cityCodeForQuery = cityCodeForQuery + "00".substring(0, 6 - cityCodeForQuery.length());
+                }
+                
+                CodeInfo cityInfo = codeInfoDao.selectByCodeCode(cityCodeForQuery);
+                if (cityInfo != null) {
+                    if (addressBuilder.length() > 0) {
+                        addressBuilder.append(" ");
+                    }
+                    addressBuilder.append(cityInfo.getCodeName());
+                    log.info("城市信息查询成功: {} -> {} -> {}", lawyerVo.getCityCode(), cityCodeForQuery, cityInfo.getCodeName());
+                } else {
+                    log.warn("未找到城市信息: {} (查询代码: {})", lawyerVo.getCityCode(), cityCodeForQuery);
+                }
+            }
+            
+            // 查询区县信息（区县代码保持原样，应该已经是6位）
+            if (lawyerVo.getDistrictCode() != null && !lawyerVo.getDistrictCode().isEmpty()) {
+                CodeInfo districtInfo = codeInfoDao.selectByCodeCode(lawyerVo.getDistrictCode());
+                if (districtInfo != null) {
+                    if (addressBuilder.length() > 0) {
+                        addressBuilder.append(" ");
+                    }
+                    addressBuilder.append(districtInfo.getCodeName());
+                    log.info("区县信息查询成功: {} -> {}", lawyerVo.getDistrictCode(), districtInfo.getCodeName());
+                } else {
+                    log.warn("未找到区县信息: {}", lawyerVo.getDistrictCode());
+                }
+            }
+            
+            // 设置完整地址
+            String fullAddress = addressBuilder.toString().trim();
+            lawyerVo.setAddress(fullAddress.isEmpty() ? "地址信息不完整" : fullAddress);
+            log.info("地址转换完成: {}", lawyerVo.getAddress());
+            
+        } catch (Exception e) {
+            log.error("地址转换失败: {}", e.getMessage(), e);
+            lawyerVo.setAddress("地址解析失败");
+        }
     }
 
     /**
@@ -199,6 +279,14 @@ public class LawyerService {
                 // 设置关联的用户ID
                 lawyerVo.setUserId(user.getId());
 
+                // 设置律师电话号码
+                if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty()) {
+                    lawyerVo.setPhone(user.getPhoneNumber());
+                    log.info("律师ID: {} 的电话号码设置为: {}", lawyerId, user.getPhoneNumber());
+                } else {
+                    log.warn("律师ID: {} 的关联用户电话号码为空", lawyerId);
+                }
+
                 // 2. 查询用户的头像
                 ImageStorage avatar = imageStorageDao.selectLatestAvatarByUserId(user.getId());
 
@@ -211,11 +299,13 @@ public class LawyerService {
                     String imageType = ImageUtil.getMimeTypeFromExtension(avatar.getFileExtension());
                     lawyerVo.setImageType(imageType);
                 }
+            } else {
+                log.warn("未找到律师ID: {} 的关联用户信息", lawyerId);
             }
         } catch (Exception e) {
             // 记录异常但不影响主功能
             System.err.println("获取律师用户信息和头像失败: " + e.getMessage());
-            log.info("获取律师用户信息和头像失败: " + e.getMessage());
+            log.error("获取律师用户信息和头像失败: " + e.getMessage(), e);
         }
     }
 
@@ -519,6 +609,12 @@ public class LawyerService {
             vo.setSpecialtyNames(String.join(",", specialtyNamesList));
         }
 
+        // 查询关联的用户信息、电话号码和头像
+        fetchUserInfoAndAvatar(lawyer.getId(), vo);
+
+        // 翻译地址信息
+        translateAddress(vo);
+
         return vo;
     }
 
@@ -599,6 +695,9 @@ public class LawyerService {
             // 查询关联的用户信息和头像(备用方法)
             fetchUserInfoAndAvatar(lawyerDTO.getId(), vo);
         }
+
+        // 翻译地址信息
+        translateAddress(vo);
 
         return vo;
     }

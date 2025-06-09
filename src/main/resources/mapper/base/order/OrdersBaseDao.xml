@@ -255,4 +255,70 @@
         where orderId = #{orderId}
     </update>
 
+    <!-- 插入一条记录(为空的字段不操作)，并返回生成的主键 -->
+    <insert id="insertSelectiveAndBackId" parameterType="com.lawfirm.lawfirmserver.order.po.Orders" useGeneratedKeys="true" keyProperty="orderId">
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="userType != null">
+                userType,
+            </if>
+            <if test="orderType != null">
+                orderType,
+            </if>
+            <if test="serviceDuration != null">
+                serviceDuration,
+            </if>
+            <if test="serviceCount != null">
+                serviceCount,
+            </if>
+            <if test="lawyerId != null">
+                lawyerId,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="orderStatus != null">
+                orderStatus,
+            </if>
+            <if test="inputTime != null">
+                inputTime,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="userType != null">
+                #{userType},
+            </if>
+            <if test="orderType != null">
+                #{orderType},
+            </if>
+            <if test="serviceDuration != null">
+                #{serviceDuration},
+            </if>
+            <if test="serviceCount != null">
+                #{serviceCount},
+            </if>
+            <if test="lawyerId != null">
+                #{lawyerId},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus},
+            </if>
+            <if test="inputTime != null">
+                #{inputTime},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
 </mapper>

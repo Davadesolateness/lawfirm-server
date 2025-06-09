@@ -58,6 +58,10 @@ public class LawyerVo implements Serializable {
      */
     private Integer workYears;
     /**
+     * 对应字段：address,备注：律师地址
+     */
+    private String address;
+    /**
      * 对应字段：rating,备注：律师评分
      */
     private BigDecimal rating;
@@ -98,6 +102,11 @@ public class LawyerVo implements Serializable {
      * 关联的用户ID
      */
     private Long userId;
+
+    /**
+     * 律师电话号码（从关联的用户表获取）
+     */
+    private String phone;
 
     /**
      * 根据关联的专长关系计算并获取逗号分隔的专长名称字符串

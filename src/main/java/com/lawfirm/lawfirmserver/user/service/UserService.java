@@ -8,6 +8,8 @@ import com.lawfirm.lawfirmserver.image.service.ImageService;
 import com.lawfirm.lawfirmserver.image.util.ImageUtil;
 import com.lawfirm.lawfirmserver.lawyer.dao.LawyerDao;
 import com.lawfirm.lawfirmserver.lawyer.po.Lawyer;
+import com.lawfirm.lawfirmserver.order.dao.OrdersDao;
+import com.lawfirm.lawfirmserver.order.po.Orders;
 import com.lawfirm.lawfirmserver.user.consts.UserContant;
 import com.lawfirm.lawfirmserver.user.dao.CorporateClientDao;
 import com.lawfirm.lawfirmserver.user.dao.CustomerServiceInfoDao;
@@ -20,6 +22,7 @@ import com.lawfirm.lawfirmserver.user.po.Users;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.UsersPageVo;
+import com.lawfirm.lawfirmserver.user.vo.DiscountInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,8 @@ public class UserService {
     private CustomerServiceInfoDao customerServiceInfoDao;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private OrdersDao ordersDao;
 
     /**
      * 验证用户登录信息的方法。
@@ -338,5 +343,137 @@ public class UserService {
         }
 
         return corporateDetailsVo;
+    }
+
+    /**
+     * 获取用户优惠次数信息
+     * 该方法通过用户ID获取用户的优惠次数以及相关服务信息
+     *
+     * @param userId 用户ID
+     * @return 用户优惠次数信息对象
+     */
+    public DiscountInfoVo getDiscountInfo(Long userId) {
+        try {
+            logger.info("开始获取用户优惠次数信息, userId: {}", userId);
+            
+            // 获取用户基本信息
+            Users users = userDao.selectByPrimaryKey(userId);
+            if (users == null) {
+                logger.warn("用户不存在, userId: {}", userId);
+                return null;
+            }
+
+            // 创建VO对象
+            DiscountInfoVo discountInfoVo = new DiscountInfoVo();
+            discountInfoVo.setUserId(userId);
+            discountInfoVo.setUsername(users.getUsername());
+            discountInfoVo.setNickName(users.getNickName());
+            discountInfoVo.setUserType(users.getUserType());
+
+            // 获取用户服务信息
+            CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(userId);
+            
+            if (serviceInfo != null) {
+                discountInfoVo.setRemainingServiceCount(serviceInfo.getRemainingServiceCount());
+                discountInfoVo.setRemainingServiceMinutes(serviceInfo.getRemainingServiceMinutes());
+                discountInfoVo.setServiceLevel(serviceInfo.getServiceLevel());
+                discountInfoVo.setServiceStartTime(serviceInfo.getServiceStartTime());
+                discountInfoVo.setServiceExpireTime(serviceInfo.getServiceExpireTime());
+                discountInfoVo.setUpdateTime(serviceInfo.getUpdateTime());
+                
+                // 如果是法人用户，添加员工数量限制
+                if (CommonUtil.equals(users.getUserType(), UserContant.USERTYPE_CORPORATE)) {
+                    discountInfoVo.setMaxEmployeeCount(serviceInfo.getMaxEmployeeCount());
+                }
+            } else {
+                // 如果没有服务信息，设置默认值
+                discountInfoVo.setRemainingServiceCount(0);
+                discountInfoVo.setRemainingServiceMinutes(0);
+                discountInfoVo.setServiceLevel(1);
+                discountInfoVo.setServiceStartTime(new Date());
+                
+                // 默认设置到期时间为当前时间后一年
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.YEAR, 1);
+                discountInfoVo.setServiceExpireTime(calendar.getTime());
+                discountInfoVo.setUpdateTime(new Date());
+                
+                if (CommonUtil.equals(users.getUserType(), UserContant.USERTYPE_CORPORATE)) {
+                    discountInfoVo.setMaxEmployeeCount(5);
+                }
+            }
+            
+            logger.info("成功获取用户优惠次数信息, userId: {}, remainingCount: {}, remainingMinutes: {}", 
+                       userId, discountInfoVo.getRemainingServiceCount(), discountInfoVo.getRemainingServiceMinutes());
+            
+            return discountInfoVo;
+            
+        } catch (Exception e) {
+            logger.error("获取用户优惠次数信息失败, userId: {}", userId, e);
+            throw new RuntimeException("获取用户优惠次数信息失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 扣减用户优惠次数
+     * 该方法用于扣减用户的优惠次数，通常在完成服务后调用
+     *
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * @return 扣减是否成功
+     */
+    public boolean deductDiscount(Long userId, String orderId) {
+        try {
+            logger.info("开始扣减用户优惠次数, userId: {}, orderId: {}", userId, orderId);
+            
+            // 获取用户基本信息
+            Users users = userDao.selectByPrimaryKey(userId);
+            if (users == null) {
+                logger.warn("用户不存在, userId: {}", userId);
+                return false;
+            }
+
+            // 获取订单信息
+            Orders order = ordersDao.selectByOrderId(Long.valueOf(orderId));
+            if (order == null) {
+                logger.warn("订单不存在, orderId: {}", orderId);
+                return false;
+            }
+
+            // 获取订单中的服务次数
+            Long serviceCount = order.getServiceCount();
+            if (serviceCount == null || serviceCount <= 0) {
+                logger.warn("订单中服务次数无效, orderId: {}, serviceCount: {}", orderId, serviceCount);
+                return false;
+            }
+
+            // 获取用户服务信息
+            CustomerServiceInfo serviceInfo = customerServiceInfoDao.selectByUserId(userId);
+            if (serviceInfo == null) {
+                logger.warn("用户服务信息不存在, userId: {}", userId);
+                return false;
+            }
+
+            // 检查服务是否已过期
+            Date now = new Date();
+            if (serviceInfo.getServiceExpireTime() != null && serviceInfo.getServiceExpireTime().before(now)) {
+                logger.warn("用户服务已过期, userId: {}, expireTime: {}", userId, serviceInfo.getServiceExpireTime());
+                return false;
+            }
+
+            // 扣减服务次数
+            int newRemainingCount = serviceInfo.getRemainingServiceCount() - serviceCount.intValue();
+            serviceInfo.setRemainingServiceCount(newRemainingCount);
+            serviceInfo.setUpdateTime(now);
+            customerServiceInfoDao.updateSelectiveByPrimaryKey(serviceInfo);
+            
+            logger.info("扣减服务次数成功, userId: {}, orderId: {}, 扣减次数: {}, 剩余次数: {}", 
+                       userId, orderId, serviceCount, newRemainingCount);
+            return true;
+            
+        } catch (Exception e) {
+            logger.error("扣减用户优惠次数失败, userId: {}, orderId: {}", userId, orderId, e);
+            throw new RuntimeException("扣减用户优惠次数失败: " + e.getMessage());
+        }
     }
 }

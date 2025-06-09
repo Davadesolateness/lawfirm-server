@@ -3,6 +3,8 @@ package com.lawfirm.lawfirmserver.user.api;
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.user.service.UserService;
 import com.lawfirm.lawfirmserver.user.vo.CorporateDetailsVo;
+import com.lawfirm.lawfirmserver.user.vo.DeductDiscountVo;
+import com.lawfirm.lawfirmserver.user.vo.DiscountInfoVo;
 import com.lawfirm.lawfirmserver.user.vo.IndividualDetailsVo;
 import com.lawfirm.lawfirmserver.user.vo.UsersPageVo;
 import io.swagger.annotations.Api;
@@ -132,6 +134,52 @@ public class UserApi {
             return Result.success("获取法人用户详情成功", details);
         } else {
             return Result.fail("获取法人用户详情失败");
+        }
+    }
+
+    /**
+     * 获取用户优惠次数信息
+     * 该方法通过用户ID获取用户的优惠次数以及相关信息
+     *
+     * @param userId 用户ID
+     * @return 包含用户优惠次数信息的Result对象
+     */
+    @GetMapping(value = "/getDiscountInfo")
+    @ApiOperation("获取用户优惠次数信息")
+    public Result<DiscountInfoVo> getDiscountInfo(
+            @ApiParam(value = "用户ID", required = true, example = "1")
+            @RequestParam(value = "userId") Long userId) {
+        try {
+            DiscountInfoVo discountInfo = userService.getDiscountInfo(userId);
+            if (discountInfo != null) {
+                return Result.success("获取用户优惠次数信息成功", discountInfo);
+            } else {
+                return Result.fail("未找到用户优惠次数信息");
+            }
+        } catch (Exception e) {
+            return Result.fail("获取用户优惠次数信息失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 扣减用户优惠次数
+     * 该方法用于扣减用户的优惠次数，通常在完成服务后调用
+     *
+     * @param deductDiscountVo 扣减优惠次数请求参数
+     * @return 扣减结果
+     */
+    @PostMapping(value = "/deductDiscount")
+    @ApiOperation("扣减用户优惠次数")
+    public Result<Object> deductDiscount(@RequestBody DeductDiscountVo deductDiscountVo) {
+        try {
+            boolean result = userService.deductDiscount(deductDiscountVo.getUserId(), deductDiscountVo.getOrderId());
+            if (result) {
+                return Result.success("优惠次数扣减成功", null);
+            } else {
+                return Result.fail("优惠次数扣减失败");
+            }
+        } catch (Exception e) {
+            return Result.fail("优惠次数扣减失败: " + e.getMessage());
         }
     }
 }

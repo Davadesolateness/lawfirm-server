@@ -4,11 +4,14 @@ import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.order.service.OrderService;
 import com.lawfirm.lawfirmserver.order.vo.OrderDetailVO;
 import com.lawfirm.lawfirmserver.order.vo.OrdersVo;
+import com.lawfirm.lawfirmserver.order.vo.CreateOrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -143,5 +146,16 @@ public class OrderApi {
             @RequestParam("userId") Long userId) {
         List<OrderDetailVO> orderDetails = orderService.getOrderDetailsByUserId(userId);
         return Result.success("获取用户详细订单成功", orderDetails);
+    }
+
+    @PostMapping(value = "/createCallOrder")
+    @ApiOperation("创建用户订单")
+    public Result<OrdersVo> createCallOrder(@RequestBody CreateOrderVo createOrderVo) {
+        try {
+            OrdersVo order = orderService.createOrder(createOrderVo);
+            return Result.success("订单创建成功", order);
+        } catch (Exception e) {
+            return Result.fail("订单创建失败: " + e.getMessage());
+        }
     }
 }
