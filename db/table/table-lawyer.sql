@@ -66,7 +66,7 @@ CREATE INDEX idx_lawyerSpecialtyRelation_operateTimeForHis ON lawyerSpecialtyRel
 -- 若需删除 LawyerConsultation 表，可取消此注释
 -- DROP TABLE IF EXISTS LawyerConsultation;
 -- 律师免费咨询主表，存储用户咨询请求及律师回复信息
-CREATE TABLE LawyerConsultation
+CREATE TABLE lawyerConsultation
 (
     id                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '咨询记录唯一标识，自增主键',
     userId             BIGINT NOT NULL COMMENT '用户唯一标识（如小程序openid、APP用户ID等）',
