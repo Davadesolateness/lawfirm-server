@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerConsultationDao">
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+		 <id column="id" property="id"/> 
+		 <result column="userId" property="userId"/> 
+		 <result column="consultContent" property="consultContent"/> 
+		 <result column="questionType" property="questionType"/> 
+		 <result column="lawyerId" property="lawyerId"/> 
+		 <result column="lawyerReply" property="lawyerReply"/> 
+		 <result column="createTime" property="createTime"/> 
+		 <result column="replyTime" property="replyTime"/> 
+		 <result column="agreeProtocol" property="agreeProtocol"/> 
+		 <result column="status" property="status"/> 
+		 <result column="insertTimeForHis" property="insertTimeForHis"/> 
+		 <result column="operateTimeForHis" property="operateTimeForHis"/> 
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, userId, consultContent, questionType, lawyerId,
+		 lawyerReply, createTime, replyTime, agreeProtocol, status,
+		 insertTimeForHis, operateTimeForHis
+	</sql>
+
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="userId != null" >
+			and userId = #{userId}
+		</if>
+		<if test="consultContent != null" >
+			and consultContent = #{consultContent}
+		</if>
+		<if test="questionType != null" >
+			and questionType = #{questionType}
+		</if>
+		<if test="lawyerId != null" >
+			and lawyerId = #{lawyerId}
+		</if>
+		<if test="lawyerReply != null" >
+			and lawyerReply = #{lawyerReply}
+		</if>
+		<if test="createTime != null" >
+			and createTime = #{createTime}
+		</if>
+		<if test="replyTime != null" >
+			and replyTime = #{replyTime}
+		</if>
+		<if test="agreeProtocol != null" >
+			and agreeProtocol = #{agreeProtocol}
+		</if>
+		<if test="status != null" >
+			and status = #{status}
+		</if>
+		<if test="insertTimeForHis != null" >
+			and insertTimeForHis = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null" >
+			and operateTimeForHis = #{operateTimeForHis}
+		</if>
+	</sql>
+
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from lawyerconsultation
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
+
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from lawyerconsultation
+		where id = #{param1}
+	</select>
+
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from lawyerconsultation
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+		<include refid="Base_Select_By_Entity" />
+	</select>
+
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from lawyerconsultation
+		where id = #{param1}
+	</delete>
+
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from lawyerconsultation
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawer.po.Lawyerconsultation">
+		insert into lawyerconsultation (id, userId, consultContent, questionType, lawyerId, 
+			lawyerReply, createTime, replyTime, agreeProtocol, status, 
+			operateTimeForHis)
+		values(#{id}, #{userId}, #{consultContent}, #{questionType}, #{lawyerId}, 
+			#{lawyerReply}, #{createTime}, #{replyTime}, #{agreeProtocol}, #{status}, 
+			now())
+	</insert>
+
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+		insert into lawyerconsultation
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="userId != null" >
+				userId,
+			</if>
+			<if test="consultContent != null" >
+				consultContent,
+			</if>
+			<if test="questionType != null" >
+				questionType,
+			</if>
+			<if test="lawyerId != null" >
+				lawyerId,
+			</if>
+			<if test="lawyerReply != null" >
+				lawyerReply,
+			</if>
+			<if test="createTime != null" >
+				createTime,
+			</if>
+			<if test="replyTime != null" >
+				replyTime,
+			</if>
+			<if test="agreeProtocol != null" >
+				agreeProtocol,
+			</if>
+			<if test="status != null" >
+				status,
+			</if>
+			operateTimeForHis,
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="userId != null" >
+				#{userId},
+			</if>
+			<if test="consultContent != null" >
+				#{consultContent},
+			</if>
+			<if test="questionType != null" >
+				#{questionType},
+			</if>
+			<if test="lawyerId != null" >
+				#{lawyerId},
+			</if>
+			<if test="lawyerReply != null" >
+				#{lawyerReply},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="replyTime != null" >
+				#{replyTime},
+			</if>
+			<if test="agreeProtocol != null" >
+				#{agreeProtocol},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			now(),
+		</trim>
+	</insert>
+
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+		update lawyerconsultation
+		<set>
+			<if test="userId != null" >
+				userId=#{userId},
+			</if>
+			<if test="consultContent != null" >
+				consultContent=#{consultContent},
+			</if>
+			<if test="questionType != null" >
+				questionType=#{questionType},
+			</if>
+			<if test="lawyerId != null" >
+				lawyerId=#{lawyerId},
+			</if>
+			<if test="lawyerReply != null" >
+				lawyerReply=#{lawyerReply},
+			</if>
+			<if test="createTime != null" >
+				createTime=#{createTime},
+			</if>
+			<if test="replyTime != null" >
+				replyTime=#{replyTime},
+			</if>
+			<if test="agreeProtocol != null" >
+				agreeProtocol=#{agreeProtocol},
+			</if>
+			<if test="status != null" >
+				status=#{status},
+			</if>
+			operateTimeForHis=now(),
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+		update lawyerconsultation
+		set userId=#{userId},
+			consultContent=#{consultContent},
+			questionType=#{questionType},
+			lawyerId=#{lawyerId},
+			lawyerReply=#{lawyerReply},
+			createTime=#{createTime},
+			replyTime=#{replyTime},
+			agreeProtocol=#{agreeProtocol},
+			status=#{status},
+			operateTimeForHis=now()
+		where id = #{id}
+	</update>
+
+</mapper>
