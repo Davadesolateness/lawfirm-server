@@ -62,3 +62,27 @@ CREATE INDEX idx_lawyerSpecialtyRelation_specialtyId ON lawyerSpecialtyRelation 
 CREATE INDEX idx_lawyerSpecialtyRelation_insertTimeForHis ON lawyerSpecialtyRelation (insertTimeForHis);
 -- 创建律师与专长关联表操作时间的索引，提高按操作时间查询的效率
 CREATE INDEX idx_lawyerSpecialtyRelation_operateTimeForHis ON lawyerSpecialtyRelation (operateTimeForHis);
+
+-- 若需删除 LawyerConsultation 表，可取消此注释
+-- DROP TABLE IF EXISTS LawyerConsultation;
+-- 律师免费咨询主表，存储用户咨询请求及律师回复信息
+CREATE TABLE LawyerConsultation
+(
+    id                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '咨询记录唯一标识，自增主键',
+    userId             BIGINT NOT NULL COMMENT '用户唯一标识（如小程序openid、APP用户ID等）',
+    consultContent     TEXT NOT NULL COMMENT '用户填写的咨询内容（情况说明+问题）',
+    questionType       BIGINT NOT NULL COMMENT '问题类型（关联律师专长表lawyerSpecialty）',
+    lawyerId           BIGINT COMMENT '匹配的律师ID（若已分配）',
+    lawyerReply        TEXT COMMENT '律师回复内容',
+    createTime         TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '咨询发起时间，默认为当前时间',
+    replyTime          TIMESTAMP NULL COMMENT '律师回复时间',
+    agreeProtocol      CHAR(1) DEFAULT '0' COMMENT '是否同意协议（0：未同意；1：已同意）',
+    status             TINYINT DEFAULT 0 COMMENT '咨询状态（0：待回复；1：已回复；2：已关闭；3：已取消）',
+    insertTimeForHis   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '记录插入时间，默认为当前时间',
+    operateTimeForHis  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录操作时间，自动更新'
+);
+CREATE INDEX idx_LawyerConsultation_userId ON LawyerConsultation (userId);
+CREATE INDEX idx_LawyerConsultation_createTime ON LawyerConsultation (createTime);
+CREATE INDEX idx_LawyerConsultation_status ON LawyerConsultation (status);
+CREATE INDEX idx_LawyerConsultation_insertTimeForHis ON LawyerConsultation (insertTimeForHis);
+CREATE INDEX idx_LawyerConsultation_operateTimeForHis ON LawyerConsultation (operateTimeForHis);
