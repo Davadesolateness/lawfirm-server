@@ -1,4 +1,4 @@
-package com.lawfirm.lawfirmserver.common.entity;
+package com.lawfirm.lawfirmserver.common.po;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
