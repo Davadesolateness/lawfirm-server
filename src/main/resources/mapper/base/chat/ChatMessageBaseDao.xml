@@ -88,7 +88,7 @@
 	</select>
 
 	<!-- 按对象查询一页记录（多条记录） -->
-	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.chat.po.Chatmessage">
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.chat.po.ChatMessage">
 		<include refid="Base_Select_By_Entity"/>
 	</select>
 

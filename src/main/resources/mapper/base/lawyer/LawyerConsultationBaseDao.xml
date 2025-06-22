@@ -120,7 +120,7 @@
 	</delete>
 
 	<!-- 完整插入一条记录-->
-	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawer.po.Lawyerconsultation">
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
 		insert into lawyerconsultation (id, userId, consultContent, questionType, lawyerId, 
 			lawyerReply, createTime, replyTime, agreeProtocol, status, 
 			operateTimeForHis)
