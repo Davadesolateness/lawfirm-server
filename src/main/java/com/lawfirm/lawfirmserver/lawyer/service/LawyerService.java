@@ -3,7 +3,7 @@ package com.lawfirm.lawfirmserver.lawyer.service;
 import com.lawfirm.lawfirmserver.common.PageResult;
 import com.lawfirm.lawfirmserver.common.util.CommonUtil;
 import com.lawfirm.lawfirmserver.common.dao.CodeInfoDao;
-import com.lawfirm.lawfirmserver.common.entity.CodeInfo;
+import com.lawfirm.lawfirmserver.common.po.CodeInfo;
 import com.lawfirm.lawfirmserver.image.dao.ImageStorageDao;
 import com.lawfirm.lawfirmserver.image.po.ImageStorage;
 import com.lawfirm.lawfirmserver.image.util.ImageUtil;
