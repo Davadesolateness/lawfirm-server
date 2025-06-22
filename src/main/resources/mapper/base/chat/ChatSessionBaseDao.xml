@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.chat.dao.ChatSessionDao">
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.chat.po.ChatSession">
+		<id column="sessionId" property="sessionId"/>
+		<result column="creatorId" property="creatorId"/>
+		<result column="creatorType" property="creatorType"/>
+		<result column="participantId" property="participantId"/>
+		<result column="participantType" property="participantType"/>
+		<result column="chatType" property="chatType"/>
+		<result column="startTime" property="startTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="status" property="status"/>
+		<result column="insertTimeForHis" property="insertTimeForHis"/>
+		<result column="operateTimeForHis" property="operateTimeForHis"/>
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		sessionId
+		, creatorId, creatorType, participantId, participantType,
+		 chatType, startTime, endTime, status, insertTimeForHis,
+		 operateTimeForHis
+	</sql>
+
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="sessionId != null">
+			and sessionId = #{sessionId}
+		</if>
+		<if test="creatorId != null">
+			and creatorId = #{creatorId}
+		</if>
+		<if test="creatorType != null">
+			and creatorType = #{creatorType}
+		</if>
+		<if test="participantId != null">
+			and participantId = #{participantId}
+		</if>
+		<if test="participantType != null">
+			and participantType = #{participantType}
+		</if>
+		<if test="chatType != null">
+			and chatType = #{chatType}
+		</if>
+		<if test="startTime != null">
+			and startTime = #{startTime}
+		</if>
+		<if test="endTime != null">
+			and endTime = #{endTime}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="insertTimeForHis != null">
+			and insertTimeForHis = #{insertTimeForHis}
+		</if>
+		<if test="operateTimeForHis != null">
+			and operateTimeForHis = #{operateTimeForHis}
+		</if>
+	</sql>
+
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+		<include refid="Base_Column_List"/>
+		from chatsession
+		<where>
+			<include refid="Base_Select_By_Entity_Where"/>
+		</where>
+	</sql>
+
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List"/>
+		from chatsession
+		where sessionId = #{param1}
+	</select>
+
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List"/>
+		from chatsession
+		where sessionId in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.chat.po.Chatsession">
+		<include refid="Base_Select_By_Entity"/>
+	</select>
+
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete
+		from chatsession
+		where sessionId = #{param1}
+	</delete>
+
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from chatsession
+		where sessionId in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.lawfirm.lawfirmserver.chat.po.ChatSession">
+		insert into chatsession (sessionId, creatorId, creatorType, participantId, participantType,
+		                         chatType, startTime, endTime, status, operateTimeForHis)
+		values (#{sessionId}, #{creatorId}, #{creatorType}, #{participantId}, #{participantType},
+		        #{chatType}, #{startTime}, #{endTime}, #{status}, now())
+	</insert>
+
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.chat.po.ChatSession">
+		insert into chatsession
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sessionId != null">
+				sessionId,
+			</if>
+			<if test="creatorId != null">
+				creatorId,
+			</if>
+			<if test="creatorType != null">
+				creatorType,
+			</if>
+			<if test="participantId != null">
+				participantId,
+			</if>
+			<if test="participantType != null">
+				participantType,
+			</if>
+			<if test="chatType != null">
+				chatType,
+			</if>
+			<if test="startTime != null">
+				startTime,
+			</if>
+			<if test="endTime != null">
+				endTime,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			operateTimeForHis,
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sessionId != null">
+				#{sessionId},
+			</if>
+			<if test="creatorId != null">
+				#{creatorId},
+			</if>
+			<if test="creatorType != null">
+				#{creatorType},
+			</if>
+			<if test="participantId != null">
+				#{participantId},
+			</if>
+			<if test="participantType != null">
+				#{participantType},
+			</if>
+			<if test="chatType != null">
+				#{chatType},
+			</if>
+			<if test="startTime != null">
+				#{startTime},
+			</if>
+			<if test="endTime != null">
+				#{endTime},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			now(),
+		</trim>
+	</insert>
+
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.chat.po.ChatSession">
+		update chatsession
+		<set>
+			<if test="creatorId != null">
+				creatorId=#{creatorId},
+			</if>
+			<if test="creatorType != null">
+				creatorType=#{creatorType},
+			</if>
+			<if test="participantId != null">
+				participantId=#{participantId},
+			</if>
+			<if test="participantType != null">
+				participantType=#{participantType},
+			</if>
+			<if test="chatType != null">
+				chatType=#{chatType},
+			</if>
+			<if test="startTime != null">
+				startTime=#{startTime},
+			</if>
+			<if test="endTime != null">
+				endTime=#{endTime},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+			operateTimeForHis=now(),
+		</set>
+		where sessionId = #{sessionId}
+	</update>
+
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.chat.po.ChatSession">
+		update chatsession
+		set creatorId=#{creatorId},
+		    creatorType=#{creatorType},
+		    participantId=#{participantId},
+		    participantType=#{participantType},
+		    chatType=#{chatType},
+		    startTime=#{startTime},
+		    endTime=#{endTime},
+		    status=#{status},
+		    operateTimeForHis=now()
+		where sessionId = #{sessionId}
+	</update>
+
+</mapper>
