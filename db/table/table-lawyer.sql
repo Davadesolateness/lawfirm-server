@@ -86,3 +86,31 @@ CREATE INDEX idx_LawyerConsultation_createTime ON LawyerConsultation (createTime
 CREATE INDEX idx_LawyerConsultation_status ON LawyerConsultation (status);
 CREATE INDEX idx_LawyerConsultation_insertTimeForHis ON LawyerConsultation (insertTimeForHis);
 CREATE INDEX idx_LawyerConsultation_operateTimeForHis ON LawyerConsultation (operateTimeForHis);
+
+-- 若需删除 lawyerApplicationReview 表，可取消此注释
+-- DROP TABLE IF EXISTS LawyerApplicationReview;
+-- 律师入驻审核表，存储律师申请信息及审核流程记录
+CREATE TABLE lawyerApplicationReview
+(
+    id                    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '申请记录唯一标识，自增主键',
+    lawyerId              BIGINT NOT NULL COMMENT '申请律师的唯一标识',
+    contactPhone          VARCHAR(20) COMMENT '联系电话',
+    contactEmail          VARCHAR(64) COMMENT '电子邮箱',
+    applicationTime       TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '申请提交时间',
+    reviewStartTime       TIMESTAMP NULL COMMENT '审核开始时间',
+    reviewEndTime         TIMESTAMP NULL COMMENT '审核结束时间',
+    reviewerId            BIGINT COMMENT '审核人ID（administrator表id）',
+    reviewOpinion         TEXT COMMENT '审核意见',
+    reviewStatus          TINYINT DEFAULT 0 COMMENT '审核状态（0：待审核；1：审核中；2：已通过；3：已拒绝；4：已撤回）',
+    rejectReason          TEXT COMMENT '拒绝原因（当审核状态为3时有效）',
+    retryCount            TINYINT DEFAULT 0 COMMENT '重试次数（修改后重新提交审核的次数）',
+    lastUpdateTime        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间，自动更新',
+    isActive              TINYINT DEFAULT 1 COMMENT '记录有效性（1：有效；0：无效/已删除）',
+    insertTimeForHis      TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '记录插入时间，默认为当前时间',
+    operateTimeForHis     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录操作时间，自动更新'
+);
+CREATE INDEX idx_LawyerApplicationReview_lawyerId ON lawyerApplicationReview (lawyerId);
+CREATE INDEX idx_LawyerApplicationReview_applicationTime ON lawyerApplicationReview (applicationTime);
+CREATE INDEX idx_LawyerApplicationReview_reviewStatus ON lawyerApplicationReview (reviewStatus);
+CREATE INDEX idx_LawyerApplicationReview_insertTimeForHis ON lawyerApplicationReview (insertTimeForHis);
+CREATE INDEX idx_LawyerApplicationReview_operateTimeForHis ON lawyerApplicationReview (operateTimeForHis);
