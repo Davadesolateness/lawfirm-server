@@ -28,7 +28,8 @@ public class CodeGenerator {
 //        createBaseFiles("lawyer", "lawyer");
 //        createBaseFiles("lawyer", "lawyerspecialtyrelation");
 //        createBaseFiles("lawyer", "lawyerspecialty");
-//        createBaseFiles("lawer", "lawyerServiceStat");
+//        createBaseFiles("lawyer", "lawyerServiceStat");
+        createBaseFiles("lawyer", "lawyerConsultation");
 
 //        createBaseFiles("order", "orders");
 //        createBaseFiles("order", "orderTime");
@@ -39,7 +40,7 @@ public class CodeGenerator {
 
 //        createBaseFiles("image", "imageStorage");
 
-        createBaseFiles("login", "loginLog");
+//        createBaseFiles("login", "loginLog");
 
 
     }

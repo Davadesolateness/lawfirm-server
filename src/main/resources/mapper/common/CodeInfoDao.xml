@@ -3,7 +3,7 @@
 <mapper namespace="com.lawfirm.lawfirmserver.common.dao.CodeInfoDao">
 
     <!-- 基础结果映射 -->
-    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.common.po.CodeInfo">
         <id column="codeCode" jdbcType="VARCHAR" property="codeCode"/>
         <result column="codeName" jdbcType="VARCHAR" property="codeName"/>
         <result column="upperCode" jdbcType="VARCHAR" property="upperCode"/>
@@ -93,7 +93,7 @@
     </delete>
 
     <!-- 插入 -->
-    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.common.po.CodeInfo">
         insert into codeInfo (codeCode, codeName, upperCode,
                             level, codeType, insertTimeForHis,
                             operateTimeForHis)
@@ -103,7 +103,7 @@
     </insert>
 
     <!-- 选择性插入 -->
-    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.common.po.CodeInfo">
         insert into codeInfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="codeCode != null">
@@ -154,7 +154,7 @@
     </insert>
 
     <!-- 根据主键选择性更新 -->
-    <update id="updateByPrimaryKeySelective" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="com.lawfirm.lawfirmserver.common.po.CodeInfo">
         update codeInfo
         <set>
             <if test="codeName != null">
@@ -180,7 +180,7 @@
     </update>
 
     <!-- 根据主键更新 -->
-    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.common.entity.CodeInfo">
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.common.po.CodeInfo">
         update codeInfo
         set codeName = #{codeName,jdbcType=VARCHAR},
             upperCode = #{upperCode,jdbcType=VARCHAR},

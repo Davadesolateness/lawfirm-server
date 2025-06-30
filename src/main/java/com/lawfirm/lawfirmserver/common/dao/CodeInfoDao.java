@@ -1,6 +1,6 @@
 package com.lawfirm.lawfirmserver.common.dao;
 
-import com.lawfirm.lawfirmserver.common.entity.CodeInfo;
+import com.lawfirm.lawfirmserver.common.po.CodeInfo;
 import ins.framework.mybatis.MybatisBaseDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -1,9 +1,7 @@
 --导出语句
-SELECT *
-FROM codeinfo INTO OUTFILE '/tmp/mysql/codeInfo.txt' FIELDS TERMINATED BY ',' ENCLOSED BY '|' LINES TERMINATED BY '\n';
+SELECT * FROM codeinfo INTO OUTFILE '/tmp/mysql/codeInfo.txt' FIELDS TERMINATED BY ',' ENCLOSED BY '|' LINES TERMINATED BY '\n';
 --导入语句
-LOAD
-DATA INFILE '/tmp/mysql/codeInfo.txt' INTO TABLE codeinfo FIELDS TERMINATED BY ',' ENCLOSED BY '|' LINES TERMINATED BY '\n';
+LOAD DATA INFILE '/tmp/mysql/codeInfo.txt' INTO TABLE codeinfo FIELDS TERMINATED BY ',' ENCLOSED BY '|' LINES TERMINATED BY '\n';
 
 -- -- 区域代码基础数据
 -- -- 生成规则：省级level=1，市级level=2，县级level=3，直辖市下属区level=2
