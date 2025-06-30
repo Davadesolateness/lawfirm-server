@@ -6,5 +6,22 @@
 <mapper namespace="com.lawfirm.lawfirmserver.chat.dao.ChatSessionDao">
     <!-- 请在下方添加自定义配置-->
 
+    <!-- 根据创建者ID查询活跃会话 -->
+    <select id="selectActiveSessionsByCreator" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM chatsession 
+        WHERE creatorId = #{userId} AND status = 'active' 
+        ORDER BY startTime DESC
+    </select>
+
+    <!-- 根据参与者ID查询活跃会话 -->
+    <select id="selectActiveSessionsByParticipant" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM chatsession 
+        WHERE participantId = #{userId} AND status = 'active' 
+        ORDER BY startTime DESC
+    </select>
 
 </mapper>
