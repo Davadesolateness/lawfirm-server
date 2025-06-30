@@ -19,6 +19,9 @@ public class ChatService {
     @Autowired
     private ChatMessageDao chatMessageDao;
 
+    @Autowired
+    private AutoReplyService autoReplyService;
+
     /**
      * 创建聊天会话
      */
@@ -39,9 +42,72 @@ public class ChatService {
     }
 
     /**
-     * 发送消息
+     * 发送消息（包含自动回复功能）
      */
     public ChatMessage sendMessage(Long sessionId, Long senderId, Long receiverId, String messageContent) {
+        // 保存用户消息
+        ChatMessage userMessage = new ChatMessage();
+        userMessage.setSessionId(sessionId);
+        userMessage.setSenderId(senderId);
+        userMessage.setReceiverId(receiverId);
+        userMessage.setMessageContent(messageContent);
+        userMessage.setSendTime(new Date());
+        userMessage.setIsRead(false);
+        userMessage.setInsertTimeForHis(new Date());
+        userMessage.setOperateTimeForHis(new Date());
+        
+        chatMessageDao.insert(userMessage);
+
+        // 检查是否需要自动回复
+        tryAutoReply(sessionId, senderId, receiverId, messageContent);
+
+        return userMessage;
+    }
+
+    /**
+     * 尝试自动回复
+     */
+    private void tryAutoReply(Long sessionId, Long senderId, Long receiverId, String messageContent) {
+        // 只对用户发送的消息进行自动回复，避免客服消息触发自动回复
+        if (isUserMessage(senderId)) {
+            String autoReplyContent = autoReplyService.getAutoReply(messageContent);
+            if (autoReplyContent != null && !autoReplyContent.trim().isEmpty()) {
+                // 发送自动回复消息
+                sendAutoReplyMessage(sessionId, receiverId, senderId, autoReplyContent);
+            }
+        }
+    }
+
+    /**
+     * 发送自动回复消息
+     */
+    private void sendAutoReplyMessage(Long sessionId, Long botSenderId, Long receiverId, String replyContent) {
+        ChatMessage autoReplyMessage = new ChatMessage();
+        autoReplyMessage.setSessionId(sessionId);
+        autoReplyMessage.setSenderId(botSenderId);  // 使用客服ID作为发送者
+        autoReplyMessage.setReceiverId(receiverId);
+        autoReplyMessage.setMessageContent(replyContent);
+        autoReplyMessage.setSendTime(new Date());
+        autoReplyMessage.setIsRead(false);
+        autoReplyMessage.setInsertTimeForHis(new Date());
+        autoReplyMessage.setOperateTimeForHis(new Date());
+        
+        chatMessageDao.insert(autoReplyMessage);
+    }
+
+    /**
+     * 判断是否为用户消息（这里简化处理，实际可能需要查询用户类型）
+     */
+    private boolean isUserMessage(Long senderId) {
+        // 这里可以根据业务逻辑判断，比如查询用户表确定用户类型
+        // 暂时简化处理，假设客服ID大于10000
+        return senderId < 10000;
+    }
+
+    /**
+     * 手动发送消息（不触发自动回复）
+     */
+    public ChatMessage sendManualMessage(Long sessionId, Long senderId, Long receiverId, String messageContent) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setSessionId(sessionId);
         chatMessage.setSenderId(senderId);

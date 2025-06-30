@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.chat.dao.AutoReplyConfigDao">
+    <!-- 通用查询结果对象-->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        <id column="configId" property="configId"/>
+        <result column="keyword" property="keyword"/>
+        <result column="replyContent" property="replyContent"/>
+        <result column="matchType" property="matchType"/>
+        <result column="priority" property="priority"/>
+        <result column="status" property="status"/>
+        <result column="category" property="category"/>
+        <result column="description" property="description"/>
+        <result column="createUserId" property="createUserId"/>
+        <result column="insertTimeForHis" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        configId, keyword, replyContent, matchType, priority,
+        status, category, description, createUserId, insertTimeForHis, operateTimeForHis
+    </sql>
+
+    <!-- 按对象查询记录的WHERE部分 -->
+    <sql id="Base_Select_By_Entity_Where">
+        <if test="configId != null">
+            and configId = #{configId}
+        </if>
+        <if test="keyword != null">
+            and keyword = #{keyword}
+        </if>
+        <if test="replyContent != null">
+            and replyContent = #{replyContent}
+        </if>
+        <if test="matchType != null">
+            and matchType = #{matchType}
+        </if>
+        <if test="priority != null">
+            and priority = #{priority}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="category != null">
+            and category = #{category}
+        </if>
+        <if test="description != null">
+            and description = #{description}
+        </if>
+        <if test="createUserId != null">
+            and createUserId = #{createUserId}
+        </if>
+        <if test="insertTimeForHis != null">
+            and insertTimeForHis = #{insertTimeForHis}
+        </if>
+        <if test="operateTimeForHis != null">
+            and operateTimeForHis = #{operateTimeForHis}
+        </if>
+    </sql>
+
+    <!-- 按对象查询记录的SQL部分 -->
+    <sql id="Base_Select_By_Entity">
+        select
+        <include refid="Base_Column_List"/>
+        from auto_reply_config
+        <where>
+            <include refid="Base_Select_By_Entity_Where"/>
+        </where>
+    </sql>
+
+    <!-- 按主键查询一条记录 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from auto_reply_config
+        where configId = #{param1}
+    </select>
+
+    <!-- 按主键List查询多条记录 -->
+    <select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from auto_reply_config
+        where configId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按对象查询一页记录（多条记录） -->
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        <include refid="Base_Select_By_Entity"/>
+    </select>
+
+    <!-- 按主键删除一条记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from auto_reply_config
+        where configId = #{param1}
+    </delete>
+
+    <!-- 按主键List删除多条记录 -->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="map">
+        delete from auto_reply_config
+        where configId in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 完整插入一条记录-->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        insert into auto_reply_config (configId, keyword, replyContent, matchType, priority,
+                                       status, category, description, createUserId, operateTimeForHis)
+        values (#{configId}, #{keyword}, #{replyContent}, #{matchType}, #{priority},
+                #{status}, #{category}, #{description}, #{createUserId}, now())
+    </insert>
+
+    <!-- 插入一条记录(为空的字段不操作) -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        insert into auto_reply_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="configId != null">
+                configId,
+            </if>
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="replyContent != null">
+                replyContent,
+            </if>
+            <if test="matchType != null">
+                matchType,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            operateTimeForHis,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="configId != null">
+                #{configId},
+            </if>
+            <if test="keyword != null">
+                #{keyword},
+            </if>
+            <if test="replyContent != null">
+                #{replyContent},
+            </if>
+            <if test="matchType != null">
+                #{matchType},
+            </if>
+            <if test="priority != null">
+                #{priority},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="category != null">
+                #{category},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <!-- 更新一条记录(为空的字段不操作) -->
+    <update id="updateSelectiveByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        update auto_reply_config
+        <set>
+            <if test="keyword != null">
+                keyword=#{keyword},
+            </if>
+            <if test="replyContent != null">
+                replyContent=#{replyContent},
+            </if>
+            <if test="matchType != null">
+                matchType=#{matchType},
+            </if>
+            <if test="priority != null">
+                priority=#{priority},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="category != null">
+                category=#{category},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="createUserId != null">
+                createUserId=#{createUserId},
+            </if>
+            operateTimeForHis=now(),
+        </set>
+        where configId = #{configId}
+    </update>
+
+    <!-- 完整更新一条记录 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.chat.po.AutoReplyConfig">
+        update auto_reply_config
+        set keyword=#{keyword},
+            replyContent=#{replyContent},
+            matchType=#{matchType},
+            priority=#{priority},
+            status=#{status},
+            category=#{category},
+            description=#{description},
+            createUserId=#{createUserId},
+            operateTimeForHis=now()
+        where configId = #{configId}
+    </update>
+
+</mapper> 

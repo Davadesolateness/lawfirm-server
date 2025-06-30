@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ================可直接使用Base配置文件中定义的节点！================ -->
+<!-- ============================================================== -->
+<mapper namespace="com.lawfirm.lawfirmserver.chat.dao.AutoReplyConfigDao">
+    <!-- 请在下方添加自定义配置-->
+
+    <!-- 查询所有启用的自动回复配置，按优先级排序 -->
+    <select id="selectActiveConfigs" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM auto_reply_config 
+        WHERE status = 'active' 
+        ORDER BY priority ASC, configId ASC
+    </select>
+
+    <!-- 根据分类查询启用的自动回复配置 -->
+    <select id="selectActiveConfigsByCategory" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM auto_reply_config 
+        WHERE status = 'active' AND category = #{category}
+        ORDER BY priority ASC, configId ASC
+    </select>
+
+    <!-- 根据关键词精确匹配查询配置 -->
+    <select id="selectByKeyword" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM auto_reply_config 
+        WHERE keyword = #{keyword} AND status = 'active'
+        ORDER BY priority ASC
+        LIMIT 1
+    </select>
+
+</mapper> 
