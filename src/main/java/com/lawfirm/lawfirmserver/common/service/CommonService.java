@@ -27,6 +27,7 @@ public class CommonService {
 
     /**
      * 获取所有省市县区域信息
+     *
      * @return 包含省市县列表的RegionListVO对象
      */
     public RegionListVo getAllRegions() {
@@ -35,17 +36,17 @@ public class CommonService {
 
         // 按等级分类
         List<RegionVo> provinces = allRegions.stream()
-                .filter(region -> "省级".equals(region.getLevel()))
+                .filter(region -> "1".equals(region.getLevel()))
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
 
         List<RegionVo> cities = allRegions.stream()
-                .filter(region -> "市级".equals(region.getLevel()))
+                .filter(region -> "2".equals(region.getLevel()))
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
 
         List<RegionVo> districts = allRegions.stream()
-                .filter(region -> "县级".equals(region.getLevel()) || "区级".equals(region.getLevel()))
+                .filter(region -> "3".equals(region.getLevel()))
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
 
@@ -54,36 +55,39 @@ public class CommonService {
 
     /**
      * 根据省份代码获取该省份下的市级区域
+     *
      * @param provinceCode 省份代码
      * @return 市级区域列表
      */
     public List<RegionVo> getCitiesByProvince(String provinceCode) {
         List<CodeInfo> cities = codeInfoDao.selectByUpperCode(provinceCode);
         return cities.stream()
-                .filter(city -> "市级".equals(city.getLevel()))
+                .filter(city -> "2".equals(city.getLevel()))
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
     }
 
     /**
      * 根据市级代码获取该市下的县级区域
+     *
      * @param cityCode 市级代码
      * @return 县级区域列表
      */
     public List<RegionVo> getDistrictsByCity(String cityCode) {
         List<CodeInfo> districts = codeInfoDao.selectByUpperCode(cityCode);
         return districts.stream()
-                .filter(district -> "县级".equals(district.getLevel()) || "区级".equals(district.getLevel()))
+                .filter(district -> "3".equals(district.getLevel()))
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
     }
 
     /**
      * 获取所有省份列表
+     *
      * @return 省份列表
      */
     public List<RegionVo> getAllProvinces() {
-        List<CodeInfo> provinces = codeInfoDao.selectByCodeTypeAndLevel("AreaCode", "省级");
+        List<CodeInfo> provinces = codeInfoDao.selectByCodeTypeAndLevel("AreaCode", "1");
         return provinces.stream()
                 .map(this::convertToRegionVO)
                 .collect(Collectors.toList());
@@ -91,6 +95,7 @@ public class CommonService {
 
     /**
      * 将CodeInfo实体转换为RegionVO视图对象
+     *
      * @param codeInfo CodeInfo实体
      * @return RegionVO视图对象
      */

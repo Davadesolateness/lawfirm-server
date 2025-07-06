@@ -52,13 +52,11 @@ public class CommonUtil {
      * @param target 目标对象，即要将属性复制到的对象
      * @param <S>    源对象的类型
      * @param <T>    目标对象的类型
-     * @return 拷贝属性后的目标对象
      */
-    public static <S, T> T copyProperties(S source, T target) {
+    public static <S, T> void copyProperties(S source, T target) {
         if (source == null || target == null) {
-            return target;
+            return;
         }
         BeanUtils.copyProperties(source, target);
-        return target;
     }
 }

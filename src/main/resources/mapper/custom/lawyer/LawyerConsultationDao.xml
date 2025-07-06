@@ -6,5 +6,187 @@
 <mapper namespace="com.lawfirm.lawfirmserver.lawyer.dao.LawyerConsultationDao">
   <!-- 请在下方添加自定义配置-->
 
+  <!-- 插入咨询记录并返回自增主键ID -->
+  <insert id="insertWithId" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation" 
+          useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into lawyerconsultation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="consultContent != null">
+        consultContent,
+      </if>
+      <if test="questionType != null">
+        questionType,
+      </if>
+      <if test="lawyerId != null">
+        lawyerId,
+      </if>
+      <if test="lawyerReply != null">
+        lawyerReply,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="replyTime != null">
+        replyTime,
+      </if>
+      <if test="agreeProtocol != null">
+        agreeProtocol,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="insertTimeForHis != null">
+        insertTimeForHis,
+      </if>
+      operateTimeForHis,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="consultContent != null">
+        #{consultContent},
+      </if>
+      <if test="questionType != null">
+        #{questionType},
+      </if>
+      <if test="lawyerId != null">
+        #{lawyerId},
+      </if>
+      <if test="lawyerReply != null">
+        #{lawyerReply},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="replyTime != null">
+        #{replyTime},
+      </if>
+      <if test="agreeProtocol != null">
+        #{agreeProtocol},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="insertTimeForHis != null">
+        #{insertTimeForHis},
+      </if>
+      now(),
+    </trim>
+  </insert>
+
+  <!-- 根据ID选择性更新咨询记录 -->
+  <update id="updateByIdSelective" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+    update lawyerconsultation
+    <set>
+      <if test="userId != null">
+        userId = #{userId},
+      </if>
+      <if test="consultContent != null">
+        consultContent = #{consultContent},
+      </if>
+      <if test="questionType != null">
+        questionType = #{questionType},
+      </if>
+      <if test="lawyerId != null">
+        lawyerId = #{lawyerId},
+      </if>
+      <if test="lawyerReply != null">
+        lawyerReply = #{lawyerReply},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime},
+      </if>
+      <if test="replyTime != null">
+        replyTime = #{replyTime},
+      </if>
+      <if test="agreeProtocol != null">
+        agreeProtocol = #{agreeProtocol},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="insertTimeForHis != null">
+        insertTimeForHis = #{insertTimeForHis},
+      </if>
+      operateTimeForHis = now(),
+    </set>
+    where id = #{id}
+  </update>
+
+  <!-- 根据主键ID查询咨询记录 -->
+  <select id="selectById" parameterType="java.lang.Long" resultType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+    select id, userId, consultContent, questionType, lawyerId,
+           lawyerReply, createTime, replyTime, agreeProtocol, status,
+           insertTimeForHis, operateTimeForHis
+    from lawyerconsultation
+    where id = #{id}
+  </select>
+
+  <!-- 根据ID更新咨询记录 -->
+  <update id="updateById" parameterType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+    update lawyerconsultation
+    <set>
+      <if test="userId != null">
+        userId = #{userId},
+      </if>
+      <if test="consultContent != null">
+        consultContent = #{consultContent},
+      </if>
+      <if test="questionType != null">
+        questionType = #{questionType},
+      </if>
+      <if test="lawyerId != null">
+        lawyerId = #{lawyerId},
+      </if>
+      <if test="lawyerReply != null">
+        lawyerReply = #{lawyerReply},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime},
+      </if>
+      <if test="replyTime != null">
+        replyTime = #{replyTime},
+      </if>
+      <if test="agreeProtocol != null">
+        agreeProtocol = #{agreeProtocol},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="insertTimeForHis != null">
+        insertTimeForHis = #{insertTimeForHis},
+      </if>
+      operateTimeForHis = now(),
+    </set>
+    where id = #{id}
+  </update>
+
+  <!-- 根据律师ID查询咨询列表 -->
+  <select id="selectByLawyerId" parameterType="java.lang.Long" resultType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+    select id, userId, consultContent, questionType, lawyerId,
+           lawyerReply, createTime, replyTime, agreeProtocol, status,
+           insertTimeForHis, operateTimeForHis
+    from lawyerconsultation
+    where lawyerId = #{lawyerId}
+    order by createTime desc
+  </select>
+
+  <!-- 查询待接收的咨询列表 -->
+  <select id="selectPendingConsultations" parameterType="java.lang.Long" resultType="com.lawfirm.lawfirmserver.lawyer.po.LawyerConsultation">
+    select id, userId, consultContent, questionType, lawyerId,
+           lawyerReply, createTime, replyTime, agreeProtocol, status,
+           insertTimeForHis, operateTimeForHis
+    from lawyerconsultation
+    where status = 0 and (lawyerId is null or lawyerId = '')
+    <if test="questionType != null">
+      and questionType = #{questionType}
+    </if>
+    order by createTime desc
+  </select>
 
 </mapper>
