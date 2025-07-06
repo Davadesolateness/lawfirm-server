@@ -1,7 +1,10 @@
 package com.lawfirm.lawfirmserver.common.service;
 
+import com.lawfirm.lawfirmserver.common.dao.BannerDao;
 import com.lawfirm.lawfirmserver.common.dao.CodeInfoDao;
+import com.lawfirm.lawfirmserver.common.po.Banner;
 import com.lawfirm.lawfirmserver.common.po.CodeInfo;
+import com.lawfirm.lawfirmserver.common.vo.BannerVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionListVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class CommonService {
 
     @Autowired
     private CodeInfoDao codeInfoDao;
+
+    @Autowired
+    private BannerDao bannerDao;
 
     /**
      * 获取所有省市县区域信息
@@ -105,6 +111,48 @@ public class CommonService {
                 codeInfo.getCodeName(),
                 codeInfo.getUpperCode(),
                 codeInfo.getLevel()
+        );
+    }
+
+    /**
+     * 获取所有启用的轮播图列表
+     *
+     * @return 轮播图列表
+     */
+    public List<BannerVo> getEnabledBanners() {
+        List<Banner> banners = bannerDao.selectEnabledBanners();
+        return banners.stream()
+                .map(this::convertToBannerVO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取指定数量的启用轮播图列表
+     *
+     * @param limit 限制数量
+     * @return 轮播图列表
+     */
+    public List<BannerVo> getEnabledBannersWithLimit(Integer limit) {
+        List<Banner> banners = bannerDao.selectEnabledBannersWithLimit(limit);
+        return banners.stream()
+                .map(this::convertToBannerVO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 将Banner实体转换为BannerVO视图对象
+     *
+     * @param banner Banner实体
+     * @return BannerVO视图对象
+     */
+    private BannerVo convertToBannerVO(Banner banner) {
+        return new BannerVo(
+                banner.getId(),
+                banner.getTitle(),
+                banner.getImageUrl(),
+                banner.getLinkUrl(),
+                banner.getSortOrder(),
+                banner.getDescription()
         );
     }
 }

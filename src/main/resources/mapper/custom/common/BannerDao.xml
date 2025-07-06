@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawfirm.lawfirmserver.common.dao.BannerDao">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.lawfirm.lawfirmserver.common.po.Banner">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="linkUrl" jdbcType="VARCHAR" property="linkUrl"/>
+        <result column="sortOrder" jdbcType="INTEGER" property="sortOrder"/>
+        <result column="isEnabled" jdbcType="INTEGER" property="isEnabled"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="insertTimeForHis" jdbcType="TIMESTAMP" property="insertTimeForHis"/>
+        <result column="operateTimeForHis" jdbcType="TIMESTAMP" property="operateTimeForHis"/>
+    </resultMap>
+
+    <!-- 基础列名 -->
+    <sql id="Base_Column_List">
+        id, title, imageUrl, linkUrl, sortOrder, isEnabled, description, insertTimeForHis, operateTimeForHis
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from banner
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 根据ID查询轮播图信息 -->
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from banner
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 获取所有启用的轮播图，按排序序号升序排列 -->
+    <select id="selectEnabledBanners" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from banner
+        where isEnabled = 1
+        order by sortOrder asc, id asc
+    </select>
+
+    <!-- 获取指定数量的启用轮播图，按排序序号升序排列 -->
+    <select id="selectEnabledBannersWithLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from banner
+        where isEnabled = 1
+        order by sortOrder asc, id asc
+        limit #{limit,jdbcType=INTEGER}
+    </select>
+
+    <!-- 删除 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from banner
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="com.lawfirm.lawfirmserver.common.po.Banner" useGeneratedKeys="true" keyProperty="id">
+        insert into banner (title, imageUrl, linkUrl,
+                           sortOrder, isEnabled, description,
+                           insertTimeForHis, operateTimeForHis)
+        values (#{title,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, #{linkUrl,jdbcType=VARCHAR},
+                #{sortOrder,jdbcType=INTEGER}, #{isEnabled,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR},
+                #{insertTimeForHis,jdbcType=TIMESTAMP}, #{operateTimeForHis,jdbcType=TIMESTAMP})
+    </insert>
+
+    <!-- 选择性插入 -->
+    <insert id="insertSelective" parameterType="com.lawfirm.lawfirmserver.common.po.Banner" useGeneratedKeys="true" keyProperty="id">
+        insert into banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="imageUrl != null">
+                imageUrl,
+            </if>
+            <if test="linkUrl != null">
+                linkUrl,
+            </if>
+            <if test="sortOrder != null">
+                sortOrder,
+            </if>
+            <if test="isEnabled != null">
+                isEnabled,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="insertTimeForHis != null">
+                insertTimeForHis,
+            </if>
+            <if test="operateTimeForHis != null">
+                operateTimeForHis,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="linkUrl != null">
+                #{linkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                #{sortOrder,jdbcType=INTEGER},
+            </if>
+            <if test="isEnabled != null">
+                #{isEnabled,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTimeForHis != null">
+                #{insertTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateTimeForHis != null">
+                #{operateTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据主键选择性更新 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.lawfirm.lawfirmserver.common.po.Banner">
+        update banner
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                imageUrl = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="linkUrl != null">
+                linkUrl = #{linkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sortOrder != null">
+                sortOrder = #{sortOrder,jdbcType=INTEGER},
+            </if>
+            <if test="isEnabled != null">
+                isEnabled = #{isEnabled,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTimeForHis != null">
+                insertTimeForHis = #{insertTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateTimeForHis != null">
+                operateTimeForHis = #{operateTimeForHis,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据主键更新 -->
+    <update id="updateByPrimaryKey" parameterType="com.lawfirm.lawfirmserver.common.po.Banner">
+        update banner
+        set title = #{title,jdbcType=VARCHAR},
+            imageUrl = #{imageUrl,jdbcType=VARCHAR},
+            linkUrl = #{linkUrl,jdbcType=VARCHAR},
+            sortOrder = #{sortOrder,jdbcType=INTEGER},
+            isEnabled = #{isEnabled,jdbcType=INTEGER},
+            description = #{description,jdbcType=VARCHAR},
+            insertTimeForHis = #{insertTimeForHis,jdbcType=TIMESTAMP},
+            operateTimeForHis = #{operateTimeForHis,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper> 

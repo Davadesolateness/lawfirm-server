@@ -11,6 +11,7 @@ import java.util.List;
  * 系统编码信息数据访问对象
  * 对应数据库表：codeInfo
  * 用于处理省市区等地区编码信息的数据库操作
+ * @author dong
  */
 @Mapper
 public interface CodeInfoDao extends MybatisBaseDao<CodeInfo, Long> {

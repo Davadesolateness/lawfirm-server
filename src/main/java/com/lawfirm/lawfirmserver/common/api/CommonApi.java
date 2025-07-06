@@ -2,6 +2,7 @@ package com.lawfirm.lawfirmserver.common.api;
 
 import com.lawfirm.lawfirmserver.common.Result;
 import com.lawfirm.lawfirmserver.common.service.CommonService;
+import com.lawfirm.lawfirmserver.common.vo.BannerVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionListVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionVo;
 import io.swagger.annotations.Api;
@@ -90,6 +91,39 @@ public class CommonApi {
             return Result.success("获取县级区域列表成功", districts);
         } catch (Exception e) {
             return Result.fail("获取县级区域列表失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取所有启用的轮播图列表
+     * @return 轮播图列表
+     */
+    @GetMapping("/banners")
+    @ApiOperation("获取所有启用的轮播图列表")
+    public Result<List<BannerVo>> getEnabledBanners() {
+        try {
+            List<BannerVo> banners = commonService.getEnabledBanners();
+            return Result.success("获取轮播图列表成功", banners);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail("获取轮播图列表失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取指定数量的启用轮播图列表
+     * @param limit 限制数量
+     * @return 轮播图列表
+     */
+    @GetMapping("/banners/limit")
+    @ApiOperation("获取指定数量的启用轮播图列表")
+    public Result<List<BannerVo>> getEnabledBannersWithLimit(
+            @ApiParam(value = "限制数量", required = true) @RequestParam Integer limit) {
+        try {
+            List<BannerVo> banners = commonService.getEnabledBannersWithLimit(limit);
+            return Result.success("获取轮播图列表成功", banners);
+        } catch (Exception e) {
+            return Result.fail("获取轮播图列表失败：" + e.getMessage());
         }
     }
 }
