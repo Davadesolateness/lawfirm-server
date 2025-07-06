@@ -8,6 +8,7 @@ import com.lawfirm.lawfirmserver.common.vo.BannerVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionListVo;
 import com.lawfirm.lawfirmserver.common.vo.RegionVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public class CommonService {
 
     @Autowired
     private BannerDao bannerDao;
+
+    @Value("${image.access.base-url:http://localhost:8080/images}")
+    private String imageAccessBaseUrl;
 
     /**
      * 获取所有省市县区域信息
@@ -149,10 +153,33 @@ public class CommonService {
         return new BannerVo(
                 banner.getId(),
                 banner.getTitle(),
-                banner.getImageUrl(),
+                convertToAbsoluteUrl(banner.getImageUrl()),
                 banner.getLinkUrl(),
                 banner.getSortOrder(),
                 banner.getDescription()
         );
+    }
+
+    /**
+     * 将相对路径转换为绝对URL
+     *
+     * @param relativePath 相对路径
+     * @return 绝对URL
+     */
+    private String convertToAbsoluteUrl(String relativePath) {
+        if (relativePath == null || relativePath.trim().isEmpty()) {
+            return null;
+        }
+        
+        // 如果已经是完整的URL，直接返回
+        if (relativePath.startsWith("http://") || relativePath.startsWith("https://")) {
+            return relativePath;
+        }
+        
+        // 确保路径以/开头
+        String normalizedPath = relativePath.startsWith("/") ? relativePath : "/" + relativePath;
+        
+        // 拼接基础URL和相对路径
+        return imageAccessBaseUrl + normalizedPath;
     }
 }
